@@ -24,11 +24,11 @@ test_that("DICOM standard timestamp", {
 })
 
 test_that("Number of slices", {
-  expect_equal(num_slices_dicom(dicom_data_3T_03_0001), 19)
+  expect_equal(num_slices(dicom_data_3T_03_0001), 19)
 })
 
 test_that("DICOM header fields", {
-  fields <- dicom_header_fields(dicom_data_3T_03_0001)
+  fields <- header_fields(dicom_data_3T_03_0001)
   expect_equal(length(fields), 111)
   expect_true("DeidentificationMethod" %in% fields)
   expect_true(!"xxx" %in% fields)
@@ -54,40 +54,40 @@ test_that("DICOM header values", {
   field_idx <- 100
   field <- dicom_data_3T_03_0001$hdr[[slice_idx]]$name[[field_idx]]
   value <- dicom_data_3T_03_0001$hdr[[slice_idx]]$value[[field_idx]]
-  expect_equal(dicom_header_values(dicom_data_3T_03_0001, field, numeric = FALSE)[[slice_idx]], value)
-  expect_equal(dicom_header_values(dicom_data_3T_03_0001, "PixelBandwidth"), rep(200, 19))
-  expect_equal(dicom_header_values(dicom_data_3T_03_0001, "PixelBandwidth", numeric = FALSE), rep("200", 19))
-  expect_error(dicom_header_values(dicom_data_3T_03_0001, "xxx"))
+  expect_equal(header_values(dicom_data_3T_03_0001, field, numeric = FALSE)[[slice_idx]], value)
+  expect_equal(header_values(dicom_data_3T_03_0001, "PixelBandwidth"), rep(200, 19))
+  expect_equal(header_values(dicom_data_3T_03_0001, "PixelBandwidth", numeric = FALSE), rep("200", 19))
+  expect_error(header_values(dicom_data_3T_03_0001, "xxx"))
 })
 
 test_that("DICOM header as matrix", {
-  mat <- dicom_header_as_matrix(dicom_data_3T_03_0001, 1)
+  mat <- header_as_matrix(dicom_data_3T_03_0001, 1)
   expect_equal(ncol(mat), 7)
   expect_gt(nrow(mat), 100)
 })
 
 test_that("Valid header elements from DICOM standard", {
-  keywords <- all_valid_dicom_header_keywords()
-  names <- all_valid_dicom_header_names()
-  tags <- all_valid_dicom_header_tags()
+  keywords <- all_valid_header_keywords()
+  names <- all_valid_header_names()
+  tags <- all_valid_header_tags()
   expect_true("MappingResourceName" %in% keywords)
   expect_true("Equipment Modality" %in% names)
   expect_true("(0008,030E)" %in% tags)
 })
 
 test_that("DICOM header tag", {
-  expect_error(dicom_header_tag("1111"))
-  expect_error(dicom_header_tag("1111", "xxxx"))
-  expect_error(dicom_header_tag("xxxx", "1111"))
-  expect_equal(dicom_header_tag("0000", "1111"), "(0000,1111)")
+  expect_error(header_tag("1111"))
+  expect_error(header_tag("1111", "xxxx"))
+  expect_error(header_tag("xxxx", "1111"))
+  expect_equal(header_tag("0000", "1111"), "(0000,1111)")
 })
 
 test_that("Search keyword", {
-  res_kw <- search_dicom_header_keywords("width")
-  res_name <- search_dicom_header_names("width")
+  res_kw <- search_header_keywords("width")
+  res_name <- search_header_names("width")
   expect_true("ChannelWidth" %in% res_kw)
   expect_true("Channel Width" %in% res_name)
-  expect_equal(length(search_dicom_header_keywords("xxxxx")), 0)
-  expect_equal(length(search_dicom_header_names("xxxxx")), 0)
+  expect_equal(length(search_header_keywords("xxxxx")), 0)
+  expect_equal(length(search_header_names("xxxxx")), 0)
 })
 
