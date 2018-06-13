@@ -126,12 +126,12 @@ header_values <- function(dicom_data, field, numeric = TRUE) {
 #' @param dicom_data DICOM data returned by \code{\link{read_dicom}}
 #' @param slice_idx 1-based slice index. If NA, all slices will be included.
 #' @return Data frame containing one record for each header attribute. Note that
-#' if all slices are included, fields that appear more than once in a given
-#' slice header will be excluded from the values reported for that slice.
+#' if all slices are included, fields that appear more than once (including tag and name)
+#' in a given slice header will be excluded from the values reported for that slice.
 #' @import dplyr
 #' @export
 header_as_matrix <- function(dicom_data, slice_idx = NA) {
-  if(!is.na(slice_idx)) dicom_data$hdr[[slice_idx]]
+  if(!is.na(slice_idx)) dicom_data$hdr[[slice_idx]] %>% unique()
   else {
 
     process_slice <- function(slice) {

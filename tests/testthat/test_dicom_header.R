@@ -61,9 +61,17 @@ test_that("DICOM header values", {
 })
 
 test_that("DICOM header as matrix", {
-  mat <- header_as_matrix(dicom_data_3T_03_0001, 1)
-  expect_equal(ncol(mat), 7)
-  expect_gt(nrow(mat), 100)
+  mat1 <- header_as_matrix(dicom_data_3T_03_0001, 1)
+  expect_equal(ncol(mat1), 7)
+  expect_gt(nrow(mat1), 100)
+  expect_gt(nrow(mat1 %>% filter(name == "CodeMeaning")), 1)
+  mat <- header_as_matrix(dicom_data_3T_03_0001)
+  expect_equal(ncol(mat), 23)
+  expect_gt(nrow(mat1), nrow(mat))
+  expect_equal(nrow(mat %>% filter(name == "CodeMeaning")), 0)
+  v1 <- mat %>% filter(name == "InstanceCreationTime") %>% select("slice_2")
+  expect_equal(v1[1,1], "091612.484000")
+  expect_equal(nrow(mat), nrow(mat %>% select(group, element, name) %>% unique()))
 })
 
 test_that("Valid header elements from DICOM standard", {

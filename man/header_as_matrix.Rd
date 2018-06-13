@@ -13,8 +13,8 @@ header_as_matrix(dicom_data, slice_idx = NA)
 }
 \value{
 Data frame containing one record for each header attribute. Note that
-if all slices are included, fields that appear more than once in a given
-slice header will be excluded from the values reported for that slice.
+if all slices are included, fields that appear more than once (including tag and name)
+in a given slice header will be excluded from the values reported for that slice.
 }
 \description{
 Get the header information as a matrix
