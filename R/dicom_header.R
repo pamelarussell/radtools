@@ -159,6 +159,40 @@ header_as_matrix <- function(dicom_data, slice_idx = NA) {
   }
 }
 
+#' Get the values of header attributes that are constant across slices
+#' @param dicom_data DICOM data returned by \code{\link{read_dicom}}
+#' @return List of field values that are constant across all slices. List identifiers
+#' are field names and values are the common attribute values. Fields that are included
+#' more than once in the header are excluded from the return list.
+#' @import dplyr
+#' @export
+constant_header_values <- function(dicom_data) {
+  # Function to get unique slice values for a row
+  unique_vals <- function(row) {
+    unique(unlist(row[sapply(names(row), function(x) grepl("^slice_", x))]))
+  }
+  mat <- header_as_matrix(dicom_data, slice_idx = NA)
+  # Remove repeat field names
+  mat <- mat[
+    which(mat$name %in%
+            (mat %>%
+               dplyr::group_by(name) %>%
+               dplyr::summarize(n_name = n()) %>%
+               dplyr::filter(n_name == 1))$name),]
+  # List to return
+  rtrn <- list()
+  # Process each row
+  for(i in 1:nrow(mat)) {
+    uvals <- unique_vals(mat[i,])
+    if(length(uvals) == 1) {
+      nm <- mat[i,"name"]
+      rtrn[[nm]] <- uvals[1]
+    }
+  }
+  # Return the list
+  rtrn
+}
+
 #' Get all valid DICOM header keywords
 #' @return Vector of all possible header keywords (e.g. "PatientName") from the DICOM standard
 #' @export

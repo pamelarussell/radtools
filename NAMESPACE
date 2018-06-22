@@ -3,6 +3,7 @@
 export(all_valid_header_keywords)
 export(all_valid_header_names)
 export(all_valid_header_tags)
+export(constant_header_values)
 export(dicom_data_to_mat)
 export(dicom_standard_timestamp)
 export(dicom_standard_version)
