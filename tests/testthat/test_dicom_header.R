@@ -103,5 +103,6 @@ test_that("Constant header values", {
   const_val <- constant_header_values(dicom_data_3T_03_0001)
   expect_null(const_val[["Unknown"]])
   expect_equal(const_val[["GroupLength"]], 196)
+  expect_equal(constant_header_values(dicom_data_3T_03_0001, numeric = FALSE)[["GroupLength"]], "196")
   expect_null(const_val[["SliceLocation"]])
 })

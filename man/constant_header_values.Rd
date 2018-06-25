@@ -4,10 +4,12 @@
 \alias{constant_header_values}
 \title{Get the values of header attributes that are constant across slices}
 \usage{
-constant_header_values(dicom_data)
+constant_header_values(dicom_data, numeric = TRUE)
 }
 \arguments{
 \item{dicom_data}{DICOM data returned by \code{\link{read_dicom}}}
+
+\item{numeric}{Convert number values to numeric instead of strings}
 }
 \value{
 List of field values that are constant across all slices. List identifiers

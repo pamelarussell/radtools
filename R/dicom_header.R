@@ -128,6 +128,8 @@ header_values <- function(dicom_data, field, numeric = TRUE) {
 #' @return Data frame containing one record for each header attribute. Note that
 #' if all slices are included, fields that appear more than once (including tag and name)
 #' in a given slice header will be excluded from the values reported for that slice.
+#' Each column contains all header attributes for one slice, therefore, values are
+#' represented as strings due to the heterogeneity even if they are conceptually numeric.
 #' @import dplyr
 #' @export
 header_as_matrix <- function(dicom_data, slice_idx = NA) {
@@ -140,13 +142,13 @@ header_as_matrix <- function(dicom_data, slice_idx = NA) {
       # Only keep fields that appear once
       unique_fields <-
         mat %>%
-        group_by(group, element, name) %>%
-        summarize(count = n()) %>%
-        filter(count == 1)
+        dplyr::group_by(group, element, name) %>%
+        dplyr::summarize(count = n()) %>%
+        dplyr::filter(count == 1)
       mat %>%
-        select(group, element, name, code, value) %>%
-        rename_at(vars(value), funs(paste0(col_nm))) %>%
-        filter(name %in% unique_fields$name)
+        dplyr::select(group, element, name, code, value) %>%
+        dplyr::rename_at(vars(value), funs(paste0(col_nm))) %>%
+        dplyr::filter(name %in% unique_fields$name)
     }
 
     rtrn <- process_slice(1)
@@ -164,9 +166,11 @@ header_as_matrix <- function(dicom_data, slice_idx = NA) {
 #' @return List of field values that are constant across all slices. List identifiers
 #' are field names and values are the common attribute values. Fields that are included
 #' more than once in the header are excluded from the return list.
+#' @param numeric Convert number values to numeric instead of strings
 #' @import dplyr
+#' @import Hmisc
 #' @export
-constant_header_values <- function(dicom_data) {
+constant_header_values <- function(dicom_data, numeric = TRUE) {
   # Function to get unique slice values for a row
   unique_vals <- function(row) {
     unique(unlist(row[sapply(names(row), function(x) grepl("^slice_", x))]))
@@ -186,7 +190,9 @@ constant_header_values <- function(dicom_data) {
     uvals <- unique_vals(mat[i,])
     if(length(uvals) == 1) {
       nm <- mat[i,"name"]
-      rtrn[[nm]] <- uvals[1]
+      val <- uvals[1]
+      if(numeric && Hmisc::all.is.numeric(val)) val <- as.numeric(val)
+      rtrn[[nm]] <- val
     }
   }
   # Return the list
