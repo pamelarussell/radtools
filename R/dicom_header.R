@@ -152,8 +152,11 @@ header_as_matrix <- function(dicom_data, slice_idx = NA) {
     }
 
     rtrn <- process_slice(1)
-    for(i in 2:num_slices(dicom_data)) {
-      rtrn <- rtrn %>% full_join(process_slice(i), by = c("group", "element", "name", "code"))
+    ns <- num_slices(dicom_data)
+    if(ns > 1) {
+      for(i in 2:num_slices(dicom_data)) {
+        rtrn <- rtrn %>% full_join(process_slice(i), by = c("group", "element", "name", "code"))
+      }
     }
 
     rtrn

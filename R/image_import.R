@@ -4,10 +4,18 @@
 #' @return List with elements \code{hdr} and \code{img}, each with an element for each slice
 #' @export
 read_dicom <- function(dir) {
-  rtrn <- oro.dicom::readDICOM(dir)
-  # Print warnings if any header elements do not match DICOM standard
-  validate_header_elements(rtrn, stop = FALSE)
-  rtrn
+  expr <<- expression(oro.dicom::readDICOM(dir))
+  tryCatch(rtrn <- eval(expr),
+    error = function(e) {
+      message("Error raised by oro.dicom::readDICOM")
+      message(paste("Message from oro.dicom:", e$message))
+      message(paste("On expression:", expr))
+      message(paste("With dir = \"", dir, "\"", sep = ""))
+      stop("See message for info")
+    })
+    # Print warnings if any header elements do not match DICOM standard
+    validate_header_elements(rtrn, stop = FALSE)
+    rtrn
 }
 
 #' Convert DICOM data to 3D matrix of intensities
