@@ -1,12 +1,17 @@
 
 # Setup
 
+# Prostate data from NCI ISBI prostate challenge
+# Modality: MR
+# Manufacturer: Siemens
 dir_prostate_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/nci_isbi_2013_challenge_prostate/images_dicom/"
-dir_prostate_dicom_3T_03_0001 <-
+dir_prostate_dicom <-
   paste(dir_prostate_dicom,
         "Prostate3T-03-0001/1.3.6.1.4.1.14519.5.2.1.7307.2101.182382809090179976301292139745/1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219",
         sep = "/")
-dicom_data_3T_03_0001 <- read_dicom(dir_prostate_dicom_3T_03_0001)
+dicom_data_prostate <- read_dicom(dir_prostate_dicom)
+
+
 
 
 # Tests
@@ -24,11 +29,11 @@ test_that("DICOM standard timestamp", {
 })
 
 test_that("Number of slices", {
-  expect_equal(num_slices(dicom_data_3T_03_0001), 19)
+  expect_equal(num_slices(dicom_data_prostate), 19)
 })
 
 test_that("DICOM header fields", {
-  fields <- header_fields(dicom_data_3T_03_0001)
+  fields <- header_fields(dicom_data_prostate)
   expect_equal(length(fields), 111)
   expect_true("DeidentificationMethod" %in% fields)
   expect_true(!"xxx" %in% fields)
@@ -45,27 +50,27 @@ test_that("Validate header", {
   expect_error(validate_group_element("0000", "0000"))
   expect_error(validate_group_element("0000", stop = FALSE))
   expect_warning(validate_group_element("0000", "0000", stop = FALSE))
-  expect_error(validate_header_elements(dicom_data_3T_03_0001))
-  expect_warning(validate_header_elements(dicom_data_3T_03_0001, stop = FALSE))
+  expect_error(validate_header_elements(dicom_data_prostate))
+  expect_warning(validate_header_elements(dicom_data_prostate, stop = FALSE))
 })
 
 test_that("DICOM header values", {
   slice_idx <- 5
   field_idx <- 100
-  field <- dicom_data_3T_03_0001$hdr[[slice_idx]]$name[[field_idx]]
-  value <- dicom_data_3T_03_0001$hdr[[slice_idx]]$value[[field_idx]]
-  expect_equal(header_values(dicom_data_3T_03_0001, field, numeric = FALSE)[[slice_idx]], value)
-  expect_equal(header_values(dicom_data_3T_03_0001, "PixelBandwidth"), rep(200, 19))
-  expect_equal(header_values(dicom_data_3T_03_0001, "PixelBandwidth", numeric = FALSE), rep("200", 19))
-  expect_error(header_values(dicom_data_3T_03_0001, "xxx"))
+  field <- dicom_data_prostate$hdr[[slice_idx]]$name[[field_idx]]
+  value <- dicom_data_prostate$hdr[[slice_idx]]$value[[field_idx]]
+  expect_equal(header_values(dicom_data_prostate, field, numeric = FALSE)[[slice_idx]], value)
+  expect_equal(header_values(dicom_data_prostate, "PixelBandwidth"), rep(200, 19))
+  expect_equal(header_values(dicom_data_prostate, "PixelBandwidth", numeric = FALSE), rep("200", 19))
+  expect_error(header_values(dicom_data_prostate, "xxx"))
 })
 
 test_that("DICOM header as matrix", {
-  mat1 <- header_as_matrix(dicom_data_3T_03_0001, 1)
+  mat1 <- header_as_matrix(dicom_data_prostate, 1)
   expect_equal(ncol(mat1), 7)
   expect_gt(nrow(mat1), 100)
   expect_gt(nrow(mat1 %>% filter(name == "CodeMeaning")), 1)
-  mat <- header_as_matrix(dicom_data_3T_03_0001)
+  mat <- header_as_matrix(dicom_data_prostate)
   expect_equal(ncol(mat), 23)
   expect_gt(nrow(mat1), nrow(mat))
   expect_equal(nrow(mat %>% filter(name == "CodeMeaning")), 0)
@@ -100,9 +105,9 @@ test_that("Search keyword", {
 })
 
 test_that("Constant header values", {
-  const_val <- constant_header_values(dicom_data_3T_03_0001)
+  const_val <- constant_header_values(dicom_data_prostate)
   expect_null(const_val[["Unknown"]])
   expect_equal(const_val[["GroupLength"]], 196)
-  expect_equal(constant_header_values(dicom_data_3T_03_0001, numeric = FALSE)[["GroupLength"]], "196")
+  expect_equal(constant_header_values(dicom_data_prostate, numeric = FALSE)[["GroupLength"]], "196")
   expect_null(const_val[["SliceLocation"]])
 })
