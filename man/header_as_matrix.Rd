@@ -16,7 +16,7 @@ Data frame containing one record for each header attribute. Note that
 if all slices are included, fields that appear more than once (including tag and name)
 in a given slice header will be excluded from the values reported for that slice.
 Each column contains all header attributes for one slice, therefore, values are
-represented as strings due to the heterogeneity even if they are conceptually numeric.
+represented as strings even if they are conceptually numeric.
 }
 \description{
 Get the header information as a matrix

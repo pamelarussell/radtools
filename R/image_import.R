@@ -4,7 +4,8 @@
 #' @return List with elements \code{hdr} and \code{img}, each with an element for each slice
 #' @export
 read_dicom <- function(dir) {
-  expr <<- expression(oro.dicom::readDICOM(dir))
+  # Wrap oro.dicom::readDICOM, translate error message, validate header
+  expr <- expression(oro.dicom::readDICOM(dir))
   tryCatch(rtrn <- eval(expr),
     error = function(e) {
       message("Error raised by oro.dicom::readDICOM")

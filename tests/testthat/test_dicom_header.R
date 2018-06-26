@@ -52,13 +52,20 @@ test_that("DICOM standard timestamp", {
 
 test_that("Number of slices", {
   expect_equal(num_slices(dicom_data_prostate_mr), 19)
+  expect_equal(num_slices(dicom_data_bladder), 1)
+  expect_equal(num_slices(dicom_data_chest), 128)
+  expect_equal(num_slices(dicom_data_prostate_pt), 234)
 })
 
 test_that("DICOM header fields", {
-  fields <- header_fields(dicom_data_prostate_mr)
-  expect_equal(length(fields), 111)
-  expect_true("DeidentificationMethod" %in% fields)
-  expect_true(!"xxx" %in% fields)
+  fieldsp <- header_fields(dicom_data_prostate_mr)
+  expect_equal(length(fieldsp), 111)
+  expect_true("DeidentificationMethod" %in% fieldsp)
+  expect_true(!"xxx" %in% fieldsp)
+  fieldsc <- header_fields(dicom_data_chest)
+  expect_equal(length(fieldsc), 94)
+  expect_true("BodyPartExamined" %in% fieldsc)
+  expect_true(!"Unknown" %in% fieldsc)
 })
 
 test_that("Validate header", {
@@ -74,17 +81,34 @@ test_that("Validate header", {
   expect_warning(validate_group_element("0000", "0000", stop = FALSE))
   expect_error(validate_header_elements(dicom_data_prostate_mr))
   expect_warning(validate_header_elements(dicom_data_prostate_mr, stop = FALSE))
+  expect_error(validate_header_elements(dicom_data_bladder))
+  expect_warning(validate_header_elements(dicom_data_bladder, stop = FALSE))
 })
 
 test_that("DICOM header values", {
   slice_idx <- 5
   field_idx <- 100
+
   field <- dicom_data_prostate_mr$hdr[[slice_idx]]$name[[field_idx]]
   value <- dicom_data_prostate_mr$hdr[[slice_idx]]$value[[field_idx]]
   expect_equal(header_values(dicom_data_prostate_mr, field, numeric = FALSE)[[slice_idx]], value)
   expect_equal(header_values(dicom_data_prostate_mr, "PixelBandwidth"), rep(200, 19))
   expect_equal(header_values(dicom_data_prostate_mr, "PixelBandwidth", numeric = FALSE), rep("200", 19))
   expect_error(header_values(dicom_data_prostate_mr, "xxx"))
+
+  fieldb <- dicom_data_bladder$hdr[[1]]$name[[field_idx]]
+  valb <- dicom_data_bladder$hdr[[1]]$value[[field_idx]]
+  expect_equal(header_values(dicom_data_bladder, fieldb, numeric = FALSE)[[1]], valb)
+  expect_equal(header_values(dicom_data_bladder, "SeriesDate"), 20020816)
+  expect_equal(header_values(dicom_data_bladder, "SeriesDate", numeric = FALSE), "20020816")
+  expect_error(header_values(dicom_data_bladder, "Unknown"))
+
+  fieldp <- dicom_data_prostate_pt$hdr[[slice_idx]]$name[[field_idx]]
+  valp <- dicom_data_prostate_pt$hdr[[slice_idx]]$value[[field_idx]]
+  expect_equal(header_values(dicom_data_prostate_pt, fieldp, numeric = FALSE)[[slice_idx]], valp)
+  expect_equal(header_values(dicom_data_prostate_pt, "GroupLength"), rep(196,234))
+  expect_equal(header_values(dicom_data_prostate_pt, "GroupLength", numeric = FALSE), rep("196",234))
+  expect_error(header_values(dicom_data_prostate_pt, "Unknown"))
 })
 
 test_that("DICOM header as matrix", {
@@ -99,6 +123,17 @@ test_that("DICOM header as matrix", {
   v1 <- mat %>% filter(name == "InstanceCreationTime") %>% select("slice_2")
   expect_equal(v1[1,1], "091612.484000")
   expect_equal(nrow(mat), nrow(mat %>% select(group, element, name) %>% unique()))
+
+  mat1b <- header_as_matrix(dicom_data_bladder, 1)
+  matb <- header_as_matrix(dicom_data_bladder)
+  expect_equal(nrow(mat1b %>% filter(name == "CodeMeaning")), 7)
+  expect_equal(nrow(matb %>% filter(name == "CodeMeaning")), 0)
+  expect(ncol(matb %>% select(starts_with("slice"))), 1)
+
+  mat10c <- header_as_matrix(dicom_data_chest, 10)
+  matc <- header_as_matrix(dicom_data_chest)
+  expect(ncol(matc %>% select(starts_with("slice"))), 128)
+  expect_equal(mat10c[9,6], "ORIGINAL PRIMARY AXIAL")
 })
 
 test_that("Valid header elements from DICOM standard", {
@@ -132,4 +167,21 @@ test_that("Constant header values", {
   expect_equal(const_val[["GroupLength"]], 196)
   expect_equal(constant_header_values(dicom_data_prostate_mr, numeric = FALSE)[["GroupLength"]], "196")
   expect_null(const_val[["SliceLocation"]])
+
+  const_valb <- constant_header_values(dicom_data_bladder)
+  expect_equal(length(const_valb),
+               nrow(
+                 header_as_matrix(dicom_data_bladder) %>%
+                   dplyr::group_by(name) %>%
+                   dplyr::summarize(n = n()) %>%
+                   dplyr::filter(n == 1)))
+  expect_equal(const_valb$AcquisitionDate, 20020816)
+  expect_equal(constant_header_values(dicom_data_bladder, numeric = F)[["AcquisitionDate"]], "20020816")
+
+  const_valc <- constant_header_values(dicom_data_chest)
+  expect_null(const_valc[["Unknown"]])
+  expect_equal(const_valc[["StudyDate"]], 20000101)
+  expect_equal(constant_header_values(dicom_data_chest, numeric = FALSE)[["SeriesDate"]], "20000101")
+  expect_null(const_valc[["SliceLocation"]])
+
 })

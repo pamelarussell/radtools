@@ -129,7 +129,7 @@ header_values <- function(dicom_data, field, numeric = TRUE) {
 #' if all slices are included, fields that appear more than once (including tag and name)
 #' in a given slice header will be excluded from the values reported for that slice.
 #' Each column contains all header attributes for one slice, therefore, values are
-#' represented as strings due to the heterogeneity even if they are conceptually numeric.
+#' represented as strings even if they are conceptually numeric.
 #' @import dplyr
 #' @export
 header_as_matrix <- function(dicom_data, slice_idx = NA) {
