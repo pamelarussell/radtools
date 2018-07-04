@@ -10,7 +10,7 @@ img_data_to_mat(img_data)
 \item{img_data}{Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti}}}
 }
 \value{
-3D array of intensities
+3D array of intensities where third dimension is slice
 }
 \description{
 Convert image data to 3D matrix of intensities

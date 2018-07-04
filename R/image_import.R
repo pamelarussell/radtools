@@ -23,13 +23,28 @@ read_dicom <- function(dir) {
 
 #' Convert image data to 3D matrix of intensities
 #' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti}}
-#' @return 3D array of intensities
+#' @return 3D array of intensities where third dimension is slice
 #' @export
 img_data_to_mat <- function(img_data) {
   UseMethod("img_data_to_mat", img_data)
 }
 
 img_data_to_mat.dicomdata <- function(dicom_data) {
-  oro.dicom::create3D(dicom_data)
+  # Wrap oro.dicom::create3D, translate error message
+  expr <- expression(oro.dicom::create3D(dicom_data))
+  tryCatch(rtrn <- eval(expr),
+           error = function(e) {
+             message("Error raised by oro.dicom::create3D")
+             message(paste("Message from oro.dicom:", e$message))
+             message(paste("On expression:", expr))
+             if(nrow(dicom_header_as_matrix(dicom_data) %>% dplyr::filter(name == "ImagePositionPatient")) == 0) {
+               message("Note: DICOM data does not include header field ImagePositionPatient that is probably required")
+             }
+             if(nrow(dicom_header_as_matrix(dicom_data) %>% dplyr::filter(name == "ImageOrientationPatient")) == 0) {
+               message("Note: DICOM data does not include required header field ImageOrientationPatient")
+             }
+             stop("See message for info")
+           })
+  rtrn
 }
 
