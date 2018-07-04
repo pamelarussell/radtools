@@ -15,7 +15,7 @@ read_dicom <- function(dir) {
       stop("See message for info")
     })
     # Print warnings if any header elements do not match DICOM standard
-    validate_header_elements(rtrn, stop = FALSE)
+    dicom_validate_header_elements(rtrn, stop = FALSE)
     rtrn
 }
 
