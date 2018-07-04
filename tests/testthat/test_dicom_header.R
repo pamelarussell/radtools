@@ -51,10 +51,10 @@ test_that("DICOM standard timestamp", {
 })
 
 test_that("Number of slices", {
-  expect_equal(dicom_num_slices(dicom_data_prostate_mr), 19)
-  expect_equal(dicom_num_slices(dicom_data_bladder), 1)
-  expect_equal(dicom_num_slices(dicom_data_chest), 128)
-  expect_equal(dicom_num_slices(dicom_data_prostate_pt), 234)
+  expect_equal(num_slices(dicom_data_prostate_mr), 19)
+  expect_equal(num_slices(dicom_data_bladder), 1)
+  expect_equal(num_slices(dicom_data_chest), 128)
+  expect_equal(num_slices(dicom_data_prostate_pt), 234)
 })
 
 test_that("DICOM header fields", {

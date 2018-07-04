@@ -20,11 +20,8 @@ dicom_singleton_header_fields <- function(dicom_data, slice_idx) {
   fields[sapply(fields, function(x) sum(fields == x) == 1)]
 }
 
-#' Get the number of image slices in a DICOM series
-#' @param dicom_data DICOM data returned by \code{\link{read_dicom}}
-#' @return Number of slices
-#' @export
-dicom_num_slices <- function(dicom_data) {
+# Number of image slices
+num_slices.dicomdata <- function(dicom_data) {
   length(dicom_data$img)
 }
 
@@ -91,7 +88,7 @@ dicom_validate_group_element <- function(group, element, stop = TRUE) {
 #' @import dplyr
 dicom_validate_header_elements <- function(dicom_data, stop = TRUE) {
   elts <- data.frame(group = character(), element = character(), name = character())
-  for(i in dicom_num_slices(dicom_data)) {
+  for(i in num_slices(dicom_data)) {
     elts <- rbind(elts, dicom_header_as_matrix(dicom_data, i) %>% select(group, element, name))
   }
   elts <- elts %>% unique()
@@ -152,9 +149,9 @@ dicom_header_as_matrix <- function(dicom_data, slice_idx = NA) {
     }
 
     rtrn <- process_slice(1)
-    ns <- dicom_num_slices(dicom_data)
+    ns <- num_slices(dicom_data)
     if(ns > 1) {
-      for(i in 2:dicom_num_slices(dicom_data)) {
+      for(i in 2:num_slices(dicom_data)) {
         rtrn <- rtrn %>% full_join(process_slice(i), by = c("group", "element", "name", "code"))
       }
     }
