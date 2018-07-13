@@ -6,3 +6,4 @@ test_that("DICOM image data to matrix", {
   expect_error(img_data_to_mat(dicom_data_bladder)) # Data is missing required header fields for oro.dicom::create3D()
 })
 
+

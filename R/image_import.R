@@ -21,6 +21,16 @@ read_dicom <- function(dir) {
   rtrn
 }
 
+#' Read a NIfTI-1 image
+#' @param file .nii file, gzipped or not
+#' @return Object of class \code{\link[oro.nifti]{nifti}}
+#' @export
+read_nifti1 <- function(file) {
+  rtrn <- oro.nifti::readNIfTI(file, warn = 0)
+  class(rtrn) <- "nifti1data"
+  rtrn
+}
+
 #' Convert image data to 3D matrix of intensities
 #' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti}}
 #' @return 3D array of intensities where third dimension is slice
