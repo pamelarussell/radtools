@@ -10,7 +10,7 @@ read_nifti1(file)
 \item{file}{.nii file, gzipped or not}
 }
 \value{
-Object of class \code{\link[oro.nifti]{nifti}}
+List containing object of class \code{\link[oro.nifti]{nifti}}
 }
 \description{
 Read a NIfTI-1 image

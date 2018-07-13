@@ -40,10 +40,10 @@ test_that("Validate header", {
   expect_error(dicom_validate_group_element("0000", "0000"))
   expect_error(dicom_validate_group_element("0000", stop = FALSE))
   expect_warning(dicom_validate_group_element("0000", "0000", stop = FALSE))
-  expect_error(dicom_validate_header_elements(dicom_data_prostate_mr))
-  expect_warning(dicom_validate_header_elements(dicom_data_prostate_mr, stop = FALSE))
-  expect_error(dicom_validate_header_elements(dicom_data_bladder))
-  expect_warning(dicom_validate_header_elements(dicom_data_bladder, stop = FALSE))
+  expect_error(validate_metadata(dicom_data_prostate_mr))
+  expect_warning(validate_metadata(dicom_data_prostate_mr, stop = FALSE))
+  expect_error(validate_metadata(dicom_data_bladder))
+  expect_warning(validate_metadata(dicom_data_bladder, stop = FALSE))
 })
 
 test_that("DICOM header values", {

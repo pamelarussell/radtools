@@ -86,7 +86,7 @@ dicom_validate_group_element <- function(group, element, stop = TRUE) {
 #' @param dicom_data DICOM data returned by \code{\link{read_dicom}}
 #' @param stop If true, raise error when validation fails. If false, raise warnings for each failed element.
 #' @import dplyr
-dicom_validate_header_elements <- function(dicom_data, stop = TRUE) {
+validate_metadata.dicomdata <- function(dicom_data, stop = TRUE) {
   elts <- data.frame(group = character(), element = character(), name = character())
   for(i in num_slices(dicom_data)) {
     elts <- rbind(elts, dicom_header_as_matrix(dicom_data, i) %>% select(group, element, name))

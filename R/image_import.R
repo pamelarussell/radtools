@@ -17,17 +17,19 @@ read_dicom <- function(dir) {
   # Set class attribute of return value
   class(rtrn) <- "dicomdata"
   # Print warnings if any header elements do not match DICOM standard
-  dicom_validate_header_elements(rtrn, stop = FALSE)
+  validate_metadata(rtrn, stop = FALSE)
   rtrn
 }
 
 #' Read a NIfTI-1 image
 #' @param file .nii file, gzipped or not
-#' @return Object of class \code{\link[oro.nifti]{nifti}}
+#' @return List containing object of class \code{\link[oro.nifti]{nifti}}
 #' @export
 read_nifti1 <- function(file) {
-  rtrn <- oro.nifti::readNIfTI(file, warn = 0)
-  class(rtrn) <- "nifti1data"
+  rtrn <- NULL
+  rtrn$data <- oro.nifti::readNIfTI(file, warn = 0)
+  class(rtrn) <- c("nifti1data")
+  validate_metadata(rtrn)
   rtrn
 }
 
