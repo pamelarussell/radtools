@@ -14,3 +14,4 @@ validate_metadata(img_data, stop = TRUE)
 \description{
 Validate the metadata associated with an image dataset
 }
+\keyword{internal}

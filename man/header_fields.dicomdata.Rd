@@ -2,11 +2,7 @@
 % Please edit documentation in R/metadata_dicom.R
 \name{header_fields.dicomdata}
 \alias{header_fields.dicomdata}
-\title{Get the names of DICOM header fields for an image series.
-If field names are repeated within a single header, these duplicate
-fields are omitted from the return value. If slices have different
-header fields, this function returns the union across slices of
-all field names.}
+\title{Get the names of DICOM header fields for an image series.}
 \usage{
 \method{header_fields}{dicomdata}(img_data)
 }
@@ -17,7 +13,6 @@ all field names.}
 Vector of header field names
 }
 \description{
-Get the names of DICOM header fields for an image series.
 If field names are repeated within a single header, these duplicate
 fields are omitted from the return value. If slices have different
 header fields, this function returns the union across slices of

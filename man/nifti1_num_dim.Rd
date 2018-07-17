@@ -2,7 +2,7 @@
 % Please edit documentation in R/metadata_nifti.R
 \name{nifti1_num_dim}
 \alias{nifti1_num_dim}
-\title{Returns the number of dimensions in a NIfTI-1 image}
+\title{Get the number of dimensions in a NIfTI-1 image}
 \usage{
 nifti1_num_dim(nifti1_data)
 }
@@ -10,5 +10,5 @@ nifti1_num_dim(nifti1_data)
 \item{nifti1_data}{NIfTI-1 data returned by \code{\link{read_nifti1}}}
 }
 \description{
-Returns the number of dimensions in a NIfTI-1 image
+Get the number of dimensions in a NIfTI-1 image
 }

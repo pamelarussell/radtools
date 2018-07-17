@@ -17,5 +17,9 @@ test_that("Image dimensions", {
   expect_equal(img_dimensions(nifti_data_avg152T1_LR), c(91, 109, 91))
 })
 
-
+test_that("Header fields", {
+  expect_equal(header_fields(nifti_data_avg152T1_LR), header_fields(nifti_data_minimal))
+  expect_equal(length(header_fields(nifti_data_zstat1)), 46)
+  expect_true("slice_code" %in% header_fields(nifti_data_filtered_func))
+})
 

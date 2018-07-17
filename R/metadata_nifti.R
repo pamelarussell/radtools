@@ -28,11 +28,22 @@ validate_metadata.nifti1data <- function(img_data, stop = TRUE) {
   if(magic == "n+1" && slot(img_data$data, "vox_offset") < 1) fail("Vox offset is required for an n+1 header")
 }
 
-#' Returns the number of dimensions in a NIfTI-1 image
+#' Get the number of dimensions in a NIfTI-1 image
 #' @param nifti1_data NIfTI-1 data returned by \code{\link{read_nifti1}}
 #' @export
 nifti1_num_dim <- function(nifti1_data) {
   nifti1_data$data@dim_[1]
+}
+
+#' Get the fields in a NIfTI-1 header.
+#'
+#' See the \href{https://nifti.nimh.nih.gov/pub/dist/src/niftilib/nifti1.h}{official definition of the NIfTI-1 header}.
+#' @param img_data NIfTI-1 data returned by \code{\link{read_nifti1}}
+#' @return Vector of header field names
+#' @method header_fields nifti1data
+#' @export
+header_fields.nifti1data <- function(img_data) {
+  slotNames(img_data[["data"]])
 }
 
 

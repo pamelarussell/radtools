@@ -33,6 +33,7 @@ img_dimensions.dicomdata <- function(img_data) {
 }
 
 #' Get the names of DICOM header fields for an image series.
+#'
 #' If field names are repeated within a single header, these duplicate
 #' fields are omitted from the return value. If slices have different
 #' header fields, this function returns the union across slices of
