@@ -18,12 +18,17 @@ test_that("Number of slices", {
   expect_equal(num_slices(dicom_data_prostate_pt), 234)
 })
 
+test_that("Image dimensions", {
+  expect_equal(img_dimensions(dicom_data_bladder), c(2140, 2140, 1))
+  expect_equal(img_dimensions(dicom_data_prostate_mr), c(384, 384, 19))
+})
+
 test_that("DICOM header fields", {
-  fieldsp <- dicom_header_fields(dicom_data_prostate_mr)
+  fieldsp <- header_fields(dicom_data_prostate_mr)
   expect_equal(length(fieldsp), 111)
   expect_true("DeidentificationMethod" %in% fieldsp)
   expect_true(!"xxx" %in% fieldsp)
-  fieldsc <- dicom_header_fields(dicom_data_chest)
+  fieldsc <- header_fields(dicom_data_chest)
   expect_equal(length(fieldsc), 94)
   expect_true("BodyPartExamined" %in% fieldsc)
   expect_true(!"Unknown" %in% fieldsc)

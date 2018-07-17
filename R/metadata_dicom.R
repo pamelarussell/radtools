@@ -20,9 +20,14 @@ dicom_singleton_header_fields <- function(dicom_data, slice_idx) {
   fields[sapply(fields, function(x) sum(fields == x) == 1)]
 }
 
-# Number of image slices
-num_slices.dicomdata <- function(dicom_data) {
-  length(dicom_data$img)
+#' @export
+num_slices.dicomdata <- function(img_data) {
+  length(img_data$img)
+}
+
+#' @export
+img_dimensions.dicomdata <- function(img_data) {
+  c(dim(img_data$img[[1]]), length(img_data$img))
 }
 
 #' Get the names of DICOM header fields for an image series.
@@ -30,13 +35,13 @@ num_slices.dicomdata <- function(dicom_data) {
 #' fields are omitted from the return value. If slices have different
 #' header fields, this function returns the union across slices of
 #' all field names.
-#' @param dicom_data DICOM data returned by \code{\link{read_dicom}}
+#' @param img_data DICOM data returned by \code{\link{read_dicom}}
 #' @return Vector of header field names
 #' @export
-dicom_header_fields <- function(dicom_data) {
-  fields <- dicom_singleton_header_fields(dicom_data, 1)
-  for(i in 2:length(dicom_data$hdr)) {
-    fields <- union(fields, dicom_singleton_header_fields(dicom_data, i))
+header_fields.dicomdata <- function(img_data) {
+  fields <- dicom_singleton_header_fields(img_data, 1)
+  for(i in 2:length(img_data$hdr)) {
+    fields <- union(fields, dicom_singleton_header_fields(img_data, i))
   }
   sort(fields)
 }
@@ -45,7 +50,7 @@ dicom_header_fields <- function(dicom_data) {
 #' @param dicom_data DICOM data
 #' @param field Field name
 dicom_validate_has_field <- function(dicom_data, field) {
-  if(!field %in% dicom_header_fields(dicom_data)) {
+  if(!field %in% header_fields(dicom_data)) {
     stop(paste("Field does not exist in DICOM header or is duplicated within individual slices:", field))
   }
 }

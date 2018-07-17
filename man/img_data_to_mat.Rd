@@ -7,7 +7,7 @@
 img_data_to_mat(img_data)
 }
 \arguments{
-\item{img_data}{Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti}}}
+\item{img_data}{Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}}
 }
 \value{
 3D array of intensities where third dimension is slice

@@ -34,7 +34,7 @@ read_nifti1 <- function(file) {
 }
 
 #' Convert image data to 3D matrix of intensities
-#' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti}}
+#' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}
 #' @return 3D array of intensities where third dimension is slice
 #' @export
 img_data_to_mat <- function(img_data) {

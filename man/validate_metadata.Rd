@@ -7,7 +7,7 @@
 validate_metadata(img_data, stop = TRUE)
 }
 \arguments{
-\item{img_data}{Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti}}}
+\item{img_data}{Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}}
 
 \item{stop}{If true, raise error when validation fails. If false, raise warnings for each failed element.}
 }
