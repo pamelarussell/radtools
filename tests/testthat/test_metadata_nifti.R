@@ -23,3 +23,13 @@ test_that("Header fields", {
   expect_true("slice_code" %in% header_fields(nifti_data_filtered_func))
 })
 
+test_that("Header values", {
+  expect_equal(header_value(nifti_data_filtered_func, "sizeof_hdr"), 348)
+  expect_equal(header_value(nifti_data_filtered_func, "extender"), c(0,0,0,0))
+  expect_equal(header_value(nifti_data_avg152T1_LR, "qoffset_x"), 0)
+  expect_equal(header_value(nifti_data_avg152T1_LR, "descrip"), "FSL3.2beta")
+  expect_equal(header_value(nifti_data_avg152T1_LR, "data_type"), "")
+})
+
+
+

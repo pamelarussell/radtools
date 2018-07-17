@@ -46,4 +46,15 @@ header_fields.nifti1data <- function(img_data) {
   slotNames(img_data[["data"]])
 }
 
+#' Get header value for a field in a NIfTI-1 header
+#' @param img_data NIfTI-1 data returned by \code{\link{read_nifti1}}
+#' @param field Header field name e.g. "sizeof_hdr". Get header field names with \code{\link{header_fields}}.
+#' @return Metadata field value
+#' @export
+#' @method header_value nifti1data
+header_value.nifti1data <- function(img_data, field) {
+  slot(img_data$data, field)
+}
+
+
 

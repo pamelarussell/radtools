@@ -3,6 +3,7 @@
 S3method(header_fields,dicomdata)
 S3method(header_fields,nifti1data)
 S3method(header_value,dicomdata)
+S3method(header_value,nifti1data)
 S3method(img_dimensions,dicomdata)
 S3method(img_dimensions,nifti1data)
 S3method(num_slices,dicomdata)
