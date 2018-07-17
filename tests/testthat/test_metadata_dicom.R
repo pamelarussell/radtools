@@ -56,25 +56,24 @@ test_that("DICOM header values", {
   field_idx <- 100
 
   field <- dicom_data_prostate_mr$hdr[[slice_idx]]$name[[field_idx]]
-  value <- dicom_data_prostate_mr$hdr[[slice_idx]]$value[[field_idx]]
-  expect_equal(dicom_header_values(dicom_data_prostate_mr, field, numeric = FALSE)[[slice_idx]], value)
-  expect_equal(dicom_header_values(dicom_data_prostate_mr, "PixelBandwidth"), rep(200, 19))
-  expect_equal(dicom_header_values(dicom_data_prostate_mr, "PixelBandwidth", numeric = FALSE), rep("200", 19))
-  expect_error(dicom_header_values(dicom_data_prostate_mr, "xxx"))
+  value <- as.numeric(dicom_data_prostate_mr$hdr[[slice_idx]]$value[[field_idx]])
+  expect_equal(header_value(dicom_data_prostate_mr, field)[[slice_idx]], value)
+  expect_equal(header_value(dicom_data_prostate_mr, "PixelBandwidth"), rep(200, 19))
+  expect_error(header_value(dicom_data_prostate_mr, "xxx"))
 
   fieldb <- dicom_data_bladder$hdr[[1]]$name[[field_idx]]
-  valb <- dicom_data_bladder$hdr[[1]]$value[[field_idx]]
-  expect_equal(dicom_header_values(dicom_data_bladder, fieldb, numeric = FALSE)[[1]], valb)
-  expect_equal(dicom_header_values(dicom_data_bladder, "SeriesDate"), 20020816)
-  expect_equal(dicom_header_values(dicom_data_bladder, "SeriesDate", numeric = FALSE), "20020816")
-  expect_error(dicom_header_values(dicom_data_bladder, "Unknown"))
+  valb <- as.numeric(dicom_data_bladder$hdr[[1]]$value[[field_idx]])
+  expect_equal(header_value(dicom_data_bladder, fieldb)[[1]], valb)
+  expect_equal(header_value(dicom_data_bladder, "SeriesDate"), 20020816)
+  expect_error(header_value(dicom_data_bladder, "Unknown"))
 
   fieldp <- dicom_data_prostate_pt$hdr[[slice_idx]]$name[[field_idx]]
-  valp <- dicom_data_prostate_pt$hdr[[slice_idx]]$value[[field_idx]]
-  expect_equal(dicom_header_values(dicom_data_prostate_pt, fieldp, numeric = FALSE)[[slice_idx]], valp)
-  expect_equal(dicom_header_values(dicom_data_prostate_pt, "GroupLength"), rep(196,234))
-  expect_equal(dicom_header_values(dicom_data_prostate_pt, "GroupLength", numeric = FALSE), rep("196",234))
-  expect_error(dicom_header_values(dicom_data_prostate_pt, "Unknown"))
+  valp <- as.numeric(dicom_data_prostate_pt$hdr[[slice_idx]]$value[[field_idx]])
+  expect_equal(header_value(dicom_data_prostate_pt, fieldp)[[slice_idx]], valp)
+  expect_equal(header_value(dicom_data_prostate_pt, "GroupLength"), rep(196,234))
+  expect_error(header_value(dicom_data_prostate_pt, "Unknown"))
+
+  expect_equal(header_value(dicom_data_prostate_mr, "Manufacturer")[[slice_idx]], "SIEMENS")
 })
 
 test_that("DICOM header as matrix", {

@@ -115,15 +115,17 @@ validate_metadata.dicomdata <- function(img_data, stop = TRUE) {
   }
 }
 
-#' Get vector of header values for each DICOM slice for a particular header field
-#' @param dicom_data DICOM data returned by \code{\link{read_dicom}}
+#' Get vector of header values for each DICOM slice for a header field
+#' @param img_data DICOM data returned by \code{\link{read_dicom}}
 #' @param field Header field keyword e.g. "PatientName"
-#' @param numeric Convert values to numbers
-#' @return Vector of header values
+#' @return Vector of header values. Numeric values are converted to numbers.
 #' @export
-dicom_header_values <- function(dicom_data, field, numeric = TRUE) {
-  dicom_validate_has_field(dicom_data, field)
-  oro.dicom::extractHeader(dicom_data$hdr, field, numeric = numeric)
+#' @import Hmisc
+#' @method header_value dicomdata
+header_value.dicomdata <- function(img_data, field) {
+  dicom_validate_has_field(img_data, field)
+  val <- oro.dicom::extractHeader(img_data$hdr, field, numeric = FALSE)
+  if(Hmisc::all.is.numeric(val)) as.numeric(val) else val
 }
 
 #' Get the header information as a matrix

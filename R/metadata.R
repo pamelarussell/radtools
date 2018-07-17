@@ -23,6 +23,15 @@ header_fields <- function(img_data) {
   UseMethod("header_fields", img_data)
 }
 
+#' Get metadata contained in a header field
+#' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}
+#' @param field Field name
+#' @return Metadata for the field in an appropriate format for the data type
+#' @export
+header_value <- function(img_data, field) {
+  UseMethod("header_value", img_data)
+}
+
 #' Validate the metadata associated with an image dataset
 #' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}
 #' @param stop If true, raise error when validation fails. If false, raise warnings for each failed element.
