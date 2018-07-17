@@ -1,9 +1,11 @@
 
+#' @method num_slices nifti1data
 #' @export
 num_slices.nifti1data <- function(img_data) {
   dim(img_data$data)[3]
 }
 
+#' @method img_dimensions nifti1data
 #' @export
 img_dimensions.nifti1data <- function(img_data) {
   dim8 <- img_data$data@dim_
@@ -11,18 +13,19 @@ img_dimensions.nifti1data <- function(img_data) {
   dim8[2:(1+ndim)]
 }
 
-# As in https://nifti.nimh.nih.gov/nifti-1/documentation/faq#Q4
-validate_metadata.nifti1data <- function(nifti1_data, stop = TRUE) {
+#' @method validate_metadata nifti1data
+validate_metadata.nifti1data <- function(img_data, stop = TRUE) {
+  # Rules as in https://nifti.nimh.nih.gov/nifti-1/documentation/faq#Q4
   fail <- function(msg) {
     if(stop) stop(msg) else warning(msg)
   }
   # Make sure size of header is 348
-  if(slot(nifti1_data$data, "sizeof_hdr") != 348) fail("Size of NIfTI-1 header must be 348")
+  if(slot(img_data$data, "sizeof_hdr") != 348) fail("Size of NIfTI-1 header must be 348")
   # Magic must be "ni1" or "n+1"
-  magic <- slot(nifti1_data$data, "magic")
+  magic <- slot(img_data$data, "magic")
   if(!magic %in% c("n+1", "ni1")) fail("Invalid magic attribute")
   # Vox offset required for an "n+1" header
-  if(magic == "n+1" && slot(nifti1_data$data, "vox_offset") < 1) fail("Vox offset is required for an n+1 header")
+  if(magic == "n+1" && slot(img_data$data, "vox_offset") < 1) fail("Vox offset is required for an n+1 header")
 }
 
 #' Returns the number of dimensions in a NIfTI-1 image

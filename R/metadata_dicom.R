@@ -20,11 +20,13 @@ dicom_singleton_header_fields <- function(dicom_data, slice_idx) {
   fields[sapply(fields, function(x) sum(fields == x) == 1)]
 }
 
+#' @method num_slices dicomdata
 #' @export
 num_slices.dicomdata <- function(img_data) {
   length(img_data$img)
 }
 
+#' @method img_dimensions dicomdata
 #' @export
 img_dimensions.dicomdata <- function(img_data) {
   c(dim(img_data$img[[1]]), length(img_data$img))
@@ -37,6 +39,7 @@ img_dimensions.dicomdata <- function(img_data) {
 #' all field names.
 #' @param img_data DICOM data returned by \code{\link{read_dicom}}
 #' @return Vector of header field names
+#' @method header_fields dicomdata
 #' @export
 header_fields.dicomdata <- function(img_data) {
   fields <- dicom_singleton_header_fields(img_data, 1)
@@ -87,14 +90,12 @@ dicom_validate_group_element <- function(group, element, stop = TRUE) {
   }
 }
 
-#' Validate all header elements (group, element, name) for all slices
-#' @param dicom_data DICOM data returned by \code{\link{read_dicom}}
-#' @param stop If true, raise error when validation fails. If false, raise warnings for each failed element.
+#' @method validate_metadata dicomdata
 #' @import dplyr
-validate_metadata.dicomdata <- function(dicom_data, stop = TRUE) {
+validate_metadata.dicomdata <- function(img_data, stop = TRUE) {
   elts <- data.frame(group = character(), element = character(), name = character())
-  for(i in num_slices(dicom_data)) {
-    elts <- rbind(elts, dicom_header_as_matrix(dicom_data, i) %>% select(group, element, name))
+  for(i in num_slices(img_data)) {
+    elts <- rbind(elts, dicom_header_as_matrix(img_data, i) %>% select(group, element, name))
   }
   elts <- elts %>% unique()
   for(i in 1:nrow(elts)) {
