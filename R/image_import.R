@@ -35,28 +35,110 @@ read_nifti1 <- function(file) {
 
 #' Convert image data to 3D matrix of intensities
 #' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}
+#' @param coord_extra_dim Coordinates in extra dimensions (beyond 3) that define the
+#' particular 3D image of interest. Not applicable for DICOM; pass NULL in that case.
 #' @return 3D array of intensities where third dimension is slice
+#' @export
+img_data_to_3D_mat <- function(img_data, coord_extra_dim) {
+  UseMethod("img_data_to_3D_mat", img_data)
+}
+
+#' Convert image data to matrix of intensities
+#' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}
+#' @return Multidimensional array of intensities where third dimension is slice
 #' @export
 img_data_to_mat <- function(img_data) {
   UseMethod("img_data_to_mat", img_data)
 }
 
-img_data_to_mat.dicomdata <- function(dicom_data) {
+img_data_to_mat.dicomdata <- function(img_data) {img_data_to_3D_mat(img_data)}
+
+img_data_to_3D_mat.dicomdata <- function(img_data, coord_extra_dim = NULL) {
+  if(!is.null(coord_extra_dim)) stop("Do not provide coordinates in dimensions beyond 3 for DICOM")
   # Wrap oro.dicom::create3D, translate error message
-  expr <- expression(oro.dicom::create3D(dicom_data))
+  expr <- expression(oro.dicom::create3D(img_data))
   tryCatch(rtrn <- eval(expr),
            error = function(e) {
              message("Error raised by oro.dicom::create3D")
              message(paste("Message from oro.dicom:", e$message))
              message(paste("On expression:", expr))
-             if(nrow(dicom_header_as_matrix(dicom_data) %>% dplyr::filter(name == "ImagePositionPatient")) == 0) {
+             if(nrow(dicom_header_as_matrix(img_data) %>% dplyr::filter(name == "ImagePositionPatient")) == 0) {
                message("Note: DICOM data does not include header field ImagePositionPatient that is probably required")
              }
-             if(nrow(dicom_header_as_matrix(dicom_data) %>% dplyr::filter(name == "ImageOrientationPatient")) == 0) {
+             if(nrow(dicom_header_as_matrix(img_data) %>% dplyr::filter(name == "ImageOrientationPatient")) == 0) {
                message("Note: DICOM data does not include required header field ImageOrientationPatient")
              }
              stop("See message for info")
            })
   rtrn
+}
+
+# From https://stackoverflow.com/questions/14500707/select-along-one-of-n-dimensions-in-array
+index_array <- function(x, dim, value, drop = FALSE) {
+  # Create list representing arguments supplied to [
+  # bquote() creates an object corresponding to a missing argument
+  indices <- rep(list(bquote()), length(dim(x)))
+  indices[[dim]] <- value
+
+  # Generate the call to [
+  call <- as.call(c(
+    list(as.name("["), quote(x)),
+    indices,
+    list(drop = drop)))
+  # Finally, evaluate it
+  eval(call)
+}
+
+#' Take a slice of a multidimensional array by fixing the coordinates in the last dimension(s)
+#' @param mat Multidimensional array
+#' @param coords_last_dims One or more coordinates in the last one or more dimensions of the matrix
+#' @return The reduced matrix with last dimension(s) collapsed
+#' @keywords internal
+mat_reduce_dim <- function(mat, coords_last_dims) {
+
+  if(!is.array(mat) && !is.vector(mat)) stop("Must pass an array or vector")
+
+  ncoord <- length(coords_last_dims)
+
+  if(is.array(mat) && ncoord > length(dim(mat))) {
+    stop("Provide fewer than the number of dimensions in the matrix")
+  }
+
+  if(is.vector(mat) && ncoord > 1) {
+    stop("Provide fewer than the number of dimensions")
+  }
+
+  if(ncoord == 0) {
+    mat
+  } else {
+    if(is.array(mat)) dim <- length(dim(mat)) else if(is.vector(mat)) dim <- 1
+    val <- coords_last_dims[ncoord]
+    red <- index_array(mat, dim, val, drop = TRUE)
+    if(ncoord == 1) {
+      red
+    } else {
+      mat_reduce_dim(red, coords_last_dims[1:(ncoord - 1)])
+    }
+  }
+
+}
+
+img_data_to_mat.nifti1data <- function(img_data) {
+  slot(img_data$data, ".Data")
+}
+
+img_data_to_3D_mat.nifti1data <- function(img_data, coord_extra_dim = NULL) {
+  d <- nifti1_num_dim(img_data)
+  if(d > 3) {
+    n_extra_dim <- d - 3
+    if(length(coord_extra_dim) != n_extra_dim) {
+      stop(paste("Provide coordinates in", n_extra_dim, "extra dimensions"))
+    }
+    full_mat <- img_data_to_mat(img_data)
+    mat_reduce_dim(full_mat, coord_extra_dim)
+  } else {
+    if(!is.null(coord_extra_dim)) stop("Do not provide coordinates in extra dimensions for 3D image")
+    img_data_to_mat(img_data)
+  }
 }
 

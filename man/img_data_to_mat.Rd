@@ -2,7 +2,7 @@
 % Please edit documentation in R/image_import.R
 \name{img_data_to_mat}
 \alias{img_data_to_mat}
-\title{Convert image data to 3D matrix of intensities}
+\title{Convert image data to matrix of intensities}
 \usage{
 img_data_to_mat(img_data)
 }
@@ -10,8 +10,8 @@ img_data_to_mat(img_data)
 \item{img_data}{Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}}
 }
 \value{
-3D array of intensities where third dimension is slice
+Multidimensional array of intensities where third dimension is slice
 }
 \description{
-Convert image data to 3D matrix of intensities
+Convert image data to matrix of intensities
 }
