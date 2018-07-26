@@ -14,3 +14,4 @@ dicom_validate_has_field(dicom_data, field)
 \description{
 Check that a field exists in DICOM header
 }
+\keyword{internal}

@@ -53,6 +53,7 @@ header_fields.dicomdata <- function(img_data) {
 #' Check that a field exists in DICOM header
 #' @param dicom_data DICOM data
 #' @param field Field name
+#' @keywords internal
 dicom_validate_has_field <- function(dicom_data, field) {
   if(!field %in% header_fields(dicom_data)) {
     stop(paste("Field does not exist in DICOM header or is duplicated within individual slices:", field))
@@ -62,6 +63,7 @@ dicom_validate_has_field <- function(dicom_data, field) {
 #' Validate a header keyword against the DICOM standard
 #' @param keyword Keyword
 #' @param stop If true, raise error when validation fails. If false, raise warning.
+#' @keywords internal
 dicom_validate_keyword <- function(keyword, stop = TRUE) {
   if(!keyword %in% dicom_all_valid_header_keywords()) {
     msg <- paste("Header keyword does not conform to DICOM standard ", dicom_standard_version(),": ", keyword, sep = "")
@@ -72,6 +74,7 @@ dicom_validate_keyword <- function(keyword, stop = TRUE) {
 #' Validate a header tag against the DICOM standard
 #' @param tag Tag
 #' @param stop If true, raise error when validation fails. If false, raise warning.
+#' @keywords internal
 dicom_validate_tag <- function(tag, stop = TRUE) {
   if(!tag %in% dicom_all_valid_header_tags()) {
     msg <- paste("Header tag does not conform to DICOM standard ", dicom_standard_version(),": ", tag, sep = "")
@@ -83,6 +86,7 @@ dicom_validate_tag <- function(tag, stop = TRUE) {
 #' @param group Group
 #' @param element Element
 #' @param stop If true, raise error when validation fails. If false, raise warning.
+#' @keywords internal
 dicom_validate_group_element <- function(group, element, stop = TRUE) {
   if(!dicom_header_tag(group, element) %in% dicom_all_valid_header_tags()) {
     msg <- paste("Header group and element do not conform to DICOM standard ",

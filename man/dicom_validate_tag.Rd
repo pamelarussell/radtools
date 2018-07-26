@@ -14,3 +14,4 @@ dicom_validate_tag(tag, stop = TRUE)
 \description{
 Validate a header tag against the DICOM standard
 }
+\keyword{internal}

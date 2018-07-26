@@ -14,3 +14,4 @@ dicom_validate_keyword(keyword, stop = TRUE)
 \description{
 Validate a header keyword against the DICOM standard
 }
+\keyword{internal}

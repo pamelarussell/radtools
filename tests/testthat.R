@@ -1,4 +1,4 @@
 library(testthat)
-library(dicomtools)
+library(radtools)
 
-test_check("dicomtools")
+test_check("radtools")

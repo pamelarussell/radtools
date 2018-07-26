@@ -16,3 +16,4 @@ dicom_validate_group_element(group, element, stop = TRUE)
 \description{
 Validate a header group and element against the DICOM standard
 }
+\keyword{internal}
