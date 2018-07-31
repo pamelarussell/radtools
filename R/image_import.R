@@ -1,18 +1,38 @@
 
-#' Read a series of DICOM images from a directory
-#' @param dir Directory containing DICOM images
+# Check if all DICOM files have nonzero values in 128-byte preamble
+all_nonzero_preamble <- function(path) {
+  if(file_test("-f", path)) {
+    files <- c(path)
+  } else {
+    if(file_test("-d", path)) {
+      files <- list.files(path)
+    }
+  }
+  for(file in files) {
+    preamble <- readBin(file, "raw", n = 128)
+    if(!any(preamble)) {
+      FALSE
+    }
+  }
+  TRUE
+}
+
+#' Read a DICOM image or series of images
+#' @param path Directory containing DICOM images, or single image file
+#' @param ... Additional arguments to \code{\link[oro.dicom]{readDICOM}}
 #' @return List with elements \code{hdr} and \code{img}, each with an element for each slice
 #' @export
-read_dicom <- function(dir) {
+read_dicom <- function(path, ...) {
   # Wrap oro.dicom::readDICOM, translate error message, validate header
-  expr <- expression(oro.dicom::readDICOM(dir))
+  expr <- expression(oro.dicom::readDICOM(path, ...))
   tryCatch(rtrn <- eval(expr),
            error = function(e) {
-             message("Error raised by oro.dicom::readDICOM")
-             message(paste("Message from oro.dicom:", e$message))
-             message(paste("On expression:", expr))
-             message(paste("With dir = \"", dir, "\"", sep = ""))
-             stop("See message for info")
+             mess <- e$message
+               message("Error raised by oro.dicom::readDICOM")
+               message(paste("Message from oro.dicom:", mess))
+               message(paste("On expression:", expr))
+               message(paste("With path = \"", path, "\"", sep = ""))
+               stop("See message for info")
            })
   # Set class attribute of return value
   class(rtrn) <- "dicomdata"
