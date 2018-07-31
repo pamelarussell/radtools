@@ -99,7 +99,11 @@ dicom_validate_group_element <- function(group, element, stop = TRUE) {
 #' @import dplyr
 validate_metadata.dicomdata <- function(img_data, stop = TRUE) {
   elts <- data.frame(group = character(), element = character(), name = character())
-  for(i in num_slices(img_data)) {
+  nslice <- num_slices(img_data)
+  if(nslice == 0) {
+    stop("Data contains no image slices")
+  }
+  for(i in nslice) {
     elts <- rbind(elts, dicom_header_as_matrix(img_data, i) %>% select(group, element, name))
   }
   elts <- elts %>% unique()
@@ -113,8 +117,7 @@ validate_metadata.dicomdata <- function(img_data, stop = TRUE) {
     }, error = function(e) {
       msg <- paste("Header field does not conform to DICOM standard ", dicom_standard_version(),
                    ": (", group, ",", element, "): ", name, sep = "")
-      warning(msg)
-      if(stop) stop(msg) else warning(msg, immediate. = T, noBreaks. = T)
+      if(stop) stop(msg)
     })
   }
 }
