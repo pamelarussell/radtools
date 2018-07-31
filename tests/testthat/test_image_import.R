@@ -1,4 +1,8 @@
 
+test_that("Invalid DICOM files", {
+  expect_error(read_dicom(paste(dir_d_clunie_dicom_deflate, "image_dfl", sep = "/")))
+})
+
 test_that("DICOM image data to 3D matrix", {
   expect_equal(dim(img_data_to_3D_mat(dicom_data_chest)), c(512, 512, 128))
   expect_equal(dim(img_data_to_3D_mat(dicom_data_prostate_mr)), c(384, 384, 19))

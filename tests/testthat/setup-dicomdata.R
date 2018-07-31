@@ -7,25 +7,25 @@ dir_d_clunie_dicom_deflate <- paste(dir_d_clunie_dicom, "deflate_tests", sep = "
 dir_d_clunie_dicom_signedrange <- paste(dir_d_clunie_dicom, "signedrangeimages/IMAGES", sep = "/")
 dicom_data_dclunie_scsgreek <- read_dicom(paste(dir_d_clunie_dicom_charset, "SCSGREEK", sep = "/"))
 dicom_data_dclunie_scsx2 <- read_dicom(paste(dir_d_clunie_dicom_charset, "SCSX2", sep = "/"))
-dicom_data_dclunie_report <- read_dicom(paste(dir_d_clunie_dicom_deflate, "report", sep = "/"))
-dicom_data_dclunie_report_dfl <- read_dicom(paste(dir_d_clunie_dicom_deflate, "report_dfl", sep = "/"))
+dicom_data_dclunie_image <- read_dicom(paste(dir_d_clunie_dicom_deflate, "image", sep = "/"))
 for(dir in list.files(dir_d_clunie_dicom_signedrange, full.names = T)) {
   dd <- read_dicom(dir)
+  rm(dd)
 }
 
 # Images from http://barre.nom.fr/medical/samples/
 dir_s_barre_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/s_barre_medical_image_samples/"
-dicom_data_sbarre_ort <- paste(dir_s_barre_dicom, "CT-MONO2-16-ort", sep = "/")
-dicom_data_sbarre_colon <- paste(dir_s_barre_dicom, "OT-MONO2-8-colon", sep = "/")
-dicom_data_sbarre_face <- paste(dir_s_barre_dicom, "OT-PAL-8-face", sep = "/")
-dicom_data_sbarre_echo <- paste(dir_s_barre_dicom, "US-PAL-8-10x-echo", sep = "/")
+dicom_data_sbarre_ort <- read_dicom(paste(dir_s_barre_dicom, "CT-MONO2-16-ort", sep = "/"))
+dicom_data_sbarre_colon <- read_dicom(paste(dir_s_barre_dicom, "OT-MONO2-8-colon", sep = "/"))
+dicom_data_sbarre_face <- read_dicom(paste(dir_s_barre_dicom, "OT-PAL-8-face", sep = "/"))
+dicom_data_sbarre_echo <- read_dicom(paste(dir_s_barre_dicom, "US-PAL-8-10x-echo", sep = "/"))
 
 # 98890234_20030505_MR
 dir_988_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/98890234_20030505_MR/98890234/20030505/MR/"
 for(dir in list.files(dir_988_dicom, full.names = T)) {
   dd <- read_dicom(dir)
+  rm(dd)
 }
-rm(dd)
 dicom_data_988_MR1 <- read_dicom(paste(dir_988_dicom, "MR1", sep = "/"))
 dicom_data_988_MR700 <- read_dicom(paste(dir_988_dicom, "MR700", sep = "/"))
 
@@ -33,8 +33,8 @@ dicom_data_988_MR700 <- read_dicom(paste(dir_988_dicom, "MR700", sep = "/"))
 dir_247_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/24759123_20010101/24759123/20010101/"
 for(dir in list.files(dir_247_dicom, full.names = T)) {
   dd <- read_dicom(dir)
+  rm(dd)
 }
-rm(dd)
 dicom_data_247_MR3 <- read_dicom(paste(dir_247_dicom, "MR3", sep = "/"))
 dicom_data_247_OT <- read_dicom(paste(dir_247_dicom, "OT999999", sep = "/"))
 
