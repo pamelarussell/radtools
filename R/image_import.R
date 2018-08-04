@@ -5,16 +5,46 @@ all_nonzero_preamble <- function(path) {
     files <- c(path)
   } else {
     if(file_test("-d", path)) {
-      files <- list.files(path)
+      files <- list.files(path, full.names = TRUE)
+    } else {
+      stop(paste("Invalid path:", path))
     }
   }
+  rtrn <- TRUE
   for(file in files) {
     preamble <- readBin(file, "raw", n = 128)
     if(!any(preamble)) {
-      FALSE
+      rtrn <- FALSE
     }
   }
-  TRUE
+  rtrn
+}
+
+# Check if the 4-byte DICOM prefix contains the string "DICM"
+# http://dicom.nema.org/MEDICAL/dicom/2016a/output/chtml/part10/chapter_7.html
+has_dicom_prefix <- function(file) {
+  grepl("DICM", paste(readBin(file, "character", 132)[129:132], collapse = ""))
+}
+
+# Check if all DICOM files have "DICM" in the 4-byte prefix
+# http://dicom.nema.org/MEDICAL/dicom/2016a/output/chtml/part10/chapter_7.html
+all_have_dicom_prefix <- function(path) {
+  if(file_test("-f", path)) {
+    files <- c(path)
+  } else {
+    if(file_test("-d", path)) {
+      files <- list.files(path, full.names = TRUE)
+    } else {
+      stop(paste("Invalid path:", path))
+    }
+  }
+  rtrn <- TRUE
+  for(file in files) {
+    if(!has_dicom_prefix(file)) {
+      rtrn <- FALSE
+    }
+  }
+  rtrn
 }
 
 #' Read a DICOM image or series of images
@@ -23,6 +53,10 @@ all_nonzero_preamble <- function(path) {
 #' @return List with elements \code{hdr} and \code{img}, each with an element for each slice
 #' @export
 read_dicom <- function(path, ...) {
+  # Check for 4-byte DICOM prefix
+  if(!all_have_dicom_prefix(path)) {
+    stop(paste("All DICOM files must have 4-byte prefix containing string \"DICM\":\n", path))
+  }
   # Wrap oro.dicom::readDICOM, translate error message, validate header
   expr <- expression(oro.dicom::readDICOM(path, ...))
   tryCatch(rtrn <- eval(expr),

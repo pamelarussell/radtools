@@ -2,16 +2,18 @@
 % Please edit documentation in R/image_import.R
 \name{read_dicom}
 \alias{read_dicom}
-\title{Read a series of DICOM images from a directory}
+\title{Read a DICOM image or series of images}
 \usage{
-read_dicom(dir)
+read_dicom(path, ...)
 }
 \arguments{
-\item{dir}{Directory containing DICOM images}
+\item{path}{Directory containing DICOM images, or single image file}
+
+\item{...}{Additional arguments to \code{\link[oro.dicom]{readDICOM}}}
 }
 \value{
 List with elements \code{hdr} and \code{img}, each with an element for each slice
 }
 \description{
-Read a series of DICOM images from a directory
+Read a DICOM image or series of images
 }
