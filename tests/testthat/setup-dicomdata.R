@@ -1,5 +1,15 @@
 # Setup: datasets
 
+# Images from http://barre.nom.fr/medical/samples/
+dir_s_barre_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/s_barre_medical_image_samples/"
+dicom_data_sbarre_ort <- read_dicom(paste(dir_s_barre_dicom, "CT-MONO2-16-ort", sep = "/"))
+dicom_data_sbarre_brain <- read_dicom(paste(dir_s_barre_dicom, "CT-MONO2-16-brain", sep = "/"))
+dicom_data_sbarre_head <- read_dicom(paste(dir_s_barre_dicom, "MR-MONO2-16-head", sep = "/"))
+dicom_data_sbarre_knee <- read_dicom(paste(dir_s_barre_dicom, "MR-MONO2-16-knee", sep = "/"))
+dicom_data_sbarre_heart_mr <- read_dicom(paste(dir_s_barre_dicom, "MR-MONO2-8-16x-heart", sep = "/"))
+dicom_data_sbarre_heart_nm <- read_dicom(paste(dir_s_barre_dicom, "NM-MONO2-16-13x-heart", sep = "/"))
+dicom_data_sbarre_execho <- read_dicom(paste(dir_s_barre_dicom, "US-MONO2-8-8x-execho", sep = "/"))
+
 # Images from http://www.dclunie.com/
 dir_d_clunie_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/d_clunie_samples/"
 dir_d_clunie_dicom_charset <- paste(dir_d_clunie_dicom, "charsettests", sep = "/")
@@ -12,13 +22,6 @@ for(dir in list.files(dir_d_clunie_dicom_signedrange, full.names = T)) {
   dd <- read_dicom(dir)
   rm(dd)
 }
-
-# Images from http://barre.nom.fr/medical/samples/
-dir_s_barre_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/s_barre_medical_image_samples/"
-dicom_data_sbarre_ort <- read_dicom(paste(dir_s_barre_dicom, "CT-MONO2-16-ort", sep = "/"))
-dicom_data_sbarre_colon <- read_dicom(paste(dir_s_barre_dicom, "OT-MONO2-8-colon", sep = "/"))
-dicom_data_sbarre_face <- read_dicom(paste(dir_s_barre_dicom, "OT-PAL-8-face", sep = "/"))
-dicom_data_sbarre_echo <- read_dicom(paste(dir_s_barre_dicom, "US-PAL-8-10x-echo", sep = "/"))
 
 # 98890234_20030505_MR
 dir_988_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/98890234_20030505_MR/98890234/20030505/MR/"
