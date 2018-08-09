@@ -9,7 +9,8 @@ dicom_header_as_matrix(dicom_data, slice_idx = NA)
 \arguments{
 \item{dicom_data}{DICOM data returned by \code{\link{read_dicom}}}
 
-\item{slice_idx}{1-based slice index. If NA, all slices will be included.}
+\item{slice_idx}{1-based slice index. If NA, all slices will be included. Won't work if
+multiple slices are included in only one image file.}
 }
 \value{
 Data frame containing one record for each header attribute. Note that

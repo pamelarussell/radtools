@@ -20,6 +20,15 @@ test_that("Number of slices", {
   expect_equal(num_slices(dicom_data_sbarre_heart_mr), 16)
   expect_equal(num_slices(dicom_data_sbarre_heart_nm), 13)
   expect_equal(num_slices(dicom_data_sbarre_execho), 8)
+  expect_equal(num_slices(dicom_data_sbarre_brain), 1)
+  expect_equal(num_slices(dicom_data_sbarre_knee), 1)
+  expect_equal(num_slices(dicom_data_sbarre_head), 1)
+  expect_equal(num_slices(dicom_data_dclunie_scsgreek), 1)
+  expect_equal(num_slices(dicom_data_dclunie_image), 1)
+  expect_equal(num_slices(dicom_data_988_MR1), 3)
+  expect_equal(num_slices(dicom_data_988_MR700), 12)
+  expect_equal(num_slices(dicom_data_247_MR3), 24)
+  expect_equal(num_slices(dicom_data_247_OT), 1)
 })
 
 test_that("Image dimensions", {
@@ -27,9 +36,17 @@ test_that("Image dimensions", {
   expect_equal(img_dimensions(dicom_data_prostate_mr), c(384, 384, 19))
   expect_equal(img_dimensions(dicom_data_sbarre_brain), c(512, 512, 1))
   expect_equal(img_dimensions(dicom_data_sbarre_ort), c(512, 512, 1))
+  expect_equal(img_dimensions(dicom_data_sbarre_knee), c(256, 256, 1))
+  expect_equal(img_dimensions(dicom_data_sbarre_head), c(256, 256, 1))
   expect_equal(img_dimensions(dicom_data_sbarre_heart_mr), c(256, 256, 16))
   expect_equal(img_dimensions(dicom_data_sbarre_heart_nm), c(64, 64, 13))
   expect_equal(img_dimensions(dicom_data_sbarre_execho), c(120, 128, 8))
+  expect_equal(img_dimensions(dicom_data_dclunie_scsgreek), c(512, 512, 1))
+  expect_equal(img_dimensions(dicom_data_dclunie_image), c(512, 512, 1))
+  expect_equal(img_dimensions(dicom_data_988_MR1), c(256, 256, 3))
+  expect_equal(img_dimensions(dicom_data_988_MR700), c(512, 512, 12))
+  expect_equal(img_dimensions(dicom_data_247_MR3), c(512, 472, 24))
+  expect_equal(img_dimensions(dicom_data_247_OT), c(1560, 1062, 1))
 })
 
 test_that("DICOM header fields", {
@@ -41,6 +58,14 @@ test_that("DICOM header fields", {
   expect_equal(length(fieldsc), 94)
   expect_true("BodyPartExamined" %in% fieldsc)
   expect_true(!"Unknown" %in% fieldsc)
+  expect_true("StudyInstanceUID" %in% header_fields(dicom_data_dclunie_scsgreek))
+  expect_true("StudyInstanceUID" %in% header_fields(dicom_data_dclunie_image))
+  expect_true("SliceThickness" %in% header_fields(dicom_data_sbarre_heart_nm))
+  expect_true("Manufacturer" %in% header_fields(dicom_data_sbarre_head))
+  expect_true("SpecificCharacterSet" %in% header_fields(dicom_data_988_MR1))
+  expect_true("SOPClassUID" %in% header_fields(dicom_data_988_MR700))
+  expect_true("AcquisitionMatrix" %in% header_fields(dicom_data_247_MR3))
+  expect_true("InstanceCreationDate" %in% header_fields(dicom_data_247_OT))
 })
 
 test_that("Validate header", {
@@ -56,6 +81,9 @@ test_that("Validate header", {
   expect_warning(dicom_validate_group_element("0000", "0000", stop = FALSE))
   expect_error(validate_metadata(dicom_data_prostate_mr))
   expect_error(validate_metadata(dicom_data_bladder))
+  expect_error(validate_metadata(dicom_data_dclunie_scsgreek))
+  expect_error(validate_metadata(dicom_data_dclunie_image))
+  expect_error(validate_metadata(dicom_data_sbarre_ort))
 })
 
 test_that("DICOM header values", {
@@ -68,6 +96,15 @@ test_that("DICOM header values", {
   expect_equal(header_value(dicom_data_sbarre_heart_nm, "NumberOfFrames"), 13)
   expect_equal(header_value(dicom_data_sbarre_execho, "NumberOfFrames"), 8)
 
+  expect_equal(header_value(dicom_data_dclunie_scsgreek, "InstanceNumber"), 1)
+  expect_equal(header_value(dicom_data_dclunie_scsgreek, "PhotometricInterpretation"), "MONOCHROME2")
+
+  expect_equal(header_value(dicom_data_988_MR1, "InstanceCreatorUID")[[1]], "1.3.6.1.4.1.5962.3")
+  expect_equal(header_value(dicom_data_988_MR1, "GroupLength")[[3]], 192)
+  expect_equal(header_value(dicom_data_988_MR700, "MediaStorageSOPInstanceUID")[[2]], "1.3.6.1.4.1.5962.1.1.0.0.0.1196533885.18148.0.120")
+
+  expect_equal(header_value(dicom_data_247_MR3, "ContentTime")[[1]], "001413.094")
+  expect_equal(header_value(dicom_data_247_OT, "ImageType"), "DERIVED SECONDARY")
 
   slice_idx <- 5
   field_idx <- 100
@@ -121,6 +158,16 @@ test_that("DICOM header as matrix", {
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_sbarre_heart_mr)), 5)
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_sbarre_heart_nm)), 5)
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_sbarre_execho)), 5)
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_sbarre_ort)), 5)
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_sbarre_brain)), 5)
+
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_dclunie_scsgreek)), 5)
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_dclunie_image)), 5)
+
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_988_MR1)), 7)
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_988_MR700)), 16)
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_247_MR3)), 28)
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_247_OT)), 5)
 
 })
 
@@ -177,6 +224,17 @@ test_that("Constant header values", {
   expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_heart_mr)), length(header_fields(dicom_data_sbarre_heart_mr)))
   expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_heart_nm)), length(header_fields(dicom_data_sbarre_heart_nm)))
   expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_execho)), length(header_fields(dicom_data_sbarre_execho)))
+
+  expect_equal(length(dicom_constant_header_values(dicom_data_dclunie_scsgreek)), length(header_fields(dicom_data_dclunie_scsgreek)))
+  expect_equal(length(dicom_constant_header_values(dicom_data_dclunie_scsgreek)), nrow(dicom_header_as_matrix(dicom_data_dclunie_scsgreek)))
+  expect_equal(length(dicom_constant_header_values(dicom_data_dclunie_image)), length(header_fields(dicom_data_dclunie_image)))
+  expect_equal(length(dicom_constant_header_values(dicom_data_dclunie_image)), nrow(dicom_header_as_matrix(dicom_data_dclunie_image)))
+
+  expect_equal(dicom_constant_header_values(dicom_data_988_MR1)[["StudyDate"]], 20030505)
+  expect_equal(dicom_constant_header_values(dicom_data_988_MR700)[["GroupLength"]], 194)
+
+  expect_equal(dicom_constant_header_values(dicom_data_247_MR3)[["DerivationDescription"]], "DRS:DOE, HARRY 24759123 1 01 01 3 JPEG 2 3 1 90")
+  expect_equal(dicom_constant_header_values(dicom_data_247_OT)[["DerivationDescription"]], "DRS:DOE, HARRY 24759123 1 01 01 3 JPEG 2 3 1 90")
 
 })
 
