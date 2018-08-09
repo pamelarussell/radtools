@@ -16,11 +16,20 @@ test_that("Number of slices", {
   expect_equal(num_slices(dicom_data_bladder), 1)
   expect_equal(num_slices(dicom_data_chest), 128)
   expect_equal(num_slices(dicom_data_prostate_pt), 234)
+  expect_equal(num_slices(dicom_data_sbarre_ort), 1)
+  expect_equal(num_slices(dicom_data_sbarre_heart_mr), 16)
+  expect_equal(num_slices(dicom_data_sbarre_heart_nm), 13)
+  expect_equal(num_slices(dicom_data_sbarre_execho), 8)
 })
 
 test_that("Image dimensions", {
   expect_equal(img_dimensions(dicom_data_bladder), c(2140, 2140, 1))
   expect_equal(img_dimensions(dicom_data_prostate_mr), c(384, 384, 19))
+  expect_equal(img_dimensions(dicom_data_sbarre_brain), c(512, 512, 1))
+  expect_equal(img_dimensions(dicom_data_sbarre_ort), c(512, 512, 1))
+  expect_equal(img_dimensions(dicom_data_sbarre_heart_mr), c(256, 256, 16))
+  expect_equal(img_dimensions(dicom_data_sbarre_heart_nm), c(64, 64, 13))
+  expect_equal(img_dimensions(dicom_data_sbarre_execho), c(120, 128, 8))
 })
 
 test_that("DICOM header fields", {
@@ -46,12 +55,20 @@ test_that("Validate header", {
   expect_error(dicom_validate_group_element("0000", stop = FALSE))
   expect_warning(dicom_validate_group_element("0000", "0000", stop = FALSE))
   expect_error(validate_metadata(dicom_data_prostate_mr))
-  expect_warning(validate_metadata(dicom_data_prostate_mr, stop = FALSE))
   expect_error(validate_metadata(dicom_data_bladder))
-  expect_warning(validate_metadata(dicom_data_bladder, stop = FALSE))
 })
 
 test_that("DICOM header values", {
+
+  expect_equal(header_value(dicom_data_sbarre_brain, "SliceThickness"), 10.0)
+  expect_equal(header_value(dicom_data_sbarre_head, "SpatialResolution"), "1.145833 0.859375")
+  expect_equal(header_value(dicom_data_sbarre_knee, "HighBit"), 15)
+  expect_equal(header_value(dicom_data_sbarre_ort, "PhotometricInterpretation"), "MONOCHROME2")
+  expect_equal(header_value(dicom_data_sbarre_heart_mr, "NumberOfFrames"), 16)
+  expect_equal(header_value(dicom_data_sbarre_heart_nm, "NumberOfFrames"), 13)
+  expect_equal(header_value(dicom_data_sbarre_execho, "NumberOfFrames"), 8)
+
+
   slice_idx <- 5
   field_idx <- 100
 
@@ -99,6 +116,12 @@ test_that("DICOM header as matrix", {
   matc <- dicom_header_as_matrix(dicom_data_chest)
   expect(ncol(matc %>% dplyr::select(dplyr::starts_with("slice"))), 128)
   expect_equal(mat10c[9,6], "ORIGINAL PRIMARY AXIAL")
+
+  expect_error(dicom_header_as_matrix(dicom_data_sbarre_heart_mr, 2))
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_sbarre_heart_mr)), 5)
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_sbarre_heart_nm)), 5)
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_sbarre_execho)), 5)
+
 })
 
 test_that("Valid header elements from DICOM standard", {
@@ -148,6 +171,12 @@ test_that("Constant header values", {
   expect_equal(const_valc[["StudyDate"]], 20000101)
   expect_equal(dicom_constant_header_values(dicom_data_chest, numeric = FALSE)[["SeriesDate"]], "20000101")
   expect_null(const_valc[["SliceLocation"]])
+
+  expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_ort)), length(header_fields(dicom_data_sbarre_ort)))
+  expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_ort)), nrow(dicom_header_as_matrix(dicom_data_sbarre_ort)) - 6) # GroupLength is included 6 times
+  expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_heart_mr)), length(header_fields(dicom_data_sbarre_heart_mr)))
+  expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_heart_nm)), length(header_fields(dicom_data_sbarre_heart_nm)))
+  expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_execho)), length(header_fields(dicom_data_sbarre_execho)))
 
 })
 

@@ -23,13 +23,29 @@ dicom_singleton_header_fields <- function(dicom_data, slice_idx) {
 #' @method num_slices dicomdata
 #' @export
 num_slices.dicomdata <- function(img_data) {
-  length(img_data$img)
+   d <- img_dimensions(img_data)
+   if(length(d) != 3) {
+     stop("DICOM image must have 3 dimensions")
+   }
+   d[3]
 }
 
 #' @method img_dimensions dicomdata
 #' @export
 img_dimensions.dicomdata <- function(img_data) {
-  c(dim(img_data$img[[1]]), length(img_data$img))
+  n_im <- length(img_data$img)
+  d1 <- dim(img_data$img[[1]])
+  if(length(d1) == 2) {
+    c(d1, n_im)
+  } else if(length(d1) == 3) {
+    if(n_im == 1) {
+      d1
+    } else {
+      stop("Invalid DICOM image dimensions")
+    }
+  } else {
+    stop("Invalid DICOM image dimensions")
+  }
 }
 
 #' Get the names of DICOM header fields for an image series.
@@ -99,11 +115,10 @@ dicom_validate_group_element <- function(group, element, stop = TRUE) {
 #' @import dplyr
 validate_metadata.dicomdata <- function(img_data, stop = TRUE) {
   elts <- data.frame(group = character(), element = character(), name = character())
-  nslice <- num_slices(img_data)
-  if(nslice == 0) {
+  if(num_slices(img_data) == 0) {
     stop("Data contains no image slices")
   }
-  for(i in nslice) {
+  for(i in length(img_data$hdr)) {
     elts <- rbind(elts, dicom_header_as_matrix(img_data, i) %>% select(group, element, name))
   }
   elts <- elts %>% unique()
@@ -137,7 +152,8 @@ header_value.dicomdata <- function(img_data, field) {
 
 #' Get the header information as a matrix
 #' @param dicom_data DICOM data returned by \code{\link{read_dicom}}
-#' @param slice_idx 1-based slice index. If NA, all slices will be included.
+#' @param slice_idx 1-based slice index. If NA, all slices will be included. Won't work if
+#' multiple slices are included in only one image file.
 #' @return Data frame containing one record for each header attribute. Note that
 #' if all slices are included, fields that appear more than once (including tag and name)
 #' in a given slice header will be excluded from the values reported for that slice.
@@ -165,9 +181,9 @@ dicom_header_as_matrix <- function(dicom_data, slice_idx = NA) {
     }
 
     rtrn <- process_slice(1)
-    ns <- num_slices(dicom_data)
+    ns <- length(dicom_data$hdr)
     if(ns > 1) {
-      for(i in 2:num_slices(dicom_data)) {
+      for(i in 2:ns) {
         rtrn <- rtrn %>% full_join(process_slice(i), by = c("group", "element", "name", "code"))
       }
     }

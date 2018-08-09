@@ -1,62 +1,31 @@
-
 test_that("Invalid DICOM files", {
   expect_error(read_dicom(paste(dir_d_clunie_dicom_deflate, "image_dfl", sep = "/")))
   expect_error(read_dicom(paste(dir_s_barre_dicom, "OT-MONO2-8-colon", sep = "/"))) # Missing 4-byte DICOM prefix
   expect_error(read_dicom(paste(dir_s_barre_dicom, "OT-PAL-8-face", sep = "/"))) # Missing 4-byte DICOM prefix
 })
 
-test_that("S. Barre brain", {
-  expect_equal(header_value(dicom_data_sbarre_brain, "SliceThickness"), 10.0)
-  expect_equal(img_dimensions(dicom_data_sbarre_brain), c(512, 512, 1))
-})
-
-test_that("S. Barre head", {
-  expect_equal(header_value(dicom_data_sbarre_head, "SpatialResolution"), "1.145833 0.859375")
-})
-
-test_that("S. Barre knee", {
-  expect_equal(header_value(dicom_data_sbarre_knee, "HighBit"), 15)
-})
-
 test_that("S. Barre ort", {
-  expect_equal(img_dimensions(dicom_data_sbarre_ort), c(512, 512, 1))
-  expect_equal(header_value(dicom_data_sbarre_ort, "PhotometricInterpretation"), "MONOCHROME2")
-  expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_ort)), length(header_fields(dicom_data_sbarre_ort)))
-  expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_ort)), nrow(dicom_header_as_matrix(dicom_data_sbarre_ort)))
-  expect_equal(num_slices(dicom_data_sbarre_ort), 1)
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_ort, 1))
-  expect_equal(dim(img_data_to_mat(dicom_data_sbarre_ort)), c(512, 512, 1))
-  expect_equal(dim(img_data_to_3D_mat(dicom_data_sbarre_ort, NULL)), c(512, 512, 1))
+  expect_error(img_data_to_mat(dicom_data_sbarre_ort))
+  expect_error(img_data_to_3D_mat(dicom_data_sbarre_ort))
 })
 
 test_that("S. Barre heart MR", {
-  expect_equal(img_dimensions(dicom_data_sbarre_heart_mr), c(256, 256, 16))
-  expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_heart_mr)), length(header_fields(dicom_data_sbarre_heart_mr)))
-  expect_equal(header_value(dicom_data_sbarre_heart_mr, "NumberOfFrames"), 16)
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_heart_mr, 1))
-  expect_equal(dim(img_data_to_mat(dicom_data_sbarre_heart_mr)), c(256, 256, 16))
-  expect_equal(dim(img_data_to_3D_mat(dicom_data_sbarre_heart_mr, NULL)), c(256, 256, 16))
-  expect_equal(ncol(dicom_header_as_matrix(dicom_data_sbarre_heart_mr)), 5)
+  expect_error(img_data_to_mat(dicom_data_sbarre_heart_mr))
+  expect_error(img_data_to_3D_mat(dicom_data_sbarre_heart_mr))
 })
 
 test_that("S. Barre heart NM", {
-  expect_equal(img_dimensions(dicom_data_sbarre_heart_nm), c(64, 64, 13))
-  expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_heart_nm)), length(header_fields(dicom_data_sbarre_heart_nm)))
-  expect_equal(header_value(dicom_data_sbarre_heart_nm, "NumberOfFrames"), 13)
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_heart_nm, 1))
-  expect_equal(dim(img_data_to_mat(dicom_data_sbarre_heart_nm)), c(64, 64, 13))
-  expect_equal(dim(img_data_to_3D_mat(dicom_data_sbarre_heart_nm, NULL)), c(64, 64, 13))
-  expect_equal(ncol(dicom_header_as_matrix(dicom_data_sbarre_heart_nm)), 5)
+  expect_error(img_data_to_mat(dicom_data_sbarre_heart_nm))
+  expect_error(img_data_to_3D_mat(dicom_data_sbarre_heart_nm))
 })
 
 test_that("S. Barre execho", {
-  expect_equal(img_dimensions(dicom_data_sbarre_execho), c(128, 120, 8))
-  expect_equal(length(dicom_constant_header_values(dicom_data_sbarre_execho)), length(header_fields(dicom_data_sbarre_execho)))
-  expect_equal(header_value(dicom_data_sbarre_execho, "NumberOfFrames"), 8)
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_execho, 1))
-  expect_equal(dim(img_data_to_mat(dicom_data_sbarre_execho)), c(128, 120, 8))
-  expect_equal(dim(img_data_to_3D_mat(dicom_data_sbarre_execho, NULL)), c(128, 120, 8))
-  expect_equal(ncol(dicom_header_as_matrix(dicom_data_sbarre_execho)), 5)
+  expect_error(img_data_to_mat(dicom_data_sbarre_execho))
+  expect_error(img_data_to_3D_mat(dicom_data_sbarre_execho))
 })
 
 test_that("DICOM image data to 3D matrix", {
