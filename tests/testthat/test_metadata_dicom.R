@@ -103,7 +103,7 @@ test_that("DICOM header values", {
   expect_equal(header_value(dicom_data_988_MR1, "GroupLength")[[3]], 192)
   expect_equal(header_value(dicom_data_988_MR700, "MediaStorageSOPInstanceUID")[[2]], "1.3.6.1.4.1.5962.1.1.0.0.0.1196533885.18148.0.120")
 
-  expect_equal(header_value(dicom_data_247_MR3, "ContentTime")[[1]], "001413.094")
+  expect_equal(header_value(dicom_data_247_MR3, "ContentTime")[[1]], 1413.094)
   expect_equal(header_value(dicom_data_247_OT, "ImageType"), "DERIVED SECONDARY")
 
   slice_idx <- 5
@@ -233,8 +233,8 @@ test_that("Constant header values", {
   expect_equal(dicom_constant_header_values(dicom_data_988_MR1)[["StudyDate"]], 20030505)
   expect_equal(dicom_constant_header_values(dicom_data_988_MR700)[["GroupLength"]], 194)
 
-  expect_equal(dicom_constant_header_values(dicom_data_247_MR3)[["DerivationDescription"]], "DRS:DOE, HARRY 24759123 1 01 01 3 JPEG 2 3 1 90")
-  expect_equal(dicom_constant_header_values(dicom_data_247_OT)[["DerivationDescription"]], "DRS:DOE, HARRY 24759123 1 01 01 3 JPEG 2 3 1 90")
+  expect_equal(dicom_constant_header_values(dicom_data_247_MR3)[["DerivationDescription"]], "DRS:DOE, HARRY    24759123  1 01 01  3   JPEG  2   3  1  90")
+  expect_equal(dicom_constant_header_values(dicom_data_247_OT)[["DerivationDescription"]], "DRS:DOE, HARRY    24759123  1 01 01  3   JPEG  2   3  1  90")
 
 })
 

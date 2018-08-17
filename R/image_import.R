@@ -76,7 +76,7 @@ read_dicom <- function(path, ...) {
 }
 
 #' Read a NIfTI-1 image
-#' @param file .nii file, gzipped or not
+#' @param file .nii file, gzipped or not, or base of .hdr and .img files without extension
 #' @return List containing object of class \code{\link[oro.nifti]{nifti}}
 #' @export
 read_nifti1 <- function(file) {
