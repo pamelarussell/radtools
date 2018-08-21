@@ -56,5 +56,13 @@ header_value.nifti1data <- function(img_data, field) {
   slot(img_data$data, field)
 }
 
+#' Get named list of header attributes for a NIfTI-1 file
+#' @param img_data NIfTI-1 data returned by \code{\link{read_nifti1}}
+#' @return List of header attribute values
+#' @export
+nifti1_header_values <- function(img_data) {
+  sapply(header_fields(nifti_data_avg152T1_LR), function(x) header_value(nifti_data_avg152T1_LR, x))
+}
+
 
 
