@@ -77,12 +77,28 @@ read_dicom <- function(path, ...) {
 
 #' Read a NIfTI-1 image
 #' @param file .nii file, gzipped or not, or base of .hdr and .img files without extension
+#' @param ... Additional arguments to \code{\link[oro.nifti]{readNIfTI}}
 #' @return List containing object of class \code{\link[oro.nifti]{nifti}}
 #' @export
-read_nifti1 <- function(file) {
+read_nifti1 <- function(file, ...) {
+  # Wrap oro.nifti::readNIFTI, translate error message, validate header
+  expr <- expression(oro.nifti::readNIfTI(file, ...))
   rtrn <- NULL
-  rtrn$data <- oro.nifti::readNIfTI(file, warn = 0)
-  class(rtrn) <- c("nifti1data")
+  tryCatch(rtrn$data <- eval(expr),
+           error = function(e) {
+             mess <- e$message
+             message("Error raised by oro.nifti::readNIfTI")
+             message(paste("Message from oro.nifti:", mess))
+             message(paste("On expression:", expr))
+             message(paste("With file(s) = \"", file, "\"", sep = ""))
+             if(grepl("reorient", mess, ignore.case = TRUE)) {
+               message("Consider using reorient = FALSE.")
+             }
+             stop("See message for info")
+           })
+  # Set class attribute of return value
+  class(rtrn) <- "nifti1data"
+  # Validate metadata
   validate_metadata(rtrn)
   rtrn
 }

@@ -22,7 +22,7 @@ minimal_nii <- paste(minimal_base, ".nii.gz", sep = "")
 nifti_data_minimal <- read_nifti1(minimal_nii)
 nifti_data_minimal_hi <- read_nifti1(minimal_base)
 # SIRP
-nifti_data_sirp <- read_nifti1(paste(dir_nifti1, "newsirp_final_XML.nii", sep = "/"))
+nifti_data_sirp <- read_nifti1(paste(dir_nifti1, "newsirp_final_XML.nii", sep = "/"), reorient = F)
 
 # zstat1
 zstat1 <- paste(dir_nifti1, "zstat1.nii.gz", sep = "/")
@@ -33,11 +33,11 @@ nifti_data_1103_3 <- read_nifti1(paste(dir_nifti1, "1103_3.nii", sep = "/"))
 nifti_data_1103_3_glm <- read_nifti1(paste(dir_nifti1, "1103_3_glm.nii", sep = "/"))
 
 # https://github.com/muschellij2/Neurohacking_data/tree/master/BRAINIX/NIfTI
-nifti_data_flair <- read_nifti1(paste(dir_nifti1, "FLAIR.nii.gz", sep = "/"))
-nifti_data_flair_regToT1 <- read_nifti1(paste(dir_nifti1, "FLAIR_regToT1.nii.gz", sep = "/"))
-nifti_data_roi <- read_nifti1(paste(dir_nifti1, "ROI.nii.gz", sep = "/"))
+nifti_data_flair <- read_nifti1(paste(dir_nifti1, "FLAIR.nii.gz", sep = "/"), reorient = F)
+nifti_data_flair_regToT1 <- read_nifti1(paste(dir_nifti1, "FLAIR_regToT1.nii.gz", sep = "/"), reorient = F)
+nifti_data_roi <- read_nifti1(paste(dir_nifti1, "ROI.nii.gz", sep = "/"), reorient = F)
 nifti_data_roi_regToT1_SyNtoMNI <- read_nifti1(paste(dir_nifti1, "ROI_regToT1_SyNtoMNI.nii.gz", sep = "/"))
-nifti_data_t1 <- read_nifti1(paste(dir_nifti1, "T1.nii.gz", sep = "/"))
+nifti_data_t1 <- read_nifti1(paste(dir_nifti1, "T1.nii.gz", sep = "/"), reorient = F)
 nifti_data_t1_SyNtoMNI <- read_nifti1(paste(dir_nifti1, "T1_SyNtoMNI.nii.gz", sep = "/"))
 
 # https://github.com/muschellij2/Neurohacking_data/tree/master/Template
@@ -46,7 +46,7 @@ nifti_data_JHU_MNI_SS_T1_mask <- read_nifti1(paste(dir_nifti1, "JHU_MNI_SS_T1_ma
 nifti_data_MNI152_T1_1mm_brain <- read_nifti1(paste(dir_nifti1, "MNI152_T1_1mm_brain.nii.gz", sep = "/"))
 
 # https://github.com/muschellij2/Neurohacking_data/tree/master/kirby21/visit_2/113
-nifti_data_113-01-MPRAGE <- read_nifti1(paste(dir_nifti1, "113-01-MPRAGE.nii.gz", sep = "/"))
-nifti_data_113-01-MPRAGE_mask <- read_nifti1(paste(dir_nifti1, "113-01-MPRAGE_mask.nii.gz", sep = "/"))
-nifti_data_FLIRT_113-01-T2w_regToT1 <- read_nifti1(paste(dir_nifti1, "FLIRT_113-01-T2w_regToT1.nii.gz", sep = "/"))
+nifti_data_113_01_MPRAGE <- read_nifti1(paste(dir_nifti1, "113-01-MPRAGE.nii.gz", sep = "/"))
+nifti_data_113_01_MPRAGE_mask <- read_nifti1(paste(dir_nifti1, "113-01-MPRAGE_mask.nii.gz", sep = "/"))
+nifti_data_FLIRT_113_01_T2w_regToT1 <- read_nifti1(paste(dir_nifti1, "FLIRT_113-01-T2w_regToT1.nii.gz", sep = "/"))
 
