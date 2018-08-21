@@ -99,7 +99,7 @@ read_nifti1 <- function(file, ...) {
   # Set class attribute of return value
   class(rtrn) <- "nifti1data"
   # Validate metadata
-  validate_metadata(rtrn)
+  validate_metadata(rtrn, stop = T)
   rtrn
 }
 

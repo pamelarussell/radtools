@@ -61,7 +61,7 @@ header_value.nifti1data <- function(img_data, field) {
 #' @return List of header attribute values
 #' @export
 nifti1_header_values <- function(img_data) {
-  sapply(header_fields(nifti_data_avg152T1_LR), function(x) header_value(nifti_data_avg152T1_LR, x))
+  sapply(header_fields(img_data), function(x) header_value(img_data, x))
 }
 
 
