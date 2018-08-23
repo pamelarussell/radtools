@@ -4,10 +4,12 @@
 \alias{read_nifti1}
 \title{Read a NIfTI-1 image}
 \usage{
-read_nifti1(file)
+read_nifti1(file, ...)
 }
 \arguments{
-\item{file}{.nii file, gzipped or not}
+\item{file}{.nii file, gzipped or not, or base of .hdr and .img files without extension}
+
+\item{...}{Additional arguments to \code{\link[oro.nifti]{readNIfTI}}}
 }
 \value{
 List containing object of class \code{\link[oro.nifti]{nifti}}
