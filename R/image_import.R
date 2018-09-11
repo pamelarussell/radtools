@@ -121,8 +121,12 @@ img_data_to_mat <- function(img_data) {
   UseMethod("img_data_to_mat", img_data)
 }
 
-img_data_to_mat.dicomdata <- function(img_data) {img_data_to_3D_mat(img_data)}
+#' @method img_data_to_mat dicomdata
+#' @export
+img_data_to_mat.dicomdata <- function(img_data) {img_data_to_3D_mat(img_data, coord_extra_dim = NULL)}
 
+#' @method img_data_to_3D_mat dicomdata
+#' @export
 img_data_to_3D_mat.dicomdata <- function(img_data, coord_extra_dim = NULL) {
   if(!is.null(coord_extra_dim)) stop("Do not provide coordinates in dimensions beyond 3 for DICOM")
   # Wrap oro.dicom::create3D, translate error message
@@ -193,10 +197,14 @@ mat_reduce_dim <- function(mat, coords_last_dims) {
 
 }
 
+#' @method img_data_to_mat nifti1data
+#' @export
 img_data_to_mat.nifti1data <- function(img_data) {
   slot(img_data$data, ".Data")
 }
 
+#' @method img_data_to_3D_mat nifti1data
+#' @export
 img_data_to_3D_mat.nifti1data <- function(img_data, coord_extra_dim = NULL) {
   d <- nifti1_num_dim(img_data)
   if(d > 3) {
