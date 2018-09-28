@@ -15,3 +15,7 @@ Vector of header field names
 \description{
 Get the names of metadata fields from an image dataset's header(s)
 }
+\examples{
+\dontrun{header_fields(dicom_data)}
+\dontrun{header_fields(nifti1_data)}
+}

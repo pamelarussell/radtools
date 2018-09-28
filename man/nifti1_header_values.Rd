@@ -15,3 +15,6 @@ List of header attribute values
 \description{
 Get named list of header attributes for a NIfTI-1 file
 }
+\examples{
+\dontrun{nifti1_header_values(nifti1_data)}
+}

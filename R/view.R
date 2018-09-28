@@ -4,6 +4,8 @@
 #' @param slice Slice number, or NULL if image is already 2D
 #' @param col Color scheme
 #' @param ... Additional arguments to \code{\link{view_slice_mat}}
+#' @examples
+#' \dontrun{view_slice(dicom_data, slice = 5)}
 #' @export
 view_slice <- function(img_data, slice = NULL, col = grDevices::grey(0:64/64), ...) {
   mat <- img_data_to_mat(img_data)
@@ -24,6 +26,8 @@ view_slice <- function(img_data, slice = NULL, col = grDevices::grey(0:64/64), .
 #' @param slice Slice number, or NULL if matrix is 2D
 #' @param col Color scheme
 #' @param ... Additional arguments to \code{\link[graphics]{image}}
+#' @examples
+#' \dontrun{view_slice_mat(img_data_to_3D_mat(nifti_data_4d, coord_extra_dim = 10), slice = 20)}
 #' @export
 view_slice_mat <- function(mat, slice = NULL, col = grDevices::grey(0:64/64), ...) {
   ndim <- length(dim(mat))

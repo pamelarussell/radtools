@@ -15,3 +15,7 @@ Number of slices
 \description{
 Get the number of image slices in an image series
 }
+\examples{
+\dontrun{num_slices(dicom_data)}
+\dontrun{num_slices(nifti1_data)}
+}

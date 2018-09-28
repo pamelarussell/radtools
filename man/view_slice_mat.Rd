@@ -18,3 +18,6 @@ view_slice_mat(mat, slice = NULL, col = grDevices::grey(0:64/64), ...)
 \description{
 Display a visual of one slice of an image matrix
 }
+\examples{
+\dontrun{view_slice_mat(img_data_to_3D_mat(nifti_data_4d, coord_extra_dim = 10), slice = 20)}
+}

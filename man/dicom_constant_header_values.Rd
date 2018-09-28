@@ -19,3 +19,6 @@ more than once in the header are excluded from the return list.
 \description{
 Get the values of header attributes that are constant across slices
 }
+\examples{
+\dontrun{dicom_constant_header_values(dicom_data)}
+}

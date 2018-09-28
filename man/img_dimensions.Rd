@@ -15,3 +15,7 @@ Image dimensions
 \description{
 Get the dimensions of an image
 }
+\examples{
+\dontrun{img_dimensions(dicom_data)}
+\dontrun{img_dimensions(nifti1_data)}
+}

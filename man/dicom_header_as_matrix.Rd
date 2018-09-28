@@ -22,3 +22,6 @@ represented as strings even if they are conceptually numeric.
 \description{
 Get the header information as a matrix
 }
+\examples{
+\dontrun{dicom_header_as_matrix(dicom_data)}
+}

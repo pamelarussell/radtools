@@ -12,3 +12,6 @@ nifti1_num_dim(nifti1_data)
 \description{
 Get the number of dimensions in a NIfTI-1 image
 }
+\examples{
+\dontrun{nifti1_num_dim(nifti1_data)}
+}

@@ -154,6 +154,8 @@ globalVariables(c("group", "element", "name", "count", "n_name", "code", "value"
 #' @importFrom dplyr full_join
 #' @importFrom dplyr n
 #' @importFrom magrittr %>%
+#' @examples
+#' \dontrun{dicom_header_as_matrix(dicom_data)}
 #' @export
 dicom_header_as_matrix <- function(dicom_data, slice_idx = NA) {
   if(!is.na(slice_idx)) dicom_data$hdr[[slice_idx]] %>% unique()
@@ -199,6 +201,8 @@ dicom_header_as_matrix <- function(dicom_data, slice_idx = NA) {
 #' @importFrom dplyr n
 #' @importFrom Hmisc all.is.numeric
 #' @importFrom magrittr %>%
+#' @examples
+#' \dontrun{dicom_constant_header_values(dicom_data)}
 #' @export
 dicom_constant_header_values <- function(dicom_data, numeric = TRUE) {
   # Function to get unique slice values for a row
@@ -261,6 +265,8 @@ validate_hex <- function(str) {
 #' @param group Group e.g. "0008"
 #' @param element Element e.g. "0020"
 #' @return The tag e.g. "(0008,0020)"
+#' @examples
+#' dicom_header_tag("0008", "0020")
 #' @export
 dicom_header_tag <- function(group, element) {
   validate_hex(group)
@@ -275,6 +281,8 @@ case_insensitive_search <- function(vec, pat) {
 #' Search header keywords in the DICOM standard for matches to a string
 #' @param str String to search for (case insensitive)
 #' @return Vector of header keywords (e.g. "PatientName") matching the string
+#' @examples
+#' dicom_search_header_keywords("manufacturer")
 #' @export
 dicom_search_header_keywords <- function(str) {
   case_insensitive_search(dicom_all_valid_header_keywords(), str)
@@ -283,6 +291,8 @@ dicom_search_header_keywords <- function(str) {
 #' Search header names in the DICOM standard for matches to a string
 #' @param str String to search for (case insensitive)
 #' @return Vector of header names (e.g. "Patient's Name") matching the string
+#' @examples
+#' dicom_search_header_names("manufacturer")
 #' @export
 dicom_search_header_names <- function(str) {
   case_insensitive_search(dicom_all_valid_header_names(), str)

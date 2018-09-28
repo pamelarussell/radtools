@@ -51,6 +51,9 @@ all_have_dicom_prefix <- function(path) {
 #' @param path Directory containing DICOM images, or single image file
 #' @param ... Additional arguments to \code{\link[oro.dicom]{readDICOM}}
 #' @return List with elements \code{hdr} and \code{img}, each with an element for each slice
+#' @examples
+#' \dontrun{read_dicom(dicom_directory)}
+#' \dontrun{read_dicom(dicom_file.dcm)}
 #' @importFrom oro.dicom readDICOM
 #' @export
 read_dicom <- function(path, ...) {
@@ -80,6 +83,9 @@ read_dicom <- function(path, ...) {
 #' @param file .nii file, gzipped or not, or base of .hdr and .img files without extension
 #' @param ... Additional arguments to \code{\link[oro.nifti]{readNIfTI}}
 #' @return List containing object of class \code{\link[oro.nifti]{nifti}}
+#' @examples
+#' \dontrun{read_nifti1(nifti_file.nii)}
+#' \dontrun{read_nifti1(nifti_file_basename)}
 #' @importFrom oro.nifti readNIfTI
 #' @export
 read_nifti1 <- function(file, ...) {
@@ -110,6 +116,8 @@ read_nifti1 <- function(file, ...) {
 #' @param coord_extra_dim Coordinates in extra dimensions (beyond 3) that define the
 #' particular 3D image of interest. Not applicable for DICOM; pass NULL in that case.
 #' @return 3D array of intensities where third dimension is slice
+#' @examples
+#' \dontrun{img_data_to_3D_mat(nifti1_data, coord_extra_dim = 10)}
 #' @export
 img_data_to_3D_mat <- function(img_data, coord_extra_dim) {
   UseMethod("img_data_to_3D_mat", img_data)
@@ -118,6 +126,8 @@ img_data_to_3D_mat <- function(img_data, coord_extra_dim) {
 #' Convert image data to matrix of intensities
 #' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}
 #' @return Multidimensional array of intensities where third dimension is slice
+#' @examples
+#' \dontrun{img_data_to_mat(dicom_data)}
 #' @export
 img_data_to_mat <- function(img_data) {
   UseMethod("img_data_to_mat", img_data)

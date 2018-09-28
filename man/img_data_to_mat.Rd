@@ -15,3 +15,6 @@ Multidimensional array of intensities where third dimension is slice
 \description{
 Convert image data to matrix of intensities
 }
+\examples{
+\dontrun{img_data_to_mat(dicom_data)}
+}

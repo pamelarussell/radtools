@@ -17,3 +17,7 @@ Metadata for the field in an appropriate format for the data type
 \description{
 Get metadata contained in a header field
 }
+\examples{
+\dontrun{header_value(dicom_data, "SliceLocation")}
+\dontrun{header_value(nifti1_data, "dim_")}
+}

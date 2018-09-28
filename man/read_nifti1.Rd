@@ -17,3 +17,7 @@ List containing object of class \code{\link[oro.nifti]{nifti}}
 \description{
 Read a NIfTI-1 image
 }
+\examples{
+\dontrun{read_nifti1(nifti_file.nii)}
+\dontrun{read_nifti1(nifti_file_basename)}
+}

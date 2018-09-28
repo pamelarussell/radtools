@@ -17,3 +17,7 @@ List with elements \code{hdr} and \code{img}, each with an element for each slic
 \description{
 Read a DICOM image or series of images
 }
+\examples{
+\dontrun{read_dicom(dicom_directory)}
+\dontrun{read_dicom(dicom_file.dcm)}
+}

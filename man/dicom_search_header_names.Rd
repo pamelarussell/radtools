@@ -15,3 +15,6 @@ Vector of header names (e.g. "Patient's Name") matching the string
 \description{
 Search header names in the DICOM standard for matches to a string
 }
+\examples{
+dicom_search_header_names("manufacturer")
+}

@@ -17,3 +17,6 @@ The tag e.g. "(0008,0020)"
 \description{
 Get DICOM header tag string corresponding to a group and element
 }
+\examples{
+dicom_header_tag("0008", "0020")
+}
