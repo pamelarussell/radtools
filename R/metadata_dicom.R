@@ -86,6 +86,7 @@ dicom_validate_tag <- function(tag, stop = TRUE) {
 #' @param group Group
 #' @param element Element
 #' @param stop If true, raise error when validation fails. If false, raise warning.
+#' @importFrom magrittr %>%
 #' @keywords internal
 dicom_validate_group_element <- function(group, element, stop = TRUE) {
   if(!dicom_header_tag(group, element) %in% dicom_all_valid_header_tags()) {
@@ -96,7 +97,6 @@ dicom_validate_group_element <- function(group, element, stop = TRUE) {
 }
 
 #' @method validate_metadata dicomdata
-#' @import dplyr
 validate_metadata.dicomdata <- function(img_data, stop = TRUE) {
   elts <- data.frame(group = character(), element = character(), name = character())
   if(num_slices(img_data) == 0) {
@@ -126,13 +126,15 @@ validate_metadata.dicomdata <- function(img_data, stop = TRUE) {
 #' @param field Header field keyword e.g. "PatientName"
 #' @return Vector of header values. Numeric values are converted to numbers.
 #' @export
-#' @import Hmisc
+#' @importFrom Hmisc all.is.numeric
 #' @method header_value dicomdata
 header_value.dicomdata <- function(img_data, field) {
   dicom_validate_has_field(img_data, field)
   val <- oro.dicom::extractHeader(img_data$hdr, field, numeric = FALSE)
   if(Hmisc::all.is.numeric(val)) as.numeric(val) else val
 }
+
+globalVariables(c("group", "element", "name", "count", "n_name", "code", "value"))
 
 #' Get the header information as a matrix
 #' @param dicom_data DICOM data returned by \code{\link{read_dicom}}
@@ -143,7 +145,15 @@ header_value.dicomdata <- function(img_data, field) {
 #' in a given slice header will be excluded from the values reported for that slice.
 #' Each column contains all header attributes for one slice, therefore, values are
 #' represented as strings even if they are conceptually numeric.
-#' @import dplyr
+#' @importFrom dplyr group_by
+#' @importFrom dplyr summarize
+#' @importFrom dplyr filter
+#' @importFrom dplyr select
+#' @importFrom dplyr vars
+#' @importFrom dplyr funs
+#' @importFrom dplyr full_join
+#' @importFrom dplyr n
+#' @importFrom magrittr %>%
 #' @export
 dicom_header_as_matrix <- function(dicom_data, slice_idx = NA) {
   if(!is.na(slice_idx)) dicom_data$hdr[[slice_idx]] %>% unique()
@@ -156,11 +166,11 @@ dicom_header_as_matrix <- function(dicom_data, slice_idx = NA) {
       unique_fields <-
         mat %>%
         dplyr::group_by(group, element, name) %>%
-        dplyr::summarize(count = n()) %>%
+        dplyr::summarize(count = dplyr::n()) %>%
         dplyr::filter(count == 1)
       mat %>%
         dplyr::select(group, element, name, code, value) %>%
-        dplyr::rename_at(vars(value), funs(paste0(col_nm))) %>%
+        dplyr::rename_at(dplyr::vars(value), dplyr::funs(paste0(col_nm))) %>%
         dplyr::filter(name %in% unique_fields$name)
     }
 
@@ -168,7 +178,7 @@ dicom_header_as_matrix <- function(dicom_data, slice_idx = NA) {
     ns <- length(dicom_data$hdr)
     if(ns > 1) {
       for(i in 2:ns) {
-        rtrn <- rtrn %>% full_join(process_slice(i), by = c("group", "element", "name", "code"))
+        rtrn <- rtrn %>% dplyr::full_join(process_slice(i), by = c("group", "element", "name", "code"))
       }
     }
 
@@ -183,8 +193,12 @@ dicom_header_as_matrix <- function(dicom_data, slice_idx = NA) {
 #' are field names and values are the common attribute values. Fields that are included
 #' more than once in the header are excluded from the return list.
 #' @param numeric Convert number values to numeric instead of strings
-#' @import dplyr
-#' @import Hmisc
+#' @importFrom dplyr group_by
+#' @importFrom dplyr summarize
+#' @importFrom dplyr filter
+#' @importFrom dplyr n
+#' @importFrom Hmisc all.is.numeric
+#' @importFrom magrittr %>%
 #' @export
 dicom_constant_header_values <- function(dicom_data, numeric = TRUE) {
   # Function to get unique slice values for a row
@@ -197,7 +211,7 @@ dicom_constant_header_values <- function(dicom_data, numeric = TRUE) {
     which(mat$name %in%
             (mat %>%
                dplyr::group_by(name) %>%
-               dplyr::summarize(n_name = n()) %>%
+               dplyr::summarize(n_name = dplyr::n()) %>%
                dplyr::filter(n_name == 1))$name),]
   # List to return
   rtrn <- list()

@@ -4,7 +4,7 @@
 \alias{view_slice}
 \title{Display a visual of one slice of an image}
 \usage{
-view_slice(img_data, slice = NULL, col = grey(0:64/64), ...)
+view_slice(img_data, slice = NULL, col = grDevices::grey(0:64/64), ...)
 }
 \arguments{
 \item{img_data}{Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}}
@@ -12,6 +12,8 @@ view_slice(img_data, slice = NULL, col = grey(0:64/64), ...)
 \item{slice}{Slice number, or NULL if image is already 2D}
 
 \item{col}{Color scheme}
+
+\item{...}{Additional arguments to \code{\link{view_slice_mat}}}
 }
 \description{
 Display a visual of one slice of an image

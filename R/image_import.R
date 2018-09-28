@@ -1,10 +1,10 @@
 
 # Check if all DICOM files have nonzero values in 128-byte preamble
 all_nonzero_preamble <- function(path) {
-  if(file_test("-f", path)) {
+  if(utils::file_test("-f", path)) {
     files <- c(path)
   } else {
-    if(file_test("-d", path)) {
+    if(utils::file_test("-d", path)) {
       files <- list.files(path, full.names = TRUE)
     } else {
       stop(paste("Invalid path:", path))
@@ -29,10 +29,10 @@ has_dicom_prefix <- function(file) {
 # Check if all DICOM files have "DICM" in the 4-byte prefix
 # http://dicom.nema.org/MEDICAL/dicom/2016a/output/chtml/part10/chapter_7.html
 all_have_dicom_prefix <- function(path) {
-  if(file_test("-f", path)) {
+  if(utils::file_test("-f", path)) {
     files <- c(path)
   } else {
-    if(file_test("-d", path)) {
+    if(utils::file_test("-d", path)) {
       files <- list.files(path, full.names = TRUE)
     } else {
       stop(paste("Invalid path:", path))
@@ -51,6 +51,7 @@ all_have_dicom_prefix <- function(path) {
 #' @param path Directory containing DICOM images, or single image file
 #' @param ... Additional arguments to \code{\link[oro.dicom]{readDICOM}}
 #' @return List with elements \code{hdr} and \code{img}, each with an element for each slice
+#' @importFrom oro.dicom readDICOM
 #' @export
 read_dicom <- function(path, ...) {
   # Check for 4-byte DICOM prefix
@@ -79,6 +80,7 @@ read_dicom <- function(path, ...) {
 #' @param file .nii file, gzipped or not, or base of .hdr and .img files without extension
 #' @param ... Additional arguments to \code{\link[oro.nifti]{readNIfTI}}
 #' @return List containing object of class \code{\link[oro.nifti]{nifti}}
+#' @importFrom oro.nifti readNIfTI
 #' @export
 read_nifti1 <- function(file, ...) {
   # Wrap oro.nifti::readNIFTI, translate error message, validate header
@@ -126,6 +128,9 @@ img_data_to_mat <- function(img_data) {
 img_data_to_mat.dicomdata <- function(img_data) {img_data_to_3D_mat(img_data, coord_extra_dim = NULL)}
 
 #' @method img_data_to_3D_mat dicomdata
+#' @importFrom oro.dicom create3D
+#' @importFrom dplyr filter
+#' @importFrom magrittr %>%
 #' @export
 img_data_to_3D_mat.dicomdata <- function(img_data, coord_extra_dim = NULL) {
   if(!is.null(coord_extra_dim)) stop("Do not provide coordinates in dimensions beyond 3 for DICOM")
@@ -142,7 +147,7 @@ img_data_to_3D_mat.dicomdata <- function(img_data, coord_extra_dim = NULL) {
              if(nrow(dicom_header_as_matrix(img_data) %>% dplyr::filter(name == "ImageOrientationPatient")) == 0) {
                message("Note: DICOM data does not include required header field ImageOrientationPatient")
              }
-             error("See message for info")
+             stop("See message for info")
            })
   tryCatch({
     rows <- header_value(img_data, "Rows")
@@ -209,9 +214,10 @@ mat_reduce_dim <- function(mat, coords_last_dims) {
 }
 
 #' @method img_data_to_mat nifti1data
+#' @importFrom methods slot
 #' @export
 img_data_to_mat.nifti1data <- function(img_data) {
-  slot(img_data$data, ".Data")
+  methods::slot(img_data$data, ".Data")
 }
 
 #' @method img_data_to_3D_mat nifti1data

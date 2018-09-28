@@ -4,14 +4,16 @@
 \alias{view_slice_mat}
 \title{Display a visual of one slice of an image matrix}
 \usage{
-view_slice_mat(mat, slice = NULL, col = grey(0:64/64), ...)
+view_slice_mat(mat, slice = NULL, col = grDevices::grey(0:64/64), ...)
 }
 \arguments{
+\item{mat}{2D or 3D intensity matrix, e.g. the return value from \code{\link{img_data_to_mat}} or \code{\link{img_data_to_3D_mat}}}
+
 \item{slice}{Slice number, or NULL if matrix is 2D}
 
 \item{col}{Color scheme}
 
-\item{img_data}{2D or 3D intensity matrix, e.g. the return value from \code{\link{img_data_to_mat}} or \code{\link{img_data_to_3D_mat}}}
+\item{...}{Additional arguments to \code{\link[graphics]{image}}}
 }
 \description{
 Display a visual of one slice of an image matrix
