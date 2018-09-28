@@ -3,7 +3,8 @@
 * win-builder
 
 ## R CMD check results
-There were no ERRORs, WARNINGs, or NOTEs. 
+There were no ERRORs or WARNINGs.
+There was one NOTE indicating that this is a new CRAN submission.
 
 ## Downstream dependencies
 There are no downstream dependencies.

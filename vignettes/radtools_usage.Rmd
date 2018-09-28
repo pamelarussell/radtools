@@ -18,6 +18,14 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r suppress_eval, echo = FALSE}
+# Check if this is running locally and if not, suppress evaluation
+if(!utils::file_test("-f", "~/Dropbox/radtools_vignette_data/prostate/000008.dcm")) {
+  knitr::opts_chunk$set(eval = FALSE)
+  message("Note: code examples will not be evaluated because they depend on local data.")
+}
+```
+
 # Overview
 
 `radtools` provides utilities to explore images in the two leading medical image formats: [DICOM](https://www.dicomstandard.org/) and [NIfTI](https://nifti.nimh.nih.gov/). Where possible, generic functions seamlessly handle both formats. When necessary or useful, specialized functions are provided for a specific image format. This vignette demonstrates how to read image data into R, extract data and metadata, and view images.

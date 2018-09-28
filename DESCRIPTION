@@ -9,7 +9,7 @@ Description: A collection of utilities for navigating medical image data. The DI
   A particular emphasis on metadata allows simple conversion of image metadata to familiar R data structures
   such as lists and data frames. Where possible, generic functions can silently process either DICOM or
   NIfTI data. Additionally, image data can be extracted and viewed.
-Depends: R (>= 3.4.3)
+Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
