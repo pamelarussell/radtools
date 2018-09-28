@@ -1,5 +1,6 @@
 
 test_that("Number of slices", {
+  skip_on_cran()
   expect_equal(num_slices(nifti_data_avg152T1_LR), 91)
   expect_equal(num_slices(nifti_data_avg152T1_RL), 91)
   expect_equal(num_slices(nifti_data_filtered_func), 21)
@@ -8,22 +9,26 @@ test_that("Number of slices", {
 })
 
 test_that("Number of dimensions", {
+  skip_on_cran()
   expect_equal(nifti1_num_dim(nifti_data_filtered_func), 4)
   expect_equal(nifti1_num_dim(nifti_data_avg152T1_LR), 3)
 })
 
 test_that("Image dimensions", {
+  skip_on_cran()
   expect_equal(img_dimensions(nifti_data_filtered_func), c(64, 64, 21, 180))
   expect_equal(img_dimensions(nifti_data_avg152T1_LR), c(91, 109, 91))
 })
 
 test_that("Header fields", {
+  skip_on_cran()
   expect_equal(header_fields(nifti_data_avg152T1_LR), header_fields(nifti_data_minimal))
   expect_equal(length(header_fields(nifti_data_zstat1)), 46)
   expect_true("slice_code" %in% header_fields(nifti_data_filtered_func))
 })
 
 test_that("Header values", {
+  skip_on_cran()
   expect_equal(header_value(nifti_data_filtered_func, "sizeof_hdr"), 348)
   expect_equal(header_value(nifti_data_filtered_func, "extender"), c(0,0,0,0))
   expect_equal(header_value(nifti_data_avg152T1_LR, "qoffset_x"), 0)
@@ -32,6 +37,7 @@ test_that("Header values", {
 })
 
 test_that("nifti_data_1103_3", {
+  skip_on_cran()
   expect_equal(num_slices(nifti_data_1103_3), 332)
   expect_equal(img_dimensions(nifti_data_1103_3), c(256, 256, 332))
   expect_equal(nifti1_num_dim(nifti_data_1103_3), 3)
@@ -43,6 +49,7 @@ test_that("nifti_data_1103_3", {
 })
 
 test_that("nifti_data_1103_3_glm", {
+  skip_on_cran()
   expect_equal(nifti1_num_dim(nifti_data_1103_3_glm), 3)
   expect_equal(length(header_fields(nifti_data_1103_3_glm)), 46)
   expect_true("descrip" %in% header_fields(nifti_data_1103_3_glm))
@@ -52,6 +59,7 @@ test_that("nifti_data_1103_3_glm", {
 })
 
 test_that("nifti_data_113_01_MPRAGE", {
+  skip_on_cran()
   expect_equal(num_slices(nifti_data_113_01_MPRAGE), 256)
   expect_equal(img_dimensions(nifti_data_113_01_MPRAGE), c(170,256,256))
   expect_equal(nifti1_num_dim(nifti_data_113_01_MPRAGE), 3)
@@ -59,6 +67,7 @@ test_that("nifti_data_113_01_MPRAGE", {
 })
 
 test_that("nifti_data_113_01_MPRAGE_mask", {
+  skip_on_cran()
   expect_equal(num_slices(nifti_data_113_01_MPRAGE_mask), 256)
   expect_equal(img_dimensions(nifti_data_113_01_MPRAGE_mask), c(170,256,256))
   expect_equal(length(nifti1_header_values(nifti_data_113_01_MPRAGE_mask)), 46)
@@ -66,6 +75,7 @@ test_that("nifti_data_113_01_MPRAGE_mask", {
 })
 
 test_that("nifti_data_avg152T1_LR", {
+  skip_on_cran()
   expect_equal(num_slices(nifti_data_avg152T1_LR), 91)
   expect_equal(img_dimensions(nifti_data_avg152T1_LR), c(91,109,91))
   expect_equal(length(header_fields(nifti_data_avg152T1_LR)), 46)
@@ -76,6 +86,7 @@ test_that("nifti_data_avg152T1_LR", {
 })
 
 test_that("nifti_data_avg152T1_LR_hi", {
+  skip_on_cran()
   expect_equal(num_slices(nifti_data_avg152T1_LR_hi), 91)
   expect_equal(img_dimensions(nifti_data_avg152T1_LR_hi), c(91,109,91))
   expect_equal(nifti1_num_dim(nifti_data_avg152T1_LR_hi), 3)
@@ -87,16 +98,19 @@ test_that("nifti_data_avg152T1_LR_hi", {
 })
 
 test_that("nifti_data_avg152T1_RL", {
+  skip_on_cran()
   expect_equal(img_dimensions(nifti_data_avg152T1_RL), c(91,109,91))
   expect_equal(header_value(nifti_data_avg152T1_RL, "descrip"), "FSL3.2beta")
 })
 
 test_that("nifti_data_avg152T1_RL_hi", {
+  skip_on_cran()
   expect_equal(img_dimensions(nifti_data_avg152T1_RL_hi), c(91,109,91))
   expect_equal(header_value(nifti_data_avg152T1_RL_hi, "descrip"), "FSL3.2beta")
 })
 
 test_that("nifti_data_filtered_func", {
+  skip_on_cran()
   expect_equal(num_slices(nifti_data_filtered_func), 21)
   expect_equal(img_dimensions(nifti_data_filtered_func), c(64,64,21,180))
   expect_equal(nifti1_num_dim(nifti_data_filtered_func), 4)
@@ -104,10 +118,12 @@ test_that("nifti_data_filtered_func", {
 })
 
 test_that("nifti_data_flair", {
+  skip_on_cran()
   expect_equal(img_dimensions(nifti_data_flair), c(288,288,22))
 })
 
 test_that("nifti_data_flair_regToT1", {
+  skip_on_cran()
   expect_equal(num_slices(nifti_data_flair_regToT1), 22)
   expect_equal(img_dimensions(nifti_data_flair_regToT1), c(512,512,22))
   expect_equal(nifti1_num_dim(nifti_data_flair_regToT1), 3)
@@ -119,22 +135,26 @@ test_that("nifti_data_flair_regToT1", {
 })
 
 test_that("nifti_data_FLIRT_113_01_T2w_regToT1", {
+  skip_on_cran()
   expect_equal(img_dimensions(nifti_data_FLIRT_113_01_T2w_regToT1), c(170,256,256))
   expect_equal(length(nifti1_header_values(nifti_data_FLIRT_113_01_T2w_regToT1)), 46)
   expect_equal(nifti1_header_values(nifti_data_FLIRT_113_01_T2w_regToT1)[["srow_z"]], c(0,0,1,0))
 })
 
 test_that("nifti_data_JHU_MNI_SS_T1_brain", {
+  skip_on_cran()
   expect_equal(img_dimensions(nifti_data_JHU_MNI_SS_T1_brain), c(181,217,181))
   expect_equal(header_value(nifti_data_JHU_MNI_SS_T1_brain, "cal_min"), 0)
 })
 
 test_that("nifti_data_JHU_MNI_SS_T1_mask", {
+  skip_on_cran()
   expect_equal(img_dimensions(nifti_data_JHU_MNI_SS_T1_mask), c(181,217,181))
   expect_equal(header_value(nifti_data_JHU_MNI_SS_T1_mask, "sform_code"), 1)
 })
 
 test_that("nifti_data_minimal", {
+  skip_on_cran()
   expect_equal(num_slices(nifti_data_minimal), 10)
   expect_equal(img_dimensions(nifti_data_minimal), c(64,64,10))
   expect_equal(nifti1_num_dim(nifti_data_minimal), 3)
@@ -146,6 +166,7 @@ test_that("nifti_data_minimal", {
 })
 
 test_that("nifti_data_minimal_hi", {
+  skip_on_cran()
   expect_equal(nifti1_num_dim(nifti_data_minimal_hi), 3)
   expect_equal(header_value(nifti_data_minimal_hi, "descrip"), "")
   expect_equal(header_value(nifti_data_minimal_hi, "aux_file"), "")
@@ -154,6 +175,7 @@ test_that("nifti_data_minimal_hi", {
 })
 
 test_that("nifti_data_MNI152_T1_1mm_brain", {
+  skip_on_cran()
   expect_equal(num_slices(nifti_data_MNI152_T1_1mm_brain), 182)
   expect_equal(img_dimensions(nifti_data_MNI152_T1_1mm_brain), c(182,218,182))
   expect_equal(nifti1_num_dim(nifti_data_MNI152_T1_1mm_brain), 3)
@@ -161,11 +183,13 @@ test_that("nifti_data_MNI152_T1_1mm_brain", {
 })
 
 test_that("nifti_data_roi", {
+  skip_on_cran()
   expect_equal(img_dimensions(nifti_data_roi), c(288,288,22))
   expect_equal(header_value(nifti_data_roi, "srow_z"), c(0.01915708,-0.05750556,5.98269606,-25.41534996), tolerance = 1e-5)
 })
 
 test_that("nifti_data_roi_regToT1_SyNtoMNI", {
+  skip_on_cran()
   expect_equal(img_dimensions(nifti_data_roi_regToT1_SyNtoMNI), c(182,218,182))
   expect_equal(length(header_fields(nifti_data_roi_regToT1_SyNtoMNI)), 46)
   expect_true("sform_code" %in% header_fields(nifti_data_roi_regToT1_SyNtoMNI))
@@ -174,6 +198,7 @@ test_that("nifti_data_roi_regToT1_SyNtoMNI", {
 })
 
 test_that("nifti_data_sirp", {
+  skip_on_cran()
   expect_equal(num_slices(nifti_data_sirp), 35)
   expect_equal(img_dimensions(nifti_data_sirp), c(64,64,35,147))
   expect_equal(nifti1_num_dim(nifti_data_sirp), 4)
@@ -181,17 +206,20 @@ test_that("nifti_data_sirp", {
 })
 
 test_that("nifti_data_t1", {
+  skip_on_cran()
   expect_equal(img_dimensions(nifti_data_t1), c(512,512,22))
   expect_equal(header_value(nifti_data_t1, "xyzt_units"), 10)
 })
 
 test_that("nifti_data_t1_SyNtoMNI", {
+  skip_on_cran()
   expect_equal(num_slices(nifti_data_t1_SyNtoMNI), 182)
   expect_equal(img_dimensions(nifti_data_t1_SyNtoMNI), c(182,218,182))
 
 })
 
 test_that("nifti_data_zstat1", {
+  skip_on_cran()
   expect_equal(img_dimensions(nifti_data_zstat1), c(64,64,21))
   expect_equal(header_value(nifti_data_zstat1, "magic"), "n+1")
 })

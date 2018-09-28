@@ -1,5 +1,5 @@
 Package: radtools
-Title: Utilities for smooth navigation of medical image data
+Title: Utilities for Smooth Navigation of Medical Image Data
 Version: 1.0.0
 Author: Pamela Russell [aut, cre]
 Maintainer: Pamela Russell <pamela.russell@ucdenver.edu>
@@ -15,9 +15,7 @@ Encoding: UTF-8
 LazyData: true
 Imports: oro.dicom, dplyr, Hmisc, oro.nifti, magrittr, methods
 RoxygenNote: 6.1.0
-Suggests:
-    testthat,
-    covr,
-    knitr,
-    rmarkdown
+Suggests: testthat, covr, knitr, rmarkdown
 VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2018-09-28 20:26:48 UTC; Pamela

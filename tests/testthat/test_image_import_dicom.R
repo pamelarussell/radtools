@@ -1,49 +1,58 @@
 test_that("Invalid DICOM files", {
+  skip_on_cran()
   expect_error(read_dicom(paste(dir_d_clunie_dicom_deflate, "image_dfl", sep = "/")))
   expect_error(read_dicom(paste(dir_s_barre_dicom, "OT-MONO2-8-colon", sep = "/"))) # Missing 4-byte DICOM prefix
   expect_error(read_dicom(paste(dir_s_barre_dicom, "OT-PAL-8-face", sep = "/"))) # Missing 4-byte DICOM prefix
 })
 
 test_that("D. Clunie scsgreek", {
+  skip_on_cran()
   expect_error(img_data_to_3D_mat(dicom_data_dclunie_scsgreek, 1))
   expect_error(img_data_to_mat(dicom_data_dclunie_scsgreek))
 })
 
 test_that("D. Clunie scx2", {
+  skip_on_cran()
   expect_error(img_data_to_3D_mat(dicom_data_dclunie_scsx2, 1))
   expect_error(img_data_to_mat(dicom_data_dclunie_scsx2))
 })
 
 test_that("D. Clunie deflate image", {
+  skip_on_cran()
   expect_error(img_data_to_3D_mat(dicom_data_dclunie_image, 1))
   expect_error(img_data_to_mat(dicom_data_dclunie_image))
 })
 
 test_that("S. Barre ort", {
+  skip_on_cran()
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_ort, 1))
   expect_error(img_data_to_mat(dicom_data_sbarre_ort))
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_ort))
 })
 
 test_that("S. Barre heart MR", {
+  skip_on_cran()
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_heart_mr, 1))
   expect_error(img_data_to_mat(dicom_data_sbarre_heart_mr))
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_heart_mr))
 })
 
 test_that("S. Barre heart NM", {
+  skip_on_cran()
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_heart_nm, 1))
   expect_error(img_data_to_mat(dicom_data_sbarre_heart_nm))
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_heart_nm))
 })
 
 test_that("S. Barre execho", {
+  skip_on_cran()
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_execho, 1))
   expect_error(img_data_to_mat(dicom_data_sbarre_execho))
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_execho))
 })
 
 test_that("DICOM image data to 3D matrix", {
+  skip_on_cran()
   expect_equal(dim(img_data_to_3D_mat(dicom_data_chest)), c(512, 512, 128))
   expect_equal(dim(img_data_to_3D_mat(dicom_data_prostate_mr)), c(384, 384, 19))
   expect_equal(dim(img_data_to_3D_mat(dicom_data_prostate_pt)), c(144, 144, 234))
@@ -60,6 +69,7 @@ test_that("DICOM image data to 3D matrix", {
 })
 
 test_that("DICOM image data to matrix", {
+  skip_on_cran()
   expect_equal(dim(img_data_to_mat(dicom_data_chest)), c(512, 512, 128))
   expect_equal(dim(img_data_to_mat(dicom_data_prostate_mr)), c(384, 384, 19))
   expect_equal(dim(img_data_to_mat(dicom_data_prostate_pt)), c(144, 144, 234))
@@ -69,6 +79,7 @@ test_that("DICOM image data to matrix", {
 })
 
 test_that("Matrix reduce dimensions", {
+  skip_on_cran()
 
   expect_error(mat_reduce_dim(1:5))
 

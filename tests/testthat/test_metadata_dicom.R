@@ -1,17 +1,21 @@
 
 test_that("DICOM standard website", {
+  skip_on_cran()
   expect_true(grepl("http", dicom_standard_web()))
 })
 
 test_that("DICOM standard version", {
+  skip_on_cran()
   expect_true(grepl("20", dicom_standard_version()))
 })
 
 test_that("DICOM standard timestamp", {
+  skip_on_cran()
   expect_true(grepl("20", dicom_standard_timestamp()))
 })
 
 test_that("Number of slices", {
+  skip_on_cran()
   expect_equal(num_slices(dicom_data_prostate_mr), 19)
   expect_equal(num_slices(dicom_data_bladder), 1)
   expect_equal(num_slices(dicom_data_chest), 128)
@@ -32,6 +36,7 @@ test_that("Number of slices", {
 })
 
 test_that("Image dimensions", {
+  skip_on_cran()
   expect_error(img_dimensions(dicom_data_bladder))
   expect_equal(img_dimensions(dicom_data_prostate_mr), c(384, 384, 19))
   expect_equal(img_dimensions(dicom_data_sbarre_brain), c(512, 512, 1))
@@ -47,6 +52,7 @@ test_that("Image dimensions", {
 })
 
 test_that("DICOM header fields", {
+  skip_on_cran()
   fieldsp <- header_fields(dicom_data_prostate_mr)
   expect_equal(length(fieldsp), 111)
   expect_true("DeidentificationMethod" %in% fieldsp)
@@ -66,6 +72,7 @@ test_that("DICOM header fields", {
 })
 
 test_that("Validate header", {
+  skip_on_cran()
   expect_silent(dicom_validate_keyword("PixelBandwidth"))
   expect_error(dicom_validate_keyword("xxx"))
   expect_warning(dicom_validate_keyword("xxx", stop = FALSE))
@@ -84,6 +91,7 @@ test_that("Validate header", {
 })
 
 test_that("DICOM header values", {
+  skip_on_cran()
 
   expect_equal(header_value(dicom_data_sbarre_brain, "SliceThickness"), 10.0)
   expect_equal(header_value(dicom_data_sbarre_head, "SpatialResolution"), "1.145833 0.859375")
@@ -128,6 +136,7 @@ test_that("DICOM header values", {
 })
 
 test_that("DICOM header as matrix", {
+  skip_on_cran()
   mat1 <- dicom_header_as_matrix(dicom_data_prostate_mr, 1)
   expect_equal(ncol(mat1), 7)
   expect_gt(nrow(mat1), 100)
@@ -169,6 +178,7 @@ test_that("DICOM header as matrix", {
 })
 
 test_that("Valid header elements from DICOM standard", {
+  skip_on_cran()
   keywords <- dicom_all_valid_header_keywords()
   names <- dicom_all_valid_header_names()
   tags <- dicom_all_valid_header_tags()
@@ -178,6 +188,7 @@ test_that("Valid header elements from DICOM standard", {
 })
 
 test_that("DICOM header tag", {
+  skip_on_cran()
   expect_error(dicom_header_tag("1111"))
   expect_error(dicom_header_tag("1111", "xxxx"))
   expect_error(dicom_header_tag("xxxx", "1111"))
@@ -185,6 +196,7 @@ test_that("DICOM header tag", {
 })
 
 test_that("Search keyword", {
+  skip_on_cran()
   res_kw <- dicom_search_header_keywords("width")
   res_name <- dicom_search_header_names("width")
   expect_true("ChannelWidth" %in% res_kw)
@@ -194,6 +206,7 @@ test_that("Search keyword", {
 })
 
 test_that("Constant header values", {
+  skip_on_cran()
   const_val <- dicom_constant_header_values(dicom_data_prostate_mr)
   expect_null(const_val[["Unknown"]])
   expect_equal(const_val[["GroupLength"]], 196)
