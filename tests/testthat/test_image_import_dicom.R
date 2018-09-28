@@ -53,7 +53,7 @@ test_that("DICOM image data to 3D matrix", {
   expect_error(img_data_to_3D_mat(dicom_data_988_MR1, coord_extra_dim = 1))
   expect_equal(dim(img_data_to_3D_mat(dicom_data_988_MR700)), c(512, 512, 12))
   expect_error(img_data_to_3D_mat(dicom_data_988_MR700, coord_extra_dim = 1))
-  expect_equal(dim(img_data_to_3D_mat(dicom_data_247_MR3)), c(512, 472, 24))
+  expect_warning(dim(img_data_to_3D_mat(dicom_data_247_MR3)))
   expect_error(img_data_to_3D_mat(dicom_data_247_MR3, coord_extra_dim = 1))
   expect_error(img_data_to_3D_mat(dicom_data_247_OT))
   expect_error(img_data_to_3D_mat(dicom_data_247_OT, coord_extra_dim = 1))
