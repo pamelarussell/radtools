@@ -23,29 +23,13 @@ dicom_singleton_header_fields <- function(dicom_data, slice_idx) {
 #' @method num_slices dicomdata
 #' @export
 num_slices.dicomdata <- function(img_data) {
-   d <- img_dimensions(img_data)
-   if(length(d) != 3) {
-     stop("DICOM image must have 3 dimensions")
-   }
-   d[3]
+   length(img_data$img)
 }
 
 #' @method img_dimensions dicomdata
 #' @export
 img_dimensions.dicomdata <- function(img_data) {
-  n_im <- length(img_data$img)
-  d1 <- dim(img_data$img[[1]])
-  if(length(d1) == 2) {
-    c(d1, n_im)
-  } else if(length(d1) == 3) {
-    if(n_im == 1) {
-      d1
-    } else {
-      stop("Invalid DICOM image dimensions")
-    }
-  } else {
-    stop("Invalid DICOM image dimensions")
-  }
+  dim(img_data_to_mat(img_data))
 }
 
 #' Get the names of DICOM header fields for an image series.
