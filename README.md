@@ -316,7 +316,7 @@ view_slice(dicom_data_2d)
 #> more than one dimension.
 ```
 
-![](README-view_slice_single-1.png)<!-- -->
+![](man/figures/README-view_slice_single-1.png)<!-- -->
 
 View one slice of a 3D image:
 
@@ -324,13 +324,13 @@ View one slice of a 3D image:
 view_slice(dicom_data_3d, slice = 10)
 ```
 
-![](README-view_slice_dir-1.png)<!-- -->
+![](man/figures/README-view_slice_dir-1.png)<!-- -->
 
 ``` r
 view_slice(nifti_data_3d, slice = 20)
 ```
 
-![](README-view_slice_dir-2.png)<!-- -->
+![](man/figures/README-view_slice_dir-2.png)<!-- -->
 
 A function is also provided to view a slice of an intensity matrix
 instead of a DICOM or NIfTI data object. In particular, this is useful
@@ -343,7 +343,7 @@ constant using `img_data_to_3D_mat`, then pass that matrix to
 view_slice_mat(mat_nifti_4d_to_3d, slice = 10)
 ```
 
-![](README-view_slice_mat-1.png)<!-- -->
+![](man/figures/README-view_slice_mat-1.png)<!-- -->
 
 # Other functionality
 
