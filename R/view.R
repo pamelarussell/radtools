@@ -5,7 +5,7 @@
 #' @param col Color scheme
 #' @param ... Additional arguments to \code{\link{view_slice_mat}}
 #' @examples
-#' \dontrun{view_slice(dicom_data, slice = 5)}
+#' view_slice(radtools::sample_dicom_img, slice = 2)
 #' @export
 view_slice <- function(img_data, slice = NULL, col = grDevices::grey(0:64/64), ...) {
   mat <- img_data_to_mat(img_data)

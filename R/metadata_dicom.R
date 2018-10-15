@@ -155,7 +155,7 @@ globalVariables(c("group", "element", "name", "count", "n_name", "code", "value"
 #' @importFrom dplyr n
 #' @importFrom magrittr %>%
 #' @examples
-#' \dontrun{dicom_header_as_matrix(dicom_data)}
+#' dicom_header_as_matrix(radtools::sample_dicom_img)
 #' @export
 dicom_header_as_matrix <- function(dicom_data, slice_idx = NA) {
   if(!is.na(slice_idx)) dicom_data$hdr[[slice_idx]] %>% unique()
@@ -202,7 +202,7 @@ dicom_header_as_matrix <- function(dicom_data, slice_idx = NA) {
 #' @importFrom Hmisc all.is.numeric
 #' @importFrom magrittr %>%
 #' @examples
-#' \dontrun{dicom_constant_header_values(dicom_data)}
+#' dicom_constant_header_values(radtools::sample_dicom_img)
 #' @export
 dicom_constant_header_values <- function(dicom_data, numeric = TRUE) {
   # Function to get unique slice values for a row

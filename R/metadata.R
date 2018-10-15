@@ -3,8 +3,8 @@
 #' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}
 #' @return Number of slices
 #' @examples
-#' \dontrun{num_slices(dicom_data)}
-#' \dontrun{num_slices(nifti1_data)}
+#' num_slices(radtools::sample_dicom_img)
+#' num_slices(radtools::sample_nifti_img)
 #' @export
 num_slices <- function(img_data) {
   UseMethod("num_slices", img_data)
@@ -14,8 +14,8 @@ num_slices <- function(img_data) {
 #' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}
 #' @return Image dimensions
 #' @examples
-#' \dontrun{img_dimensions(dicom_data)}
-#' \dontrun{img_dimensions(nifti1_data)}
+#' img_dimensions(radtools::sample_dicom_img)
+#' img_dimensions(radtools::sample_nifti_img)
 #' @export
 img_dimensions <- function(img_data) {
   UseMethod("img_dimensions", img_data)
@@ -25,8 +25,8 @@ img_dimensions <- function(img_data) {
 #' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}
 #' @return Vector of header field names
 #' @examples
-#' \dontrun{header_fields(dicom_data)}
-#' \dontrun{header_fields(nifti1_data)}
+#' header_fields(radtools::sample_dicom_img)
+#' header_fields(radtools::sample_nifti_img)
 #' @export
 header_fields <- function(img_data) {
   UseMethod("header_fields", img_data)
@@ -37,8 +37,8 @@ header_fields <- function(img_data) {
 #' @param field Field name
 #' @return Metadata for the field in an appropriate format for the data type
 #' @examples
-#' \dontrun{header_value(dicom_data, "SliceLocation")}
-#' \dontrun{header_value(nifti1_data, "dim_")}
+#' header_value(radtools::sample_dicom_img, "SliceLocation")
+#' header_value(radtools::sample_nifti_img, "dim_")
 #' @export
 header_value <- function(img_data, field) {
   UseMethod("header_value", img_data)

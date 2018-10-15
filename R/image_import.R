@@ -117,7 +117,8 @@ read_nifti1 <- function(file, ...) {
 #' particular 3D image of interest. Not applicable for DICOM; pass NULL in that case.
 #' @return 3D array of intensities where third dimension is slice
 #' @examples
-#' \dontrun{img_data_to_3D_mat(nifti1_data, coord_extra_dim = 10)}
+#' img_data_to_3D_mat(radtools::sample_nifti_img)
+#' \dontrun{img_data_to_3D_mat(nifti_data_4D, coord_extra_dim = 10)}
 #' @export
 img_data_to_3D_mat <- function(img_data, coord_extra_dim) {
   UseMethod("img_data_to_3D_mat", img_data)
@@ -127,7 +128,7 @@ img_data_to_3D_mat <- function(img_data, coord_extra_dim) {
 #' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}
 #' @return Multidimensional array of intensities where third dimension is slice
 #' @examples
-#' \dontrun{img_data_to_mat(dicom_data)}
+#' img_data_to_mat(radtools::sample_dicom_img)
 #' @export
 img_data_to_mat <- function(img_data) {
   UseMethod("img_data_to_mat", img_data)
