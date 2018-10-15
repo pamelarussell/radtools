@@ -29,11 +29,15 @@ test_that("Number of slices", {
   expect_equal(num_slices(dicom_data_sbarre_head), 1)
   expect_equal(num_slices(dicom_data_dclunie_scsgreek), 1)
   expect_equal(num_slices(dicom_data_dclunie_image), 1)
-  expect_equal(num_slices(dicom_data_988_MR1), 3)
+  expect_equal(num_slices(sample_dicom_img), 3)
   expect_equal(num_slices(dicom_data_988_MR700), 12)
   expect_equal(num_slices(dicom_data_247_MR3), 24)
   expect_equal(num_slices(dicom_data_247_OT), 1)
 })
+
+test_that("Number of slices - for CRAN", {
+  expect_equal(num_slices(sample_dicom_img), 3)
+ })
 
 test_that("Image dimensions", {
   skip_on_cran()
@@ -46,9 +50,13 @@ test_that("Image dimensions", {
   expect_error(img_dimensions(dicom_data_sbarre_execho))
   expect_error(img_dimensions(dicom_data_dclunie_scsgreek))
   expect_error(img_dimensions(dicom_data_dclunie_image))
-  expect_equal(img_dimensions(dicom_data_988_MR1), c(256, 256, 3))
+  expect_equal(img_dimensions(sample_dicom_img), c(256, 256, 3))
   expect_equal(img_dimensions(dicom_data_988_MR700), c(512, 512, 12))
   expect_error(img_dimensions(dicom_data_247_OT))
+})
+
+test_that("Image dimensions - for CRAN", {
+  expect_equal(img_dimensions(sample_dicom_img), c(256, 256, 3))
 })
 
 test_that("DICOM header fields", {
@@ -65,10 +73,14 @@ test_that("DICOM header fields", {
   expect_true("StudyInstanceUID" %in% header_fields(dicom_data_dclunie_image))
   expect_true("SliceThickness" %in% header_fields(dicom_data_sbarre_heart_nm))
   expect_true("Manufacturer" %in% header_fields(dicom_data_sbarre_head))
-  expect_true("SpecificCharacterSet" %in% header_fields(dicom_data_988_MR1))
+  expect_true("SpecificCharacterSet" %in% header_fields(sample_dicom_img))
   expect_true("SOPClassUID" %in% header_fields(dicom_data_988_MR700))
   expect_true("AcquisitionMatrix" %in% header_fields(dicom_data_247_MR3))
   expect_true("InstanceCreationDate" %in% header_fields(dicom_data_247_OT))
+})
+
+test_that("DICOM header fields - for CRAN", {
+  expect_true("SpecificCharacterSet" %in% header_fields(sample_dicom_img))
 })
 
 test_that("Validate header", {
@@ -104,8 +116,8 @@ test_that("DICOM header values", {
   expect_equal(header_value(dicom_data_dclunie_scsgreek, "InstanceNumber"), 1)
   expect_equal(header_value(dicom_data_dclunie_scsgreek, "PhotometricInterpretation"), "MONOCHROME2")
 
-  expect_equal(header_value(dicom_data_988_MR1, "InstanceCreatorUID")[[1]], "1.3.6.1.4.1.5962.3")
-  expect_equal(header_value(dicom_data_988_MR1, "GroupLength")[[3]], 192)
+  expect_equal(header_value(sample_dicom_img, "InstanceCreatorUID")[[1]], "1.3.6.1.4.1.5962.3")
+  expect_equal(header_value(sample_dicom_img, "GroupLength")[[3]], 192)
   expect_equal(header_value(dicom_data_988_MR700, "MediaStorageSOPInstanceUID")[[2]], "1.3.6.1.4.1.5962.1.1.0.0.0.1196533885.18148.0.120")
 
   expect_equal(header_value(dicom_data_247_MR3, "ContentTime")[[1]], 1413.094)
@@ -133,6 +145,11 @@ test_that("DICOM header values", {
   expect_error(header_value(dicom_data_prostate_pt, "Unknown"))
 
   expect_equal(header_value(dicom_data_prostate_mr, "Manufacturer")[[slice_idx]], "SIEMENS")
+})
+
+test_that("DICOM header values - for CRAN", {
+  expect_equal(header_value(sample_dicom_img, "InstanceCreatorUID")[[1]], "1.3.6.1.4.1.5962.3")
+  expect_equal(header_value(sample_dicom_img, "GroupLength")[[3]], 192)
 })
 
 test_that("DICOM header as matrix", {
@@ -170,15 +187,18 @@ test_that("DICOM header as matrix", {
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_dclunie_scsgreek)), 5)
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_dclunie_image)), 5)
 
-  expect_equal(ncol(dicom_header_as_matrix(dicom_data_988_MR1)), 7)
+  expect_equal(ncol(dicom_header_as_matrix(sample_dicom_img)), 7)
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_988_MR700)), 16)
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_247_MR3)), 28)
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_247_OT)), 5)
 
 })
 
+test_that("DICOM header as matrix - for CRAN", {
+  expect_equal(ncol(dicom_header_as_matrix(sample_dicom_img)), 7)
+})
+
 test_that("Valid header elements from DICOM standard", {
-  skip_on_cran()
   keywords <- dicom_all_valid_header_keywords()
   names <- dicom_all_valid_header_names()
   tags <- dicom_all_valid_header_tags()
@@ -188,7 +208,6 @@ test_that("Valid header elements from DICOM standard", {
 })
 
 test_that("DICOM header tag", {
-  skip_on_cran()
   expect_error(dicom_header_tag("1111"))
   expect_error(dicom_header_tag("1111", "xxxx"))
   expect_error(dicom_header_tag("xxxx", "1111"))
@@ -196,7 +215,6 @@ test_that("DICOM header tag", {
 })
 
 test_that("Search keyword", {
-  skip_on_cran()
   res_kw <- dicom_search_header_keywords("width")
   res_name <- dicom_search_header_names("width")
   expect_true("ChannelWidth" %in% res_kw)
@@ -240,11 +258,15 @@ test_that("Constant header values", {
   expect_equal(length(dicom_constant_header_values(dicom_data_dclunie_image)), length(header_fields(dicom_data_dclunie_image)))
   expect_equal(length(dicom_constant_header_values(dicom_data_dclunie_image)), nrow(dicom_header_as_matrix(dicom_data_dclunie_image)))
 
-  expect_equal(dicom_constant_header_values(dicom_data_988_MR1)[["StudyDate"]], 20030505)
+  expect_equal(dicom_constant_header_values(sample_dicom_img)[["StudyDate"]], 20030505)
   expect_equal(dicom_constant_header_values(dicom_data_988_MR700)[["GroupLength"]], 194)
 
   expect_equal(dicom_constant_header_values(dicom_data_247_MR3)[["DerivationDescription"]], "DRS:DOE, HARRY    24759123  1 01 01  3   JPEG  2   3  1  90")
   expect_equal(dicom_constant_header_values(dicom_data_247_OT)[["DerivationDescription"]], "DRS:DOE, HARRY    24759123  1 01 01  3   JPEG  2   3  1  90")
 
+})
+
+test_that("Constant header values - for CRAN", {
+  expect_equal(dicom_constant_header_values(sample_dicom_img)[["StudyDate"]], 20030505)
 })
 

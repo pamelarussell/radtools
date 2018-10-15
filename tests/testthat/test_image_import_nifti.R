@@ -53,9 +53,8 @@ test_that("nifti_data_JHU_MNI_SS_T1_mask", {
   expect_equal(dim(img_data_to_mat(nifti_data_JHU_MNI_SS_T1_mask)), c(181,217,181))
 })
 
-test_that("nifti_data_minimal", {
-  skip_on_cran()
-  expect_equal(dim(img_data_to_mat(nifti_data_minimal)), c(64,64,10))
+test_that("sample_nifti_img - for CRAN", {
+  expect_equal(dim(img_data_to_mat(sample_nifti_img)), c(64,64,10))
 })
 
 test_that("nifti_data_MNI152_T1_1mm_brain", {

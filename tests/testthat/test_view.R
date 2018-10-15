@@ -10,6 +10,11 @@ test_that("View a slice of a 3D image with view_slice", {
   view_slice(dicom_data_prostate_mr, 5)
 })
 
+test_that("View slice - for CRAN", {
+  view_slice(sample_dicom_img, 1)
+  view_slice(sample_nifti_img, 1)
+})
+
 test_that("View a slice of a 2D image with view_slice_mat", {
   skip_on_cran()
   view_slice_mat(img_data_to_mat(dicom_data_sbarre_brain))

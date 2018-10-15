@@ -32,7 +32,7 @@ if (NOT_CRAN) {
     dd <- read_dicom(dir)
     rm(dd)
   }
-  dicom_data_988_MR1 <- read_dicom(paste(dir_988_dicom, "MR1", sep = "/"))
+  # dicom_data_988_MR1 <- read_dicom(paste(dir_988_dicom, "MR1", sep = "/")) # Include with package
   dicom_data_988_MR700 <- read_dicom(paste(dir_988_dicom, "MR700", sep = "/"))
 
   # 24759123_20010101

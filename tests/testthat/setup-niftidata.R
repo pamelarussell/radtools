@@ -22,7 +22,7 @@ if (NOT_CRAN) {
   # minimal data
   minimal_base <- paste(dir_nifti1, "minimal", sep = "/")
   minimal_nii <- paste(minimal_base, ".nii.gz", sep = "")
-  nifti_data_minimal <- read_nifti1(minimal_nii)
+  # nifti_data_minimal <- read_nifti1(minimal_nii) # Include with package
   nifti_data_minimal_hi <- read_nifti1(minimal_base)
   # SIRP
   nifti_data_sirp <- read_nifti1(paste(dir_nifti1, "newsirp_final_XML.nii", sep = "/"), reorient = F)
