@@ -18,6 +18,6 @@ Metadata for the field in an appropriate format for the data type
 Get metadata contained in a header field
 }
 \examples{
-\dontrun{header_value(dicom_data, "SliceLocation")}
-\dontrun{header_value(nifti1_data, "dim_")}
+header_value(radtools::sample_dicom_img, "SliceLocation")
+header_value(radtools::sample_nifti_img, "dim_")
 }

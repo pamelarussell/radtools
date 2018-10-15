@@ -16,5 +16,5 @@ Multidimensional array of intensities where third dimension is slice
 Convert image data to matrix of intensities
 }
 \examples{
-\dontrun{img_data_to_mat(dicom_data)}
+img_data_to_mat(radtools::sample_dicom_img)
 }

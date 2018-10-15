@@ -16,6 +16,6 @@ Number of slices
 Get the number of image slices in an image series
 }
 \examples{
-\dontrun{num_slices(dicom_data)}
-\dontrun{num_slices(nifti1_data)}
+num_slices(radtools::sample_dicom_img)
+num_slices(radtools::sample_nifti_img)
 }

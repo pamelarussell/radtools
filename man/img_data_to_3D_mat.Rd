@@ -19,5 +19,6 @@ particular 3D image of interest. Not applicable for DICOM; pass NULL in that cas
 Convert image data to 3D matrix of intensities
 }
 \examples{
-\dontrun{img_data_to_3D_mat(nifti1_data, coord_extra_dim = 10)}
+img_data_to_3D_mat(radtools::sample_nifti_img)
+\dontrun{img_data_to_3D_mat(nifti_data_4D, coord_extra_dim = 10)}
 }

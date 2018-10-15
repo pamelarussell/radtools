@@ -16,5 +16,5 @@ List of header attribute values
 Get named list of header attributes for a NIfTI-1 file
 }
 \examples{
-\dontrun{nifti1_header_values(nifti1_data)}
+nifti1_header_values(radtools::sample_nifti_img)
 }

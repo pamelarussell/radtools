@@ -23,5 +23,5 @@ represented as strings even if they are conceptually numeric.
 Get the header information as a matrix
 }
 \examples{
-\dontrun{dicom_header_as_matrix(dicom_data)}
+dicom_header_as_matrix(radtools::sample_dicom_img)
 }

@@ -16,6 +16,6 @@ Vector of header field names
 Get the names of metadata fields from an image dataset's header(s)
 }
 \examples{
-\dontrun{header_fields(dicom_data)}
-\dontrun{header_fields(nifti1_data)}
+header_fields(radtools::sample_dicom_img)
+header_fields(radtools::sample_nifti_img)
 }

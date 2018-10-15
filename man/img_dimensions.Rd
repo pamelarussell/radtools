@@ -16,6 +16,6 @@ Image dimensions
 Get the dimensions of an image
 }
 \examples{
-\dontrun{img_dimensions(dicom_data)}
-\dontrun{img_dimensions(nifti1_data)}
+img_dimensions(radtools::sample_dicom_img)
+img_dimensions(radtools::sample_nifti_img)
 }
