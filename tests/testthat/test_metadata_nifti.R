@@ -170,11 +170,11 @@ test_that("sample_nifti_img - for CRAN", {
 
 test_that("sample_nifti_img_hi", {
   skip_on_cran()
-  expect_equal(nifti1_num_dim(sample_nifti_img_hi), 3)
-  expect_equal(header_value(sample_nifti_img_hi, "descrip"), "")
-  expect_equal(header_value(sample_nifti_img_hi, "aux_file"), "")
-  expect_equal(header_value(sample_nifti_img_hi, "qoffset_z"), 0)
-  expect_equal(nifti1_header_values(sample_nifti_img_hi)[["quatern_c"]], 0)
+  expect_equal(nifti1_num_dim(nifti_data_minimal_hi), 3)
+  expect_equal(header_value(nifti_data_minimal_hi, "descrip"), "")
+  expect_equal(header_value(nifti_data_minimal_hi, "aux_file"), "")
+  expect_equal(header_value(nifti_data_minimal_hi, "qoffset_z"), 0)
+  expect_equal(nifti1_header_values(nifti_data_minimal_hi)[["quatern_c"]], 0)
 })
 
 test_that("nifti_data_MNI152_T1_1mm_brain", {
