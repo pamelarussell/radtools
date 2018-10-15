@@ -9,5 +9,5 @@ There was one NOTE indicating that this is a new CRAN submission.
 ## Downstream dependencies
 There are no downstream dependencies.
 
-## Tests and examples require local data
-Tests and examples are passing locally, but are not run as part of the check because they use local image data.
+## Some tests require local data
+We have included two small datasets so that examples and some tests can be run, but many other tests rely on larger local image datasets and are skipped on CRAN.
