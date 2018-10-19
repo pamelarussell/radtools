@@ -16,11 +16,21 @@ knitr::opts_chunk$set(
 
 # radtools
 
+[![](https://www.r-pkg.org/badges/version/radtools)](https://cran.r-project.org/web/packages/radtools/index.html) [![](http://cranlogs.r-pkg.org/badges/grand-total/radtools?color=brightgreen)](https://cran.r-project.org/web/packages/radtools/index.html)
+
 `radtools` is an R package that provides utilities to explore images in the two leading medical image formats: [DICOM](https://www.dicomstandard.org/) and [NIfTI](https://nifti.nimh.nih.gov/). This documentation demonstrates how to read image data into R, extract data and metadata, and view images.
 
 # Installation
 
-You can install radtools from github with:
+Radtools is on [CRAN](https://cran.r-project.org/package=radtools).
+
+To install from within R:
+
+```{r cran-installation, eval = FALSE}
+install.packages("radtools")
+```
+
+You can install the development version from GitHub with:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")

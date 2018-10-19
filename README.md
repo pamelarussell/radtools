@@ -3,6 +3,9 @@
 
 # radtools
 
+[![](https://www.r-pkg.org/badges/version/radtools)](https://cran.r-project.org/web/packages/radtools/index.html)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/radtools?color=brightgreen)](https://cran.r-project.org/web/packages/radtools/index.html)
+
 `radtools` is an R package that provides utilities to explore images in
 the two leading medical image formats:
 [DICOM](https://www.dicomstandard.org/) and
@@ -12,7 +15,15 @@ images.
 
 # Installation
 
-You can install radtools from github with:
+Radtools is on [CRAN](https://cran.r-project.org/package=radtools).
+
+To install from within R:
+
+``` r
+install.packages("radtools")
+```
+
+You can install the development version from GitHub with:
 
 ``` r
 # install.packages("devtools")
@@ -121,10 +132,14 @@ Get image dimensions or number of slices:
 
 ``` r
 img_dimensions(dicom_data_2d)
+#> Warning in oro.dicom::create3D(img_data): ImagePositionPatient is moving in
+#> more than one dimension.
 #> [1] 384 384   1
 num_slices(dicom_data_2d)
 #> [1] 1
 img_dimensions(dicom_data_3d)
+#> Warning in oro.dicom::create3D(img_data): ImagePositionPatient is moving in
+#> more than one dimension.
 #> [1] 384 384  19
 num_slices(dicom_data_3d)
 #> [1] 19
@@ -357,11 +372,11 @@ standard, and the time it was accessed during package development:
 
 ``` r
 dicom_standard_version()
-#> [1] "PS3.6 2018b"
+#> [1] "PS3.6 2018d"
 dicom_standard_web()
 #> [1] "http://dicom.nema.org/medical/dicom/current/output/html/part06.html"
 dicom_standard_timestamp()
-#> [1] "2018-06-13 15:50:25 MDT"
+#> [1] "2018-10-15 15:45:47 MDT"
 ```
 
 The DICOM standard specifies a tag, name, and keyword for each allowable
@@ -374,7 +389,7 @@ Tags:
 ``` r
 tags <- dicom_all_valid_header_tags()
 length(tags)
-#> [1] 4293
+#> [1] 4297
 head(tags, 10)
 #>  [1] "(0002,0000)" "(0002,0001)" "(0002,0002)" "(0002,0003)" "(0002,0010)"
 #>  [6] "(0002,0012)" "(0002,0013)" "(0002,0016)" "(0002,0017)" "(0002,0018)"
@@ -385,7 +400,7 @@ Names:
 ``` r
 names <- dicom_all_valid_header_names()
 length(names)
-#> [1] 4290
+#> [1] 4294
 head(names, 10)
 #>  [1] ""                                               
 #>  [2] "2D Degree of Freedom Axis"                      
@@ -404,7 +419,7 @@ Keywords:
 ``` r
 keywords <- dicom_all_valid_header_keywords()
 length(keywords)
-#> [1] 4290
+#> [1] 4294
 head(keywords, 10)
 #>  [1] ""                             "AbortFlag"                   
 #>  [3] "AbortReason"                  "AbsoluteChannelDisplayScale" 
