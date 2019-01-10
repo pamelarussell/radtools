@@ -3,6 +3,11 @@
 NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 
 if (NOT_CRAN) {
+
+  # Series 1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882 from TCIA; a DICOM SR object with no slices
+  dir_qin_headneck_sr <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/qin_headneck_sr"
+  dicom_data_qin_hn_sr <- read_dicom(paste(dir_qin_headneck_sr, "1-234.dcm", sep = "/"))
+
   # Images from http://barre.nom.fr/medical/samples/
   dir_s_barre_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/s_barre_medical_image_samples/"
   dicom_data_sbarre_ort <- read_dicom(paste(dir_s_barre_dicom, "CT-MONO2-16-ort", sep = "/"))

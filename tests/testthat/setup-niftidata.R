@@ -1,7 +1,7 @@
 
-NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
+IS_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "false")
 
-if (NOT_CRAN) {
+if (!IS_CRAN) {
   dir_nifti1 <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/nifti-1/"
   dir_nifti2 <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/nifti-2/"
 

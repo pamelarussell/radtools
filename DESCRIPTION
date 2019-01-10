@@ -1,6 +1,6 @@
 Package: radtools
 Title: Utilities for Smooth Navigation of Medical Image Data
-Version: 1.0.0
+Version: 1.0.2
 Author: Pamela Russell [aut, cre]
 Maintainer: Pamela Russell <pamela.russell@ucdenver.edu>
 Authors@R: person("Pamela", "Russell", email = "pamela.russell@ucdenver.edu", role = c("aut", "cre"))

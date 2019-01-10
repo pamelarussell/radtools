@@ -29,7 +29,8 @@ num_slices.dicomdata <- function(img_data) {
 #' @method img_dimensions dicomdata
 #' @export
 img_dimensions.dicomdata <- function(img_data) {
-  dim(img_data_to_mat(img_data))
+  if(num_slices(img_data) == 0) NA
+  else dim(img_data_to_mat(img_data))
 }
 
 #' Get the names of DICOM header fields for an image series.
@@ -99,9 +100,6 @@ dicom_validate_group_element <- function(group, element, stop = TRUE) {
 #' @method validate_metadata dicomdata
 validate_metadata.dicomdata <- function(img_data, stop = TRUE) {
   elts <- data.frame(group = character(), element = character(), name = character())
-  if(num_slices(img_data) == 0) {
-    stop("Data contains no image slices")
-  }
   for(i in length(img_data$hdr)) {
     elts <- rbind(elts, dicom_header_as_matrix(img_data, i) %>% select(group, element, name))
   }

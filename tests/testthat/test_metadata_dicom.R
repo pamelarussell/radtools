@@ -16,6 +16,7 @@ test_that("DICOM standard timestamp", {
 
 test_that("Number of slices", {
   skip_on_cran()
+  expect_equal(num_slices(dicom_data_qin_hn_sr), 0)
   expect_equal(num_slices(dicom_data_prostate_mr), 19)
   expect_equal(num_slices(dicom_data_bladder), 1)
   expect_equal(num_slices(dicom_data_chest), 128)
@@ -41,6 +42,7 @@ test_that("Number of slices - for CRAN", {
 
 test_that("Image dimensions", {
   skip_on_cran()
+  expect_equal(img_dimensions(dicom_data_qin_hn_sr), NA)
   expect_error(img_dimensions(dicom_data_bladder))
   expect_equal(img_dimensions(dicom_data_prostate_mr), c(384, 384, 19))
   expect_equal(img_dimensions(dicom_data_sbarre_brain), c(512, 512, 1))
@@ -100,6 +102,7 @@ test_that("Validate header", {
   expect_error(validate_metadata(dicom_data_dclunie_scsgreek))
   expect_error(validate_metadata(dicom_data_dclunie_image))
   expect_error(validate_metadata(dicom_data_sbarre_ort))
+  expect_silent(validate_metadata(dicom_data_qin_hn_sr, stop = FALSE))
 })
 
 test_that("DICOM header values", {
@@ -191,6 +194,8 @@ test_that("DICOM header as matrix", {
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_988_MR700)), 16)
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_247_MR3)), 28)
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_247_OT)), 5)
+
+  expect_silent(dicom_header_as_matrix(dicom_data_qin_hn_sr))
 
 })
 
