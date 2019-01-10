@@ -32,7 +32,8 @@ validate_metadata.nifti1data <- function(img_data, stop = TRUE) {
 #' Get the number of dimensions in a NIfTI-1 image
 #' @param nifti1_data NIfTI-1 data returned by \code{\link{read_nifti1}}
 #' @examples
-#' nifti1_num_dim(radtools::sample_nifti_img)
+#' data(sample_nifti_img)
+#' nifti1_num_dim(sample_nifti_img)
 #' @export
 nifti1_num_dim <- function(nifti1_data) {
   nifti1_data$data@dim_[1]
@@ -65,7 +66,8 @@ header_value.nifti1data <- function(img_data, field) {
 #' @param img_data NIfTI-1 data returned by \code{\link{read_nifti1}}
 #' @return List of header attribute values
 #' @examples
-#' nifti1_header_values(radtools::sample_nifti_img)
+#' data(sample_nifti_img)
+#' nifti1_header_values(sample_nifti_img)
 #' @export
 nifti1_header_values <- function(img_data) {
   sapply(header_fields(img_data), function(x) header_value(img_data, x))
