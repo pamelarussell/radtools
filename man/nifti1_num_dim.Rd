@@ -13,5 +13,6 @@ nifti1_num_dim(nifti1_data)
 Get the number of dimensions in a NIfTI-1 image
 }
 \examples{
-nifti1_num_dim(radtools::sample_nifti_img)
+data(sample_nifti_img)
+nifti1_num_dim(sample_nifti_img)
 }

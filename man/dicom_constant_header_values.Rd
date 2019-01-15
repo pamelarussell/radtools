@@ -20,5 +20,6 @@ more than once in the header are excluded from the return list.
 Get the values of header attributes that are constant across slices
 }
 \examples{
-dicom_constant_header_values(radtools::sample_dicom_img)
+data(sample_dicom_img)
+dicom_constant_header_values(sample_dicom_img)
 }

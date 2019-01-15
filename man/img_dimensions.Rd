@@ -10,12 +10,14 @@ img_dimensions(img_data)
 \item{img_data}{Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}}
 }
 \value{
-Image dimensions
+Image dimensions, or NA if image has no slices
 }
 \description{
 Get the dimensions of an image
 }
 \examples{
-img_dimensions(radtools::sample_dicom_img)
-img_dimensions(radtools::sample_nifti_img)
+data(sample_dicom_img)
+data(sample_nifti_img)
+img_dimensions(sample_dicom_img)
+img_dimensions(sample_nifti_img)
 }

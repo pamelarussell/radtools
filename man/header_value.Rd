@@ -18,6 +18,8 @@ Metadata for the field in an appropriate format for the data type
 Get metadata contained in a header field
 }
 \examples{
-header_value(radtools::sample_dicom_img, "SliceLocation")
-header_value(radtools::sample_nifti_img, "dim_")
+data(sample_dicom_img)
+data(sample_nifti_img)
+header_value(sample_dicom_img, "SliceLocation")
+header_value(sample_nifti_img, "dim_")
 }

@@ -19,5 +19,6 @@ view_slice(img_data, slice = NULL, col = grDevices::grey(0:64/64), ...)
 Display a visual of one slice of an image
 }
 \examples{
-view_slice(radtools::sample_dicom_img, slice = 2)
+data(sample_dicom_img)
+view_slice(sample_dicom_img, slice = 2)
 }
