@@ -1,4 +1,6 @@
 
+# Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
+
 test_that("View slice - for CRAN", {
   view_slice(sample_dicom_img, 1)
   view_slice(sample_nifti_img, 1)

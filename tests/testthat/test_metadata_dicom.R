@@ -1,4 +1,6 @@
 
+# Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
+
 test_that("DICOM header as matrix - for CRAN", {
   expect_equal(ncol(dicom_header_as_matrix(sample_dicom_img)), 7)
 })

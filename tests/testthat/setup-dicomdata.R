@@ -1,4 +1,6 @@
 
+# Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
+
 if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
 
   # Series 1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882 from TCIA; a DICOM SR object with no slices

@@ -165,13 +165,19 @@ img_data_to_3D_mat.dicomdata <- function(img_data, coord_extra_dim = NULL) {
   tryCatch({
     rows <- header_value(img_data, "Rows")
     cols <- header_value(img_data, "Columns")
+    urows <- unique(rows)
+    ucols <- unique(cols)
+    if(length(urows) > 1 || length(cols) > 1) {
+      stop("Must have constant row and column dimensions")
+    }
     dim <- dim(rtrn)
-    if (rows != dim[1] || cols != dim[2]) {
+    if (urows != dim[1] || ucols != dim[2]) {
       warning(paste("Returning 3D matrix whose dimensions do not match Rows and Columns attributes in DICOM metadata.",
                     "The discrepancy may be related to the \"transpose\" option in oro.dicom::create3D."))
     }
   }, error = function(e) {
-    warning("Couldn't validate 3D matrix: could not get Rows and Columns attributes from DICOM metadata")
+    warning("Couldn't validate 3D matrix: could not get Rows and Columns attributes from DICOM metadata,
+            or invalid attributes")
   })
   rtrn
 }

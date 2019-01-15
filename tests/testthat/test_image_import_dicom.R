@@ -1,4 +1,6 @@
 
+# Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
+
 test_that("DICOM image data to 3D matrix - for CRAN", {
   expect_equal(dim(img_data_to_3D_mat(sample_dicom_img)), c(256, 256, 3))
   expect_error(img_data_to_3D_mat(sample_dicom_img, coord_extra_dim = 1))

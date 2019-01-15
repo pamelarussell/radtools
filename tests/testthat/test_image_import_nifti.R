@@ -1,4 +1,6 @@
 
+# Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
+
 test_that("sample_nifti_img - for CRAN", {
   expect_equal(dim(img_data_to_mat(sample_nifti_img)), c(64,64,10))
 })

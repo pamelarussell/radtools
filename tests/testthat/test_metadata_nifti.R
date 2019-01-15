@@ -1,4 +1,6 @@
 
+# Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
+
 test_that("Number of slices - for CRAN", {
   expect_equal(num_slices(sample_nifti_img), 10)
 })
