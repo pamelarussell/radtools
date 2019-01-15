@@ -27,8 +27,6 @@ test_that("Constant header values - for CRAN", {
 test_that("DICOM metadata", {
 
   skip_on_cran()
-  load_test_data_dicom()
-  load_test_data_nifti()
 
   # DICOM standard website
   expect_true(grepl("http", dicom_standard_web()))

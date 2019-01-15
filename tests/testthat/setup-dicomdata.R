@@ -1,5 +1,5 @@
 
-load_test_data_dicom <- function() {
+if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
 
   # Series 1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882 from TCIA; a DICOM SR object with no slices
   dir_qin_headneck_sr <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/qin_headneck_sr"

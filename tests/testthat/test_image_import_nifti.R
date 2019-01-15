@@ -7,8 +7,6 @@ test_that("sample_nifti_img - for CRAN", {
 test_that("NIfTI import", {
 
   skip_on_cran()
-  load_test_data_dicom()
-  load_test_data_nifti()
 
   # NIfTI image data to 3D matrix
   expect_error(img_data_to_3D_mat(nifti_data_filtered_func, coord_extra_dim = 181))

@@ -7,8 +7,6 @@ test_that("View slice - for CRAN", {
 test_that("View slices", {
 
   skip_on_cran()
-  load_test_data_dicom()
-  load_test_data_nifti()
 
   # View a slice of a 2D image with view_slice
   view_slice(dicom_data_sbarre_brain)

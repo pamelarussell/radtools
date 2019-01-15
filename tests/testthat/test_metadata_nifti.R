@@ -17,8 +17,6 @@ test_that("sample_nifti_img - for CRAN", {
 test_that("NIfTI metadata", {
 
   skip_on_cran()
-  load_test_data_dicom()
-  load_test_data_nifti()
 
   # Number of slices
   expect_equal(num_slices(nifti_data_avg152T1_LR), 91)

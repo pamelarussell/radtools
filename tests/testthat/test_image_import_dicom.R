@@ -12,8 +12,6 @@ test_that("DICOM image data to matrix - for CRAN", {
 test_that("DICOM import", {
 
   skip_on_cran()
-  load_test_data_dicom()
-  load_test_data_nifti()
 
   # Invalid DICOM files
   expect_error(read_dicom(paste(dir_d_clunie_dicom_deflate, "image_dfl", sep = "/")))
