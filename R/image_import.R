@@ -167,7 +167,7 @@ img_data_to_3D_mat.dicomdata <- function(img_data, coord_extra_dim = NULL) {
     cols <- header_value(img_data, "Columns")
     urows <- unique(rows)
     ucols <- unique(cols)
-    if(length(urows) > 1 || length(cols) > 1) {
+    if(length(urows) > 1 || length(ucols) > 1) {
       stop("Must have constant row and column dimensions")
     }
     dim <- dim(rtrn)
