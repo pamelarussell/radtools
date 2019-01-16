@@ -15,6 +15,9 @@ test_that("DICOM import", {
 
   skip_on_cran()
 
+  # No slices
+  expect_error(img_data_to_3D_mat(dicom_data_qin_hn_sr))
+
   # Invalid DICOM files
   expect_error(read_dicom(paste(dir_d_clunie_dicom_deflate, "image_dfl", sep = "/")))
   expect_error(read_dicom(paste(dir_s_barre_dicom, "OT-MONO2-8-colon", sep = "/"))) # Missing 4-byte DICOM prefix

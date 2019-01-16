@@ -10,6 +10,9 @@ test_that("View slices", {
 
   skip_on_cran()
 
+  # view_slice throws error if there are no slices
+  expect_error(view_slice(dicom_data_qin_hn_sr))
+
   # View a slice of a 2D image with view_slice
   view_slice(dicom_data_sbarre_brain)
 
