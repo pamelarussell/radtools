@@ -3,7 +3,8 @@
 * win-builder
 
 ## R CMD check results
-There were no ERRORs, WARNINGs or NOTEs.
+There were no ERRORs or WARNINGs.
+There was one NOTE indicating that a short time has passed since the previous update.
 
 ## Downstream dependencies
 There are no downstream dependencies.

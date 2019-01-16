@@ -37,14 +37,15 @@ devtools::install_github("pamelarussell/radtools")
 DICOM (Digital Imaging and Communication in Medicine) is a standard for
 management of medical images and image metadata. The [DICOM
 standard](https://www.dicomstandard.org/current/) specifies a file
-format definition. Each DICOM file includes image pixel data and
-embedded metadata. Our package assumes each DICOM file contains one
-two-dimensional image slice.
+format definition. Each DICOM file includes optional pixel data and
+embedded metadata. Typically, each DICOM file contains one
+two-dimensional image slice. Radtools also supports DICOM files that do
+not contain pixel data.
 
 DICOM metadata is embedded in each file and allows image series to be
 reconstructed from multiple files via shared metadata identifying the
-patient, etc. DICOM files can be analyzed individually as single slices,
-or a directory containing an entire image series can be analyzed as one
+patient, etc. DICOM files can be analyzed individually, or a directory
+containing an entire image series can be analyzed as one
 three-dimensional image.
 
 ## NIfTI

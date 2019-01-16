@@ -12,7 +12,7 @@ read_dicom(path, ...)
 \item{...}{Additional arguments to \code{\link[oro.dicom]{readDICOM}}}
 }
 \value{
-List with elements \code{hdr} and \code{img}, each with an element for each slice
+List with elements \code{hdr} and \code{img}, each with an element for each slice. \code{img} is empty if the DICOM file contains no pixel data.
 }
 \description{
 Read a DICOM image or series of images

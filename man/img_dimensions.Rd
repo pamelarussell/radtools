@@ -10,7 +10,7 @@ img_dimensions(img_data)
 \item{img_data}{Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}}
 }
 \value{
-Image dimensions, or NA if image has no slices
+Image dimensions, or \code{NA} if image has no slices
 }
 \description{
 Get the dimensions of an image
