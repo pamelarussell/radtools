@@ -14,7 +14,7 @@ num_slices <- function(img_data) {
 
 #' Get the dimensions of an image
 #' @param img_data Image data returned by e.g. \code{\link{read_dicom}} or \code{\link{read_nifti1}}
-#' @return Image dimensions, or NA if image has no slices
+#' @return Image dimensions, or \code{NA} if image has no slices
 #' @examples
 #' data(sample_dicom_img)
 #' data(sample_nifti_img)

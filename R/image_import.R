@@ -50,7 +50,7 @@ all_have_dicom_prefix <- function(path) {
 #' Read a DICOM image or series of images
 #' @param path Directory containing DICOM images, or single image file
 #' @param ... Additional arguments to \code{\link[oro.dicom]{readDICOM}}
-#' @return List with elements \code{hdr} and \code{img}, each with an element for each slice
+#' @return List with elements \code{hdr} and \code{img}, each with an element for each slice. \code{img} is empty if the DICOM file contains no pixel data.
 #' @examples
 #' \dontrun{read_dicom(dicom_directory)}
 #' \dontrun{read_dicom(dicom_file.dcm)}
@@ -146,6 +146,9 @@ img_data_to_mat.dicomdata <- function(img_data) {img_data_to_3D_mat(img_data, co
 #' @importFrom magrittr %>%
 #' @export
 img_data_to_3D_mat.dicomdata <- function(img_data, coord_extra_dim = NULL) {
+  if(num_slices(img_data) == 0) {
+    stop("Image has no pixel data")
+  }
   if(!is.null(coord_extra_dim)) stop("Do not provide coordinates in dimensions beyond 3 for DICOM")
   # Wrap oro.dicom::create3D, translate error message
   expr <- expression(oro.dicom::create3D(img_data))

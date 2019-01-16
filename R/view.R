@@ -9,6 +9,9 @@
 #' view_slice(sample_dicom_img, slice = 2)
 #' @export
 view_slice <- function(img_data, slice = NULL, col = grDevices::grey(0:64/64), ...) {
+  if(num_slices(img_data) == 0) {
+    stop("Image has no pixel data")
+  }
   mat <- img_data_to_mat(img_data)
   ndim <- length(dim(mat))
   if (ndim == 2) {
