@@ -3,11 +3,10 @@
 * win-builder
 
 ## R CMD check results
-There were no ERRORs or WARNINGs.
-There was one NOTE indicating that a short time has passed since the previous update.
+There were no ERRORs, WARNINGs or NOTEs.
 
 ## Downstream dependencies
 There are no downstream dependencies.
 
 ## Some tests require local data
-We have included two small datasets so that examples and some tests can be run, but many other tests rely on larger local image datasets and are skipped on CRAN.
+For the tests, we have included two small datasets and we import additional data from The Cancer Imaging Archive on the fly so that many tests can be run. Some other tests rely on larger local image datasets and are skipped on CRAN.

@@ -4,6 +4,13 @@
 test_that("View slice - for CRAN", {
   view_slice(sample_dicom_img, 1)
   view_slice(sample_nifti_img, 1)
+
+  # View a slice of a 2D image with view_slice
+  view_slice(dicom_data_sbarre_brain)
+
+  # View a slice of a 2D image with view_slice_mat
+  view_slice_mat(img_data_to_mat(dicom_data_sbarre_brain))
+
 })
 
 test_that("View slices", {
@@ -13,15 +20,9 @@ test_that("View slices", {
   # view_slice throws error if there are no slices
   expect_error(view_slice(dicom_data_qin_hn_sr))
 
-  # View a slice of a 2D image with view_slice
-  view_slice(dicom_data_sbarre_brain)
-
   # View a slice of a 3D image with view_slice
   view_slice(nifti_data_avg152T1_LR, 5)
   view_slice(dicom_data_prostate_mr, 5)
-
-  # View a slice of a 2D image with view_slice_mat
-  view_slice_mat(img_data_to_mat(dicom_data_sbarre_brain))
 
   # View a slice of a 3D image with view_slice_mat
   view_slice_mat(img_data_to_mat(nifti_data_avg152T1_LR), 10)

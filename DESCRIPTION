@@ -1,6 +1,6 @@
 Package: radtools
 Title: Utilities for Convenient Extraction of Medical Image Metadata
-Version: 1.0.3
+Version: 1.0.4
 Author: Pamela Russell [aut, cre]
 Maintainer: Pamela Russell <pamela.russell@ucdenver.edu>
 Authors@R: person("Pamela", "Russell", email = "pamela.russell@ucdenver.edu", role = c("aut", "cre"))
@@ -13,7 +13,7 @@ Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: oro.dicom, dplyr, Hmisc, oro.nifti, magrittr, methods
+Imports: oro.dicom, dplyr, Hmisc, oro.nifti, magrittr, methods, TCIApathfinder, R.utils
 RoxygenNote: 6.1.1
 Suggests: testthat, covr, knitr, rmarkdown, rvest, hashmap, stringr, xml2
 VignetteBuilder: knitr

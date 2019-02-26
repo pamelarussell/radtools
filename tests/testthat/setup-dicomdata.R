@@ -1,21 +1,44 @@
 
 # Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
 
+
+# Make temp directory to store images from web
+outdir <- tempfile()
+dir.create(outdir, recursive = TRUE)
+
+
+# Images from http://barre.nom.fr/medical/samples/
+url_sbarre <- "http://barre.nom.fr/medical/samples/files/"
+sbarre_samples <- list(ort = "CT-MONO2-16-ort",
+                       brain = "CT-MONO2-16-brain",
+                       head = "MR-MONO2-16-head",
+                       knee = "MR-MONO2-16-knee",
+                       heart_mr = "MR-MONO2-8-16x-heart",
+                       heart_nm = "NM-MONO2-16-13x-heart",
+                       execho = "US-MONO2-8-8x-execho")
+sbarre_url_sample <- function(sample) {paste(url_sbarre, sample, ".gz", sep = "")}
+sbarre_unzip_file <- function(sample) {paste(outdir, sample, sep = "/")}
+sbarre_zip_file <- function(sample) {paste(sbarre_unzip_file(sample), ".gz", sep = "")}
+for(sample in sbarre_samples) {
+  download.file(sbarre_url_sample(sample), sbarre_zip_file(sample))
+  R.utils::gunzip(sbarre_zip_file(sample))
+}
+dicom_data_sbarre_ort <<- read_dicom(sbarre_unzip_file(sbarre_samples$ort))
+dicom_data_sbarre_brain <<- read_dicom(sbarre_unzip_file(sbarre_samples$brain))
+dicom_data_sbarre_head <<- read_dicom(sbarre_unzip_file(sbarre_samples$head))
+dicom_data_sbarre_knee <<- read_dicom(sbarre_unzip_file(sbarre_samples$knee))
+dicom_data_sbarre_heart_mr <<- read_dicom(sbarre_unzip_file(sbarre_samples$heart_mr))
+dicom_data_sbarre_heart_nm <<- read_dicom(sbarre_unzip_file(sbarre_samples$heart_nm))
+dicom_data_sbarre_execho <<- read_dicom(sbarre_unzip_file(sbarre_samples$execho))
+
+
+
+# Datasets that can't be downloaded on the fly
 if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
 
   # Series 1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882 from TCIA; a DICOM SR object with no slices
   dir_qin_headneck_sr <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/qin_headneck_sr"
   dicom_data_qin_hn_sr <<- read_dicom(paste(dir_qin_headneck_sr, "1-234.dcm", sep = "/"))
-
-  # Images from http://barre.nom.fr/medical/samples/
-  dir_s_barre_dicom <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/s_barre_medical_image_samples/"
-  dicom_data_sbarre_ort <<- read_dicom(paste(dir_s_barre_dicom, "CT-MONO2-16-ort", sep = "/"))
-  dicom_data_sbarre_brain <<- read_dicom(paste(dir_s_barre_dicom, "CT-MONO2-16-brain", sep = "/"))
-  dicom_data_sbarre_head <<- read_dicom(paste(dir_s_barre_dicom, "MR-MONO2-16-head", sep = "/"))
-  dicom_data_sbarre_knee <<- read_dicom(paste(dir_s_barre_dicom, "MR-MONO2-16-knee", sep = "/"))
-  dicom_data_sbarre_heart_mr <<- read_dicom(paste(dir_s_barre_dicom, "MR-MONO2-8-16x-heart", sep = "/"))
-  dicom_data_sbarre_heart_nm <<- read_dicom(paste(dir_s_barre_dicom, "NM-MONO2-16-13x-heart", sep = "/"))
-  dicom_data_sbarre_execho <<- read_dicom(paste(dir_s_barre_dicom, "US-MONO2-8-8x-execho", sep = "/"))
 
   # Images from http://www.dclunie.com/
   dir_d_clunie_dicom <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/d_clunie_samples/"
