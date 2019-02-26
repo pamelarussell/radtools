@@ -32,6 +32,27 @@ dicom_data_sbarre_heart_nm <<- read_dicom(sbarre_unzip_file(sbarre_samples$heart
 dicom_data_sbarre_execho <<- read_dicom(sbarre_unzip_file(sbarre_samples$execho))
 
 
+# Images from http://www.dclunie.com/
+d_clunie_tar_charset <- paste(outdir, "charsettests.20070405.tar.bz2", sep = "/")
+d_clunie_tar_deflate <- paste(outdir, "deflate_tests_release.tar.gz", sep = "/")
+d_clunie_tar_signedrange <- paste(outdir, "signedrangeimages.tar.bz2", sep = "/")
+download.file("http://www.dclunie.com/images/charset/charsettests.20070405.tar.bz2", d_clunie_tar_charset)
+download.file("http://www.dclunie.com/images/compressed/deflate_tests_release.tar.gz", d_clunie_tar_deflate)
+download.file("http://www.dclunie.com/images/signedrange/signedrangeimages.tar.bz2", d_clunie_tar_signedrange)
+untar(d_clunie_tar_charset, exdir = outdir)
+untar(d_clunie_tar_deflate, exdir = outdir)
+untar(d_clunie_tar_signedrange, exdir = outdir)
+dir_d_clunie_dicom_charset <<- paste(outdir, "charsettests", sep = "/")
+dir_d_clunie_dicom_deflate <<- paste(outdir, "deflate_tests", sep = "/")
+dir_d_clunie_dicom_signedrange <<- paste(outdir, "IMAGES", sep = "/")
+dicom_data_dclunie_scsgreek <<- read_dicom(paste(dir_d_clunie_dicom_charset, "SCSGREEK", sep = "/"))
+dicom_data_dclunie_scsx2 <<- read_dicom(paste(dir_d_clunie_dicom_charset, "SCSX2", sep = "/"))
+dicom_data_dclunie_image <<- read_dicom(paste(dir_d_clunie_dicom_deflate, "image", sep = "/"))
+for(dir in list.files(dir_d_clunie_dicom_signedrange, full.names = T)) {
+  dd <<- read_dicom(dir)
+  rm(dd)
+}
+
 
 # Datasets that can't be downloaded on the fly
 if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
@@ -39,19 +60,6 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # Series 1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882 from TCIA; a DICOM SR object with no slices
   dir_qin_headneck_sr <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/qin_headneck_sr"
   dicom_data_qin_hn_sr <<- read_dicom(paste(dir_qin_headneck_sr, "1-234.dcm", sep = "/"))
-
-  # Images from http://www.dclunie.com/
-  dir_d_clunie_dicom <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/d_clunie_samples/"
-  dir_d_clunie_dicom_charset <<- paste(dir_d_clunie_dicom, "charsettests", sep = "/")
-  dir_d_clunie_dicom_deflate <<- paste(dir_d_clunie_dicom, "deflate_tests", sep = "/")
-  dir_d_clunie_dicom_signedrange <<- paste(dir_d_clunie_dicom, "signedrangeimages/IMAGES", sep = "/")
-  dicom_data_dclunie_scsgreek <<- read_dicom(paste(dir_d_clunie_dicom_charset, "SCSGREEK", sep = "/"))
-  dicom_data_dclunie_scsx2 <<- read_dicom(paste(dir_d_clunie_dicom_charset, "SCSX2", sep = "/"))
-  dicom_data_dclunie_image <<- read_dicom(paste(dir_d_clunie_dicom_deflate, "image", sep = "/"))
-  for(dir in list.files(dir_d_clunie_dicom_signedrange, full.names = T)) {
-    dd <<- read_dicom(dir)
-    rm(dd)
-  }
 
   # 98890234_20030505_MR
   dir_988_dicom <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/98890234_20030505_MR/98890234/20030505/MR/"
