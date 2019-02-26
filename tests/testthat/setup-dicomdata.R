@@ -54,30 +54,38 @@ for(dir in list.files(dir_d_clunie_dicom_signedrange, full.names = T)) {
 }
 
 
-# Datasets that can't be downloaded on the fly
+# Images from patient contributed image repository http://www.pcir.org/
+pcir_tar_988 <- paste(outdir, "98890234_20030505_MR.tar.bz2", sep = "")
+pcir_tar_247 <- paste(outdir, "24759123_20010101.tar.bz2", sep = "")
+download.file("https://archive.org/download/9889023420030505MR/98890234_20030505_MR.tar.bz2", pcir_tar_988)
+download.file("https://archive.org/download/2475912320010101/24759123_20010101.tar.bz2", pcir_tar_247)
+untar(pcir_tar_988, exdir = outdir)
+untar(pcir_tar_247, exdir = outdir)
+dir_pcir_988 <- paste(outdir, "98890234/20030505/MR/", sep = "/")
+dir_pcir_247 <- paste(outdir, "24759123/20010101/", sep = "/")
+# 98890234_20030505_MR
+for(dir in list.files(dir_pcir_988, full.names = T)) {
+  dd <<- read_dicom(dir)
+  rm(dd)
+}
+# dicom_data_988_MR1 <<- read_dicom(paste(dir_pcir_988, "MR1", sep = "/")) # Include with package
+dicom_data_988_MR700 <<- read_dicom(paste(dir_pcir_988, "MR700", sep = "/"))
+# 24759123_20010101
+for(dir in list.files(dir_pcir_247, full.names = T)) {
+  dd <<- read_dicom(dir)
+  rm(dd)
+}
+dicom_data_247_MR3 <<- read_dicom(paste(dir_pcir_247, "MR3", sep = "/"))
+dicom_data_247_OT <<- read_dicom(paste(dir_pcir_247, "OT999999", sep = "/"))
+
+
+
+# TCIA datasets can't be downloaded on the fly
 if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
 
   # Series 1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882 from TCIA; a DICOM SR object with no slices
   dir_qin_headneck_sr <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/qin_headneck_sr"
   dicom_data_qin_hn_sr <<- read_dicom(paste(dir_qin_headneck_sr, "1-234.dcm", sep = "/"))
-
-  # 98890234_20030505_MR
-  dir_988_dicom <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/98890234_20030505_MR/98890234/20030505/MR/"
-  for(dir in list.files(dir_988_dicom, full.names = T)) {
-    dd <<- read_dicom(dir)
-    rm(dd)
-  }
-  # dicom_data_988_MR1 <<- read_dicom(paste(dir_988_dicom, "MR1", sep = "/")) # Include with package
-  dicom_data_988_MR700 <<- read_dicom(paste(dir_988_dicom, "MR700", sep = "/"))
-
-  # 24759123_20010101
-  dir_247_dicom <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/24759123_20010101/24759123/20010101/"
-  for(dir in list.files(dir_247_dicom, full.names = T)) {
-    dd <<- read_dicom(dir)
-    rm(dd)
-  }
-  dicom_data_247_MR3 <<- read_dicom(paste(dir_247_dicom, "MR3", sep = "/"))
-  dicom_data_247_OT <<- read_dicom(paste(dir_247_dicom, "OT999999", sep = "/"))
 
   # NCI ISBI prostate challenge
   # Modality: MR
