@@ -3,8 +3,8 @@
 
 
 # Make temp directory to store images from web
-outdir <- tempfile()
-dir.create(outdir, recursive = TRUE)
+outdir_dicom <- tempfile()
+dir.create(outdir_dicom, recursive = TRUE)
 
 
 # Images from http://barre.nom.fr/medical/samples/
@@ -17,7 +17,7 @@ sbarre_samples <- list(ort = "CT-MONO2-16-ort",
                        heart_nm = "NM-MONO2-16-13x-heart",
                        execho = "US-MONO2-8-8x-execho")
 sbarre_url_sample <- function(sample) {paste(url_sbarre, sample, ".gz", sep = "")}
-sbarre_unzip_file <- function(sample) {paste(outdir, sample, sep = "/")}
+sbarre_unzip_file <- function(sample) {paste(outdir_dicom, sample, sep = "/")}
 sbarre_zip_file <- function(sample) {paste(sbarre_unzip_file(sample), ".gz", sep = "")}
 for(sample in sbarre_samples) {
   download.file(sbarre_url_sample(sample), sbarre_zip_file(sample))
@@ -33,18 +33,18 @@ dicom_data_sbarre_execho <<- read_dicom(sbarre_unzip_file(sbarre_samples$execho)
 
 
 # Images from http://www.dclunie.com/
-d_clunie_tar_charset <- paste(outdir, "charsettests.20070405.tar.bz2", sep = "/")
-d_clunie_tar_deflate <- paste(outdir, "deflate_tests_release.tar.gz", sep = "/")
-d_clunie_tar_signedrange <- paste(outdir, "signedrangeimages.tar.bz2", sep = "/")
+d_clunie_tar_charset <- paste(outdir_dicom, "charsettests.20070405.tar.bz2", sep = "/")
+d_clunie_tar_deflate <- paste(outdir_dicom, "deflate_tests_release.tar.gz", sep = "/")
+d_clunie_tar_signedrange <- paste(outdir_dicom, "signedrangeimages.tar.bz2", sep = "/")
 download.file("http://www.dclunie.com/images/charset/charsettests.20070405.tar.bz2", d_clunie_tar_charset)
 download.file("http://www.dclunie.com/images/compressed/deflate_tests_release.tar.gz", d_clunie_tar_deflate)
 download.file("http://www.dclunie.com/images/signedrange/signedrangeimages.tar.bz2", d_clunie_tar_signedrange)
-untar(d_clunie_tar_charset, exdir = outdir)
-untar(d_clunie_tar_deflate, exdir = outdir)
-untar(d_clunie_tar_signedrange, exdir = outdir)
-dir_d_clunie_dicom_charset <<- paste(outdir, "charsettests", sep = "/")
-dir_d_clunie_dicom_deflate <<- paste(outdir, "deflate_tests", sep = "/")
-dir_d_clunie_dicom_signedrange <<- paste(outdir, "IMAGES", sep = "/")
+untar(d_clunie_tar_charset, exdir = outdir_dicom)
+untar(d_clunie_tar_deflate, exdir = outdir_dicom)
+untar(d_clunie_tar_signedrange, exdir = outdir_dicom)
+dir_d_clunie_dicom_charset <<- paste(outdir_dicom, "charsettests", sep = "/")
+dir_d_clunie_dicom_deflate <<- paste(outdir_dicom, "deflate_tests", sep = "/")
+dir_d_clunie_dicom_signedrange <<- paste(outdir_dicom, "IMAGES", sep = "/")
 dicom_data_dclunie_scsgreek <<- read_dicom(paste(dir_d_clunie_dicom_charset, "SCSGREEK", sep = "/"))
 dicom_data_dclunie_scsx2 <<- read_dicom(paste(dir_d_clunie_dicom_charset, "SCSX2", sep = "/"))
 dicom_data_dclunie_image <<- read_dicom(paste(dir_d_clunie_dicom_deflate, "image", sep = "/"))
@@ -55,14 +55,14 @@ for(dir in list.files(dir_d_clunie_dicom_signedrange, full.names = T)) {
 
 
 # Images from patient contributed image repository http://www.pcir.org/
-pcir_tar_988 <- paste(outdir, "98890234_20030505_MR.tar.bz2", sep = "")
-pcir_tar_247 <- paste(outdir, "24759123_20010101.tar.bz2", sep = "")
+pcir_tar_988 <- paste(outdir_dicom, "98890234_20030505_MR.tar.bz2", sep = "")
+pcir_tar_247 <- paste(outdir_dicom, "24759123_20010101.tar.bz2", sep = "")
 download.file("https://archive.org/download/9889023420030505MR/98890234_20030505_MR.tar.bz2", pcir_tar_988)
 download.file("https://archive.org/download/2475912320010101/24759123_20010101.tar.bz2", pcir_tar_247)
-untar(pcir_tar_988, exdir = outdir)
-untar(pcir_tar_247, exdir = outdir)
-dir_pcir_988 <- paste(outdir, "98890234/20030505/MR/", sep = "/")
-dir_pcir_247 <- paste(outdir, "24759123/20010101/", sep = "/")
+untar(pcir_tar_988, exdir = outdir_dicom)
+untar(pcir_tar_247, exdir = outdir_dicom)
+dir_pcir_988 <- paste(outdir_dicom, "98890234/20030505/MR/", sep = "/")
+dir_pcir_247 <- paste(outdir_dicom, "24759123/20010101/", sep = "/")
 # 98890234_20030505_MR
 for(dir in list.files(dir_pcir_988, full.names = T)) {
   dd <<- read_dicom(dir)

@@ -1,24 +1,6 @@
 
-# Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
-
-test_that("Number of slices - for CRAN", {
-  expect_equal(num_slices(sample_nifti_img), 10)
-})
-
-test_that("sample_nifti_img - for CRAN", {
-  expect_equal(num_slices(sample_nifti_img), 10)
-  expect_equal(img_dimensions(sample_nifti_img), c(64,64,10))
-  expect_equal(nifti1_num_dim(sample_nifti_img), 3)
-  expect_equal(length(header_fields(sample_nifti_img)), 46)
-  expect_true("srow_x" %in% header_fields(sample_nifti_img))
-  expect_equal(header_value(sample_nifti_img, "cal_min"), 0)
-  expect_equal(length(nifti1_header_values(sample_nifti_img)), 46)
-  expect_equal(nifti1_header_values(sample_nifti_img)[["magic"]], "n+1")
-})
 
 test_that("NIfTI metadata", {
-
-  skip_on_cran()
 
   # Number of slices
   expect_equal(num_slices(nifti_data_avg152T1_LR), 91)
@@ -30,15 +12,19 @@ test_that("NIfTI metadata", {
   # Number of dimensions
   expect_equal(nifti1_num_dim(nifti_data_filtered_func), 4)
   expect_equal(nifti1_num_dim(nifti_data_avg152T1_LR), 3)
+  expect_equal(nifti1_num_dim(sample_nifti_img), 3)
 
   # Image dimensions
   expect_equal(img_dimensions(nifti_data_filtered_func), c(64, 64, 21, 180))
   expect_equal(img_dimensions(nifti_data_avg152T1_LR), c(91, 109, 91))
+  expect_equal(img_dimensions(sample_nifti_img), c(64,64,10))
 
   # Header fields
   expect_equal(header_fields(nifti_data_avg152T1_LR), header_fields(sample_nifti_img))
   expect_equal(length(header_fields(nifti_data_zstat1)), 46)
   expect_true("slice_code" %in% header_fields(nifti_data_filtered_func))
+  expect_equal(length(header_fields(sample_nifti_img)), 46)
+  expect_true("srow_x" %in% header_fields(sample_nifti_img))
 
   # Header values
   expect_equal(header_value(nifti_data_filtered_func, "sizeof_hdr"), 348)
@@ -46,6 +32,9 @@ test_that("NIfTI metadata", {
   expect_equal(header_value(nifti_data_avg152T1_LR, "qoffset_x"), 0)
   expect_equal(header_value(nifti_data_avg152T1_LR, "descrip"), "FSL3.2beta")
   expect_equal(header_value(nifti_data_avg152T1_LR, "data_type"), "")
+  expect_equal(header_value(sample_nifti_img, "cal_min"), 0)
+  expect_equal(length(nifti1_header_values(sample_nifti_img)), 46)
+  expect_equal(nifti1_header_values(sample_nifti_img)[["magic"]], "n+1")
 
   # nifti_data_1103_3
   expect_equal(num_slices(nifti_data_1103_3), 332)

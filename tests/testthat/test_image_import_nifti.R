@@ -1,14 +1,5 @@
 
-# Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
-
-test_that("sample_nifti_img - for CRAN", {
-  expect_equal(dim(img_data_to_mat(sample_nifti_img)), c(64,64,10))
-})
-
-
 test_that("NIfTI import", {
-
-  skip_on_cran()
 
   # NIfTI image data to 3D matrix
   expect_error(img_data_to_3D_mat(nifti_data_filtered_func, coord_extra_dim = 181))
@@ -24,6 +15,7 @@ test_that("NIfTI import", {
   # NIfTI image data to matrix
   expect_equal(dim(img_data_to_mat(nifti_data_filtered_func)), c(64, 64, 21, 180))
   expect_equal(dim(img_data_to_mat(nifti_data_avg152T1_LR)), c(91, 109, 91))
+  expect_equal(dim(img_data_to_mat(sample_nifti_img)), c(64,64,10))
 
   # nifti_data_1103_3
   expect_equal(dim(img_data_to_mat(nifti_data_1103_3)), c(256,256,332))
