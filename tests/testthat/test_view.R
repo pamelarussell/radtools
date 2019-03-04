@@ -20,7 +20,7 @@ test_that("View slice - for CRAN", {
   # view_slice throws error for 4D image
   expect_error(view_slice(nifti_data_filtered_func, 5))
 
-  #  iew_slice throws error for 3D image if no slice number is provided
+  # view_slice throws error for 3D image if no slice number is provided
   expect_error(view_slice(nifti_data_avg152T1_LR))
 
   # view_slice_mat throws error for 4D image
