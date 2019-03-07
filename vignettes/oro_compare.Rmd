@@ -58,6 +58,8 @@ radtools::num_slices(nifti_data_rad)
 
 #### oro
 
+The oro packages do not contain direct functions for this. For oro.dicom, you can use `base::dim` on the extracted 3D matrix. For oro.nifti, you can use `base::dim` on the NIfTI object directly.
+
 ```{r img_dim_oro}
 mat_dicom <- oro.dicom::create3D(dicom_data)
 dim(mat_dicom)
@@ -83,6 +85,8 @@ head(fields, 10)
 
 #### oro.dicom
 
+oro.dicom does not contain a direct function for this. You can get the metadata table with `oro.dicom::dicomTable` and extract its column names. You have to pass `dicom_data$hdr` instead of `dicom_data` directly.
+
 ```{r header_field_oro}
 tab <- oro.dicom::dicomTable(dicom_data$hdr)
 fields <- colnames(tab)
@@ -103,10 +107,12 @@ head(fields, 10)
 
 #### oro.nifti
 
-Not provided; functions for each individual metadata attribute are provided.
+Not provided in oro.nifti; functions for each individual metadata attribute are provided.
 
 
 ## Get DICOM metadata attribute across slices as a list
+
+Both radtools and oro.dicom provide functions to get the values of a metadata attribute across slices by the attribute name.
 
 #### radtools
 
@@ -115,6 +121,8 @@ radtools::header_value(dicom_data, "SliceLocation")
 ```
 
 #### oro.dicom
+
+In oro.dicom, you have to pass `dicom_data$hdr` instead of `dicom_data` directly.
 
 ```{r header_value_oro}
 oro.dicom::extractHeader(dicom_data$hdr, "SliceLocation")
@@ -125,6 +133,8 @@ oro.dicom::extractHeader(dicom_data$hdr, "SliceLocation")
 
 ### DICOM
 
+Both radtools and oro.dicom provide functions to extract all metadata as a matrix. See below for the different matrix formats.
+
 #### radtools
 
 ```{r dicom_header_as_mat_rad, warning = FALSE}
@@ -133,6 +143,8 @@ kable(mat[1:10, 1:6])
 ```
 
 #### oro.dicom
+
+In oro.dicom, you have to pass `dicom_data$hdr` instead of `dicom_data` directly. The row names of the matrix are the .dcm file names.
 
 ```{r dicom_header_as_mat_oro}
 mat <- oro.dicom::dicomTable(dicom_data$hdr)
@@ -150,12 +162,16 @@ head(nifti_header_vals[names(nifti_header_vals) != ".Data"])
 
 #### oro.nifti
 
-Functionality not available in oro.nifti
+This functionality is not available in oro.nifti. Accessors are provided for individual metadata attributes.
 
 
 ## Get constant (across slices) DICOM attributes and their values
 
+In DICOM datasets, many attributes have constant values across all slices. These are properties of the data acquisition as a whole, as opposed to individual slices.
+
 #### radtools
+
+Radtools provides a direct function to get these dataset attributes as a named list. Numeric values are returned as numbers by default.
 
 ```{r dicom_const_rad}
 const_attributes <- radtools::dicom_constant_header_values(dicom_data)
@@ -163,6 +179,8 @@ head(const_attributes)
 ```
 
 #### oro.dicom
+
+With oro.dicom, a few lines of code are required to access overall dataset attributes. All attributes are returned as strings.
 
 ```{r dicom_const_oro}
 tab <- oro.dicom::dicomTable(dicom_data$hdr)
@@ -187,6 +205,8 @@ dim(mat_nifti)
 
 #### oro
 
+oro.dicom and oro.nifti each have direct functions to get the image data as a matrix. Because of the different typical uses of these formats, the functions have different names.
+
 ```{r img_data_to_mat_oro}
 mat_dicom <- oro.dicom::create3D(dicom_data)
 dim(mat_dicom)
@@ -197,6 +217,10 @@ dim(mat_nifti)
 
 # Viewing images
 
+The `radtools::view_slice` function works for both DICOM and NIfTI datasets. For datasets with more than three dimensions, data can first be reduced to a 3D matrix with the generic function `img_data_to_3D_mat` and then `radtools::view_slice_mat` is agnostic to the original format of the data.
+
+oro.dicom does not provide a direct view function, while oro.nifti does.
+
 ## DICOM
 
 #### radtools
@@ -206,6 +230,8 @@ radtools::view_slice(dicom_data, slice = 10)
 ```
 
 #### oro.dicom
+
+As oro.dicom does not provide a direct `view` function, a small amount of code is required.
 
 ```{r view_slice_oro, warning = FALSE, fig.width = 5, fig.height = 5}
 mat <- oro.dicom::create3D(dicom_data)
@@ -225,6 +251,8 @@ radtools::view_slice_mat(mat, slice = 10)
 
 #### oro.nifti
 
+oro.nifti provides a direct `image` function:
+
 ```{r, fig.width = 5, fig.height = 5}
 oro.nifti::image(nifti_data_oro, z = 10, w = 90, plot.type = "single")
 ```
@@ -233,6 +261,8 @@ oro.nifti::image(nifti_data_oro, z = 10, w = 90, plot.type = "single")
 # DICOM standard
 
 ## radtools
+
+Radtools provides functions to explore the DICOM standard itself.
 
 #### Get the DICOM standard version used
 
@@ -274,7 +304,7 @@ radtools::dicom_search_header_keywords("manufacturer")
 
 ## oro.dicom
 
-Functionality not provided in oro.dicom
+This functionality is not provided in oro.dicom.
 
 
 # Session info
