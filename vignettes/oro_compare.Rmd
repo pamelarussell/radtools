@@ -107,10 +107,10 @@ head(fields, 10)
 
 #### oro.nifti
 
-Not provided in oro.nifti; functions for each individual metadata attribute are provided.
+oro.nifti does not provide a function to get the names of metadata attributes; accessors for each individual metadata attribute are provided.
 
 
-## Get DICOM metadata attribute across slices as a list
+## Get DICOM metadata value across slices as a list
 
 Both radtools and oro.dicom provide functions to get the values of a metadata attribute across slices by the attribute name.
 

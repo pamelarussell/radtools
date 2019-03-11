@@ -1,5 +1,5 @@
 ## Test environments
-* local OS X install, R 3.4.3
+* local OS X install, R 3.5.2.
 * win-builder
 
 ## R CMD check results
@@ -9,4 +9,4 @@ There were no ERRORs, WARNINGs or NOTEs.
 There are no downstream dependencies.
 
 ## Some tests require local data
-For the tests, we have included two small datasets and we import additional data from The Cancer Imaging Archive on the fly so that many tests can be run. Some other tests rely on larger local image datasets and are skipped on CRAN.
+For the tests, we have included two small datasets and we import additional data on the fly so that most tests can be run on CRAN servers. Tests that require data from The Cancer Imaging Archive are skipped on CRAN, as that database requires an API key for live downloads.

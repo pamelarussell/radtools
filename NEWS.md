@@ -1,6 +1,8 @@
 # radtools 1.0.4
 
-
+* Most tests have been modified to download test datasets from the web on the fly
+* Documentation has been added to test source files to describe each test dataset
+* A new vignette has been added that shows a comparison with equivalent functionality in oro.dicom and oro.nifti
 
 # radtools 1.0.3
 
