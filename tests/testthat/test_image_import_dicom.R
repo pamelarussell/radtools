@@ -49,9 +49,9 @@ test_that("Matrix reduce dimensions", {
 
 test_that("DICOM import - for CRAN", {
   # Invalid DICOM files
-  expect_error(read_dicom(paste(dir_d_clunie_dicom_deflate, "image_dfl", sep = "/")))
-  expect_error(read_dicom(paste(dir_s_barre_dicom, "OT-MONO2-8-colon", sep = "/"))) # Missing 4-byte DICOM prefix
-  expect_error(read_dicom(paste(dir_s_barre_dicom, "OT-PAL-8-face", sep = "/"))) # Missing 4-byte DICOM prefix
+  expect_error(read_dicom(file.path(dir_d_clunie_dicom_deflate, "image_dfl")))
+  expect_error(read_dicom(file.path(dir_s_barre_dicom, "OT-MONO2-8-colon"))) # Missing 4-byte DICOM prefix
+  expect_error(read_dicom(file.path(dir_s_barre_dicom, "OT-PAL-8-face"))) # Missing 4-byte DICOM prefix
 
   # D. Clunie scsgreek
   expect_error(img_data_to_3D_mat(dicom_data_dclunie_scsgreek, 1))
