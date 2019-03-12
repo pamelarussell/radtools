@@ -1,7 +1,7 @@
 
 
 # Make temp directory to store images from web
-outdir_nifti <- tempfile()
+outdir_nifti <- tempdir(check = TRUE)
 dir.create(outdir_nifti, recursive = TRUE)
 
 

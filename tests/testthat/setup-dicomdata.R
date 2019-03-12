@@ -3,7 +3,7 @@
 
 
 # Make temp directory to store images from web
-outdir_dicom <- tempfile()
+outdir_dicom <- tempdir(check = TRUE)
 dir.create(outdir_dicom, recursive = TRUE)
 
 
