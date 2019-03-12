@@ -147,12 +147,17 @@ d_clunie_tar_signedrange <- xfun::normalize_path(file.path(outdir_dicom, "signed
 download.file("http://www.dclunie.com/images/charset/charsettests.20070405.tar.bz2", d_clunie_tar_charset)
 download.file("http://www.dclunie.com/images/compressed/deflate_tests_release.tar.gz", d_clunie_tar_deflate)
 download.file("http://www.dclunie.com/images/signedrange/signedrangeimages.tar.bz2", d_clunie_tar_signedrange)
-untar(d_clunie_tar_charset, exdir = outdir_dicom, compressed = "bzip2")
+untar(d_clunie_tar_charset, exdir = outdir_dicom)
 untar(d_clunie_tar_deflate, exdir = outdir_dicom)
-untar(d_clunie_tar_signedrange, exdir = outdir_dicom, compressed = "bzip2")
+untar(d_clunie_tar_signedrange, exdir = outdir_dicom)
 dir_d_clunie_dicom_charset <- xfun::normalize_path(file.path(outdir_dicom, "charsettests"))
 dir_d_clunie_dicom_deflate <- xfun::normalize_path(file.path(outdir_dicom, "deflate_tests"))
 dir_d_clunie_dicom_signedrange <- xfun::normalize_path(file.path(outdir_dicom, "IMAGES"))
+
+
+# For debugging
+print(list.files(outdir_dicom, recursive = TRUE, full.names = TRUE, include.dirs = TRUE))
+
 
 # dicom_data_dclunie_scsgreek
 # - Single slice DICOM dataset with Greek characters
@@ -192,8 +197,8 @@ pcir_tar_988 <- paste(outdir_dicom, "98890234_20030505_MR.tar.bz2", sep = "")
 pcir_tar_247 <- paste(outdir_dicom, "24759123_20010101.tar.bz2", sep = "")
 download.file("https://archive.org/download/9889023420030505MR/98890234_20030505_MR.tar.bz2", pcir_tar_988)
 download.file("https://archive.org/download/2475912320010101/24759123_20010101.tar.bz2", pcir_tar_247)
-untar(pcir_tar_988, exdir = outdir_dicom, compressed = "bzip2")
-untar(pcir_tar_247, exdir = outdir_dicom, compressed = "bzip2")
+untar(pcir_tar_988, exdir = outdir_dicom)
+untar(pcir_tar_247, exdir = outdir_dicom)
 dir_pcir_988 <- xfun::normalize_path(file.path(outdir_dicom, "98890234/20030505/MR/"))
 dir_pcir_247 <- xfun::normalize_path(file.path(outdir_dicom, "24759123/20010101/"))
 
