@@ -13,7 +13,7 @@ Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: oro.dicom, dplyr, Hmisc, oro.nifti, magrittr, methods, TCIApathfinder, R.utils
+Imports: oro.dicom, dplyr, Hmisc, oro.nifti, magrittr, methods, TCIApathfinder, R.utils, xfun
 RoxygenNote: 6.1.1
 Suggests: testthat, covr, knitr, rmarkdown, rvest, hashmap, stringr, xml2
 VignetteBuilder: knitr

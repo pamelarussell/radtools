@@ -13,7 +13,7 @@ url_nimh <- "https://nifti.nimh.nih.gov/nifti-1/data/"
 download_nimh <- function(base, extension) {
   name <- paste(base, extension, sep = ".")
   name_gz <- paste(name, "gz", sep = ".")
-  gz <- file.path(outdir_nifti, name_gz)
+  gz <- xfun::normalize_path(file.path(outdir_nifti, name_gz))
   download.file(paste(url_nimh, name_gz, sep = "/"), gz)
   R.utils::gunzip(gz)
 }
@@ -88,7 +88,7 @@ nifti_data_filtered_func <- read_nifti1(filtered_func)
 # Aspects tested:
 # - Has 3 dimensions
 # - Blank and 0 header values obtained by various methods
-minimal_base <- file.path(outdir_nifti, "minimal")
+minimal_base <- xfun::normalize_path(file.path(outdir_nifti, "minimal"))
 minimal <- download_nimh("minimal", "hdr")
 minimal <- download_nimh("minimal", "img")
 nifti_data_minimal_hi <- read_nifti1(minimal_base)
@@ -107,8 +107,8 @@ nifti_data_minimal_hi <- read_nifti1(minimal_base)
 # - Header value glmin
 # - Conversion to 3D matrix holding one dimension constant returns correct 3D matrix
 # - Conversion to matrix returns correct 4D matrix
-sirp_gz <- file.path(outdir_nifti, "sirp_fmri_study_ver4.tar.gz")
-sirp_file <- file.path(outdir_nifti, "newsirp_final_XML.nii")
+sirp_gz <- xfun::normalize_path(file.path(outdir_nifti, "sirp_fmri_study_ver4.tar.gz"))
+sirp_file <- xfun::normalize_path(file.path(outdir_nifti, "newsirp_final_XML.nii"))
 download.file("https://nifti.nimh.nih.gov/nifti-1/data/sirp_fmri_study_ver4.tar.gz", sirp_gz)
 untar(sirp_gz, exdir = outdir_nifti)
 nifti_data_sirp <- read_nifti1(sirp_file, reorient = F)
@@ -129,9 +129,9 @@ nifti_data_zstat1 <- read_nifti1(zstat1_nii)
 
 # http://www.neuromorphometrics.com/?page_id=310
 # Labeled MRI brain scan
-file_1103 <- file.path(outdir_nifti, "Data/1103/3/NIFTI/1103_3.nii")
-file_1103_glm <- file.path(outdir_nifti, "Data/1103/3/NIFTI/1103_3_glm.nii")
-gz_1103 <- file.path(outdir_nifti, "1103_3.tgz")
+file_1103 <- xfun::normalize_path(file.path(outdir_nifti, "Data/1103/3/NIFTI/1103_3.nii"))
+file_1103_glm <- xfun::normalize_path(file.path(outdir_nifti, "Data/1103/3/NIFTI/1103_3_glm.nii"))
+gz_1103 <- xfun::normalize_path(file.path(outdir_nifti, "1103_3.tgz"))
 download.file("http://www.neuromorphometrics.com/1103_3.tgz", gz_1103)
 untar(gz_1103, exdir = outdir_nifti)
 
@@ -151,7 +151,7 @@ nifti_data_1103_3_glm <- read_nifti1(file_1103_glm)
 
 # John Muschelli's Neurohacking Coursera course data
 download_jm <- function(path, outfile) {
-  saved_file <- file.path(outdir_nifti, outfile)
+  saved_file <- xfun::normalize_path(file.path(outdir_nifti, outfile))
   download.file(paste("https://github.com/muschellij2/Neurohacking_data/raw/master/", path, sep = ""),
                 saved_file)
   saved_file

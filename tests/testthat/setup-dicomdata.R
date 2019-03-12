@@ -3,7 +3,7 @@
 
 
 # Make temp directory to store images from web
-outdir_dicom <- tempdir(check = TRUE)
+outdir_dicom <- xfun::normalize_path(tempdir(check = TRUE))
 dir.create(outdir_dicom, recursive = TRUE)
 
 
@@ -18,7 +18,7 @@ sbarre_samples <- list(ort = "CT-MONO2-16-ort",
                        heart_nm = "NM-MONO2-16-13x-heart",
                        execho = "US-MONO2-8-8x-execho")
 sbarre_url_sample <- function(sample) {paste(url_sbarre, sample, ".gz", sep = "")}
-sbarre_unzip_file <- function(sample) {file.path(outdir_dicom, sample)}
+sbarre_unzip_file <- function(sample) {xfun::normalize_path(file.path(outdir_dicom, sample))}
 sbarre_zip_file <- function(sample) {paste(sbarre_unzip_file(sample), ".gz", sep = "")}
 for(sample in sbarre_samples) {
   download.file(sbarre_url_sample(sample), sbarre_zip_file(sample))
@@ -41,7 +41,7 @@ for(sample in sbarre_samples) {
 # - Can't make 3D matrix with single slice
 # - Test specific header values
 # - Dimensions of metadata matrix
-dicom_data_sbarre_ort <<- read_dicom(sbarre_unzip_file(sbarre_samples$ort))
+dicom_data_sbarre_ort <- read_dicom(sbarre_unzip_file(sbarre_samples$ort))
 
 # dicom_data_sbarre_brain
 # - DICOM
@@ -58,7 +58,7 @@ dicom_data_sbarre_ort <<- read_dicom(sbarre_unzip_file(sbarre_samples$ort))
 # - Slice thickness
 # - Dimensions of metadata matrix
 # - View slice of 2D image
-dicom_data_sbarre_brain <<- read_dicom(sbarre_unzip_file(sbarre_samples$brain))
+dicom_data_sbarre_brain <- read_dicom(sbarre_unzip_file(sbarre_samples$brain))
 
 # dicom_data_sbarre_head
 # - DICOM
@@ -73,7 +73,7 @@ dicom_data_sbarre_brain <<- read_dicom(sbarre_unzip_file(sbarre_samples$brain))
 # - Has a single slice
 # - Spatial resolution
 # - Manufacturer
-dicom_data_sbarre_head <<- read_dicom(sbarre_unzip_file(sbarre_samples$head))
+dicom_data_sbarre_head <- read_dicom(sbarre_unzip_file(sbarre_samples$head))
 
 # dicom_data_sbarre_knee
 # - DICOM
@@ -87,7 +87,7 @@ dicom_data_sbarre_head <<- read_dicom(sbarre_unzip_file(sbarre_samples$head))
 # Aspects tested:
 # - Has a single slice
 # - Specific metadata values
-dicom_data_sbarre_knee <<- read_dicom(sbarre_unzip_file(sbarre_samples$knee))
+dicom_data_sbarre_knee <- read_dicom(sbarre_unzip_file(sbarre_samples$knee))
 
 # dicom_data_sbarre_heart_mr
 # - A 3D DICOM image stored in a single file instead of one slice per file
@@ -105,7 +105,7 @@ dicom_data_sbarre_knee <<- read_dicom(sbarre_unzip_file(sbarre_samples$knee))
 # - dicom_header_as_matrix can't specify slice if multiple slices in single image file
 # - Dimensions of metadata matrix
 # - Conversion to 3D matrix fails due to missing header fields ImagePositionPatient, ImageOrientationPatient
-dicom_data_sbarre_heart_mr <<- read_dicom(sbarre_unzip_file(sbarre_samples$heart_mr))
+dicom_data_sbarre_heart_mr <- read_dicom(sbarre_unzip_file(sbarre_samples$heart_mr))
 
 # dicom_data_sbarre_heart_nm
 # - DICOM
@@ -121,7 +121,7 @@ dicom_data_sbarre_heart_mr <<- read_dicom(sbarre_unzip_file(sbarre_samples$heart
 # - Number of frames (13)
 # - Set of header fields
 # - Conversion to 3D matrix fails due to missing header fields ImagePositionPatient, ImageOrientationPatient
-dicom_data_sbarre_heart_nm <<- read_dicom(sbarre_unzip_file(sbarre_samples$heart_nm))
+dicom_data_sbarre_heart_nm <- read_dicom(sbarre_unzip_file(sbarre_samples$heart_nm))
 
 # dicom_data_sbarre_execho
 # - DICOM
@@ -135,24 +135,24 @@ dicom_data_sbarre_heart_nm <<- read_dicom(sbarre_unzip_file(sbarre_samples$heart
 # - Number of frames
 # - Set of header fields
 # - Some calculations fail due to missing header fields ImagePositionPatient, ImageOrientationPatient
-dicom_data_sbarre_execho <<- read_dicom(sbarre_unzip_file(sbarre_samples$execho))
+dicom_data_sbarre_execho <- read_dicom(sbarre_unzip_file(sbarre_samples$execho))
 
 
 
 # Images from http://www.dclunie.com/
 # David Clunie's Medical Image Format Site
-d_clunie_tar_charset <- file.path(outdir_dicom, "charsettests.20070405.tar.bz2")
-d_clunie_tar_deflate <- file.path(outdir_dicom, "deflate_tests_release.tar.gz")
-d_clunie_tar_signedrange <- file.path(outdir_dicom, "signedrangeimages.tar.bz2")
+d_clunie_tar_charset <- xfun::normalize_path(file.path(outdir_dicom, "charsettests.20070405.tar.bz2"))
+d_clunie_tar_deflate <- xfun::normalize_path(file.path(outdir_dicom, "deflate_tests_release.tar.gz"))
+d_clunie_tar_signedrange <- xfun::normalize_path(file.path(outdir_dicom, "signedrangeimages.tar.bz2"))
 download.file("http://www.dclunie.com/images/charset/charsettests.20070405.tar.bz2", d_clunie_tar_charset)
 download.file("http://www.dclunie.com/images/compressed/deflate_tests_release.tar.gz", d_clunie_tar_deflate)
 download.file("http://www.dclunie.com/images/signedrange/signedrangeimages.tar.bz2", d_clunie_tar_signedrange)
-untar(d_clunie_tar_charset, exdir = outdir_dicom)
+untar(d_clunie_tar_charset, exdir = outdir_dicom, compressed = "bzip2")
 untar(d_clunie_tar_deflate, exdir = outdir_dicom)
-untar(d_clunie_tar_signedrange, exdir = outdir_dicom)
-dir_d_clunie_dicom_charset <<- file.path(outdir_dicom, "charsettests")
-dir_d_clunie_dicom_deflate <<- file.path(outdir_dicom, "deflate_tests")
-dir_d_clunie_dicom_signedrange <<- file.path(outdir_dicom, "IMAGES")
+untar(d_clunie_tar_signedrange, exdir = outdir_dicom, compressed = "bzip2")
+dir_d_clunie_dicom_charset <- xfun::normalize_path(file.path(outdir_dicom, "charsettests"))
+dir_d_clunie_dicom_deflate <- xfun::normalize_path(file.path(outdir_dicom, "deflate_tests"))
+dir_d_clunie_dicom_signedrange <- xfun::normalize_path(file.path(outdir_dicom, "IMAGES"))
 
 # dicom_data_dclunie_scsgreek
 # - Single slice DICOM dataset with Greek characters
@@ -162,11 +162,11 @@ dir_d_clunie_dicom_signedrange <<- file.path(outdir_dicom, "IMAGES")
 # - Single slice
 # - Specific header fields and values
 # - Set of header fields
-dicom_data_dclunie_scsgreek <<- read_dicom(file.path(dir_d_clunie_dicom_charset, "SCSGREEK"))
+dicom_data_dclunie_scsgreek <- read_dicom(xfun::normalize_path(file.path(dir_d_clunie_dicom_charset, "SCSGREEK")))
 
 # Aspects tested:
 # - Some calculations fail due to missing header fields ImagePositionPatient, ImageOrientationPatient
-dicom_data_dclunie_scsx2 <<- read_dicom(file.path(dir_d_clunie_dicom_charset, "SCSX2"))
+dicom_data_dclunie_scsx2 <- read_dicom(xfun::normalize_path(file.path(dir_d_clunie_dicom_charset, "SCSX2")))
 
 # dicom_data_dclunie_image
 # - Deflate transfer syntax
@@ -177,12 +177,12 @@ dicom_data_dclunie_scsx2 <<- read_dicom(file.path(dir_d_clunie_dicom_charset, "S
 # - Has invalid metadata according to current DICOM standard
 # - Study instance UID
 # - Some calculations fail due to missing header fields ImagePositionPatient, ImageOrientationPatient
-dicom_data_dclunie_image <<- read_dicom(file.path(dir_d_clunie_dicom_deflate, "image"))
+dicom_data_dclunie_image <- read_dicom(xfun::normalize_path(file.path(dir_d_clunie_dicom_deflate, "image")))
 
 # Signed range test images
 # Load all of them to make sure we can import all of these with oro.dicom
 for(dir in list.files(dir_d_clunie_dicom_signedrange, full.names = T)) {
-  dd <<- read_dicom(dir)
+  dd <- read_dicom(dir)
   rm(dd)
 }
 
@@ -192,16 +192,16 @@ pcir_tar_988 <- paste(outdir_dicom, "98890234_20030505_MR.tar.bz2", sep = "")
 pcir_tar_247 <- paste(outdir_dicom, "24759123_20010101.tar.bz2", sep = "")
 download.file("https://archive.org/download/9889023420030505MR/98890234_20030505_MR.tar.bz2", pcir_tar_988)
 download.file("https://archive.org/download/2475912320010101/24759123_20010101.tar.bz2", pcir_tar_247)
-untar(pcir_tar_988, exdir = outdir_dicom)
-untar(pcir_tar_247, exdir = outdir_dicom)
-dir_pcir_988 <- file.path(outdir_dicom, "98890234/20030505/MR/")
-dir_pcir_247 <- file.path(outdir_dicom, "24759123/20010101/")
+untar(pcir_tar_988, exdir = outdir_dicom, compressed = "bzip2")
+untar(pcir_tar_247, exdir = outdir_dicom, compressed = "bzip2")
+dir_pcir_988 <- xfun::normalize_path(file.path(outdir_dicom, "98890234/20030505/MR/"))
+dir_pcir_247 <- xfun::normalize_path(file.path(outdir_dicom, "24759123/20010101/"))
 
 # 98890234_20030505_MR
 # MR, MRA, DWI of Brain, Carotids
 # Load all of them to make sure we can import all of these with oro.dicom
 for(dir in list.files(dir_pcir_988, full.names = T)) {
-  dd <<- read_dicom(dir)
+  dd <- read_dicom(dir)
   rm(dd)
 }
 
@@ -217,13 +217,13 @@ for(dir in list.files(dir_pcir_988, full.names = T)) {
 # - Metadata matrix dimensions
 # - Convert image data to 3D matrix; correct dimensions
 # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
-dicom_data_988_MR700 <<- read_dicom(file.path(dir_pcir_988, "MR700"))
+dicom_data_988_MR700 <- read_dicom(xfun::normalize_path(file.path(dir_pcir_988, "MR700")))
 
 # 24759123_20010101
 # Patient contributed DICOM images - MR, MRA, DWI of Brain, Carotids
 # Load all of them to make sure we can import all of these with oro.dicom
 for(dir in list.files(dir_pcir_247, full.names = T)) {
-  dd <<- read_dicom(dir)
+  dd <- read_dicom(dir)
   rm(dd)
 }
 
@@ -239,7 +239,7 @@ for(dir in list.files(dir_pcir_247, full.names = T)) {
 # - Metadata matrix has 28 columns
 # - Set of header fields
 # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
-dicom_data_247_MR3 <<- read_dicom(file.path(dir_pcir_247, "MR3"))
+dicom_data_247_MR3 <- read_dicom(xfun::normalize_path(file.path(dir_pcir_247, "MR3")))
 
 # dicom_data_247_OT
 # -
@@ -250,7 +250,7 @@ dicom_data_247_MR3 <<- read_dicom(file.path(dir_pcir_247, "MR3"))
 # - Metadata matrix dimensions
 # - Set of header fields; specific fields are present
 # - Some calculations fail due to missing fields ImagePositionPatient and ImageOrientationPatient
-dicom_data_247_OT <<- read_dicom(file.path(dir_pcir_247, "OT999999"))
+dicom_data_247_OT <- read_dicom(xfun::normalize_path(file.path(dir_pcir_247, "OT999999")))
 
 
 
@@ -268,8 +268,8 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Can get metadata matrix without error
   # - Error when trying to get image data as matrix
   # - Error when trying to view slice
-  dir_qin_headneck_sr <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/qin_headneck_sr"
-  dicom_data_qin_hn_sr <<- read_dicom(file.path(dir_qin_headneck_sr, "1-234.dcm"))
+  dir_qin_headneck_sr <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/qin_headneck_sr"
+  dicom_data_qin_hn_sr <- read_dicom(xfun::normalize_path(file.path(dir_qin_headneck_sr, "1-234.dcm")))
 
   # dicom_data_prostate_mr
   # - NCI ISBI prostate challenge
@@ -303,11 +303,11 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - View slice 10 of 3D intensity matrix
   # - Error when trying to view slice number that is out of bounds
   # - Error when trying to view slice of 3D intensity matrix that is out of bounds
-  dir_prostate_dicom_mr <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/nci_isbi_2013_challenge_prostate/images_dicom/"
-  dir_prostate_dicom_mr <<-
-    file.path(dir_prostate_dicom_mr,
-          "Prostate3T-03-0001/1.3.6.1.4.1.14519.5.2.1.7307.2101.182382809090179976301292139745/1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
-  dicom_data_prostate_mr <<- read_dicom(dir_prostate_dicom_mr)
+  dir_prostate_dicom_mr <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/nci_isbi_2013_challenge_prostate/images_dicom/"
+  dir_prostate_dicom_mr <-
+    xfun::normalize_path(file.path(dir_prostate_dicom_mr,
+          "Prostate3T-03-0001/1.3.6.1.4.1.14519.5.2.1.7307.2101.182382809090179976301292139745/1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219"))
+  dicom_data_prostate_mr <- read_dicom(dir_prostate_dicom_mr)
 
   # dicom_data_chest
   # - LIDC-IDRI
@@ -326,8 +326,8 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   #    - Option to return numeric values as strings works
   # - Dimensions of image matrix and 3D matrix are 512x512x128
   # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
-  dir_chest_dicom <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/lidc_idri_chest_ct/1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138"
-  dicom_data_chest <<- read_dicom(dir_chest_dicom)
+  dir_chest_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/lidc_idri_chest_ct/1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138"
+  dicom_data_chest <- read_dicom(dir_chest_dicom)
 
   # dicom_data_prostate_pt
   # - NaF Prostate
@@ -341,8 +341,8 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Header values for constant numeric value across slices is list of repeated numeric value
   # - Trying to get header value for repeated field throws error
   # - Dimensions of image matrix and 3D matrix are 144x144x234
-  dir_prostate_pt_dicom <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/naf_prostate_pt/1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545"
-  dicom_data_prostate_pt <<- read_dicom(dir_prostate_pt_dicom)
+  dir_prostate_pt_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/naf_prostate_pt/1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545"
+  dicom_data_prostate_pt <- read_dicom(dir_prostate_pt_dicom)
 
   # dicom_data_bladder
   # - TCIA image with a single slice
@@ -362,6 +362,6 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Metadata matrix has a single column starting with "slice"
   # - List of constant header values has same names as unique fields in metadata matrix because only one slice
   # - Getting constant header values: option to return all values as strings works correctly
-  dir_bladder_dicom <<- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/tcga_blca_cr/1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012"
-  dicom_data_bladder <<- read_dicom(dir_bladder_dicom)
+  dir_bladder_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/tcga_blca_cr/1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012"
+  dicom_data_bladder <- read_dicom(dir_bladder_dicom)
 }
