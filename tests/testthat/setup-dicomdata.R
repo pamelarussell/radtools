@@ -167,10 +167,10 @@ print_dir <- function(dir) {
   print(dir)
   print(list.files(dir, recursive = TRUE, full.names = TRUE, include.dirs = TRUE))
 }
-print_dir(outdir_dicom)
-print_dir(dir_d_clunie_dicom_deflate)
-print_dir(dir_d_clunie_dicom_charset)
-print_dir(dir_d_clunie_dicom_signedrange)
+#print_dir(outdir_dicom)
+#print_dir(dir_d_clunie_dicom_deflate)
+#print_dir(dir_d_clunie_dicom_charset)
+#print_dir(dir_d_clunie_dicom_signedrange)
 
 
 # dicom_data_dclunie_scsgreek
@@ -215,8 +215,8 @@ expand_tar_bz2(pcir_tar_988, outdir_dicom)
 expand_tar_bz2(pcir_tar_247, outdir_dicom)
 dir_pcir_988 <- xfun::normalize_path(file.path(outdir_dicom, "98890234/20030505/MR/"))
 dir_pcir_247 <- xfun::normalize_path(file.path(outdir_dicom, "24759123/20010101/"))
-print_dir(dir_pcir_988)
-print_dir(dir_pcir_247)
+#print_dir(dir_pcir_988)
+#print_dir(dir_pcir_247)
 
 # 98890234_20030505_MR
 # MR, MRA, DWI of Brain, Carotids
