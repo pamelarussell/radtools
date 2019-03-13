@@ -6,17 +6,10 @@ test_that("DICOM image data to 3D matrix - for CRAN", {
   expect_error(img_data_to_3D_mat(sample_dicom_img, coord_extra_dim = 1))
   expect_equal(dim(img_data_to_3D_mat(sample_dicom_img)), c(256, 256, 3))
   expect_error(img_data_to_3D_mat(sample_dicom_img, coord_extra_dim = 1))
-  expect_equal(dim(img_data_to_3D_mat(dicom_data_988_MR700)), c(512, 512, 12))
-  expect_error(img_data_to_3D_mat(dicom_data_988_MR700, coord_extra_dim = 1))
-  expect_warning(dim(img_data_to_3D_mat(dicom_data_247_MR3)))
-  expect_error(img_data_to_3D_mat(dicom_data_247_MR3, coord_extra_dim = 1))
-  expect_error(img_data_to_3D_mat(dicom_data_247_OT))
-  expect_error(img_data_to_3D_mat(dicom_data_247_OT, coord_extra_dim = 1))
 })
 
 test_that("DICOM image data to matrix - for CRAN", {
   expect_equal(dim(img_data_to_mat(sample_dicom_img)), c(256, 256, 3))
-  expect_equal(dim(img_data_to_mat(dicom_data_988_MR700)), c(512, 512, 12))
 })
 
 test_that("Matrix reduce dimensions", {
@@ -100,12 +93,33 @@ test_that("DICOM import - skip on CRAN", {
   expect_equal(dim(img_data_to_3D_mat(dicom_data_prostate_pt)), c(144, 144, 234))
   expect_error(img_data_to_3D_mat(dicom_data_chest, coord_extra_dim = 1))
   expect_error(img_data_to_3D_mat(dicom_data_bladder)) # Data is missing required header fields for oro.dicom::create3D()
+  expect_warning(dim(img_data_to_3D_mat(dicom_data_247_MR3)))
+  expect_equal(dim(img_data_to_3D_mat(dicom_data_988_MR700)), c(512, 512, 12))
+  expect_error(img_data_to_3D_mat(dicom_data_988_MR700, coord_extra_dim = 1))
+  expect_error(img_data_to_3D_mat(dicom_data_247_MR3, coord_extra_dim = 1))
+  expect_error(img_data_to_3D_mat(dicom_data_247_OT))
+  expect_error(img_data_to_3D_mat(dicom_data_247_OT, coord_extra_dim = 1))
 
   # DICOM image data to matrix
   expect_equal(dim(img_data_to_mat(dicom_data_chest)), c(512, 512, 128))
   expect_equal(dim(img_data_to_mat(dicom_data_prostate_mr)), c(384, 384, 19))
   expect_equal(dim(img_data_to_mat(dicom_data_prostate_pt)), c(144, 144, 234))
   expect_error(img_data_to_mat(dicom_data_bladder)) # Data is missing required header fields for oro.dicom::create3D()
+  expect_equal(dim(img_data_to_mat(dicom_data_988_MR700)), c(512, 512, 12))
+
+  # Make sure we can import all of these with oro.dicom
+  for(dir in list.files(dir_pcir_988, full.names = T)) {
+    dd <- read_dicom(dir)
+    rm(dd)
+  }
+  for(dir in list.files(dir_d_clunie_dicom_signedrange, full.names = T)) {
+    dd <- read_dicom(dir)
+    rm(dd)
+  }
+  for(dir in list.files(dir_pcir_247, full.names = T)) {
+    dd <- read_dicom(dir)
+    rm(dd)
+  }
 
 })
 

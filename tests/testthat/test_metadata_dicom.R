@@ -62,9 +62,6 @@ test_that("DICOM header as matrix - for CRAN", {
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_dclunie_scsgreek)), 5)
   expect_equal(ncol(dicom_header_as_matrix(dicom_data_dclunie_image)), 5)
   expect_equal(ncol(dicom_header_as_matrix(sample_dicom_img)), 7)
-  expect_equal(ncol(dicom_header_as_matrix(dicom_data_988_MR700)), 16)
-  expect_equal(ncol(dicom_header_as_matrix(dicom_data_247_MR3)), 28)
-  expect_equal(ncol(dicom_header_as_matrix(dicom_data_247_OT)), 5)
 })
 
 test_that("Number of slices - for CRAN", {
@@ -79,9 +76,6 @@ test_that("Number of slices - for CRAN", {
   expect_equal(num_slices(dicom_data_dclunie_scsgreek), 1)
   expect_equal(num_slices(dicom_data_dclunie_image), 1)
   expect_equal(num_slices(sample_dicom_img), 3)
-  expect_equal(num_slices(dicom_data_988_MR700), 12)
-  expect_equal(num_slices(dicom_data_247_MR3), 24)
-  expect_equal(num_slices(dicom_data_247_OT), 1)
 })
 
 test_that("Image dimensions - for CRAN", {
@@ -94,8 +88,6 @@ test_that("Image dimensions - for CRAN", {
   expect_error(img_dimensions(dicom_data_dclunie_scsgreek))
   expect_error(img_dimensions(dicom_data_dclunie_image))
   expect_equal(img_dimensions(sample_dicom_img), c(256, 256, 3))
-  expect_equal(img_dimensions(dicom_data_988_MR700), c(512, 512, 12))
-  expect_error(img_dimensions(dicom_data_247_OT))
 })
 
 test_that("DICOM header fields - for CRAN", {
@@ -105,9 +97,6 @@ test_that("DICOM header fields - for CRAN", {
   expect_true("SliceThickness" %in% header_fields(dicom_data_sbarre_heart_nm))
   expect_true("Manufacturer" %in% header_fields(dicom_data_sbarre_head))
   expect_true("SpecificCharacterSet" %in% header_fields(sample_dicom_img))
-  expect_true("SOPClassUID" %in% header_fields(dicom_data_988_MR700))
-  expect_true("AcquisitionMatrix" %in% header_fields(dicom_data_247_MR3))
-  expect_true("InstanceCreationDate" %in% header_fields(dicom_data_247_OT))
 })
 
 test_that("DICOM header values - for CRAN", {
@@ -124,9 +113,6 @@ test_that("DICOM header values - for CRAN", {
   expect_equal(header_value(dicom_data_dclunie_scsgreek, "PhotometricInterpretation"), "MONOCHROME2")
   expect_equal(header_value(sample_dicom_img, "InstanceCreatorUID")[[1]], "1.3.6.1.4.1.5962.3")
   expect_equal(header_value(sample_dicom_img, "GroupLength")[[3]], 192)
-  expect_equal(header_value(dicom_data_988_MR700, "MediaStorageSOPInstanceUID")[[2]], "1.3.6.1.4.1.5962.1.1.0.0.0.1196533885.18148.0.120")
-  expect_equal(header_value(dicom_data_247_MR3, "ContentTime")[[1]], 1413.094)
-  expect_equal(header_value(dicom_data_247_OT, "ImageType"), "DERIVED SECONDARY")
 })
 
 test_that("Constant header values - for CRAN", {
@@ -140,9 +126,6 @@ test_that("Constant header values - for CRAN", {
   expect_equal(length(dicom_constant_header_values(dicom_data_dclunie_scsgreek)), nrow(dicom_header_as_matrix(dicom_data_dclunie_scsgreek)))
   expect_equal(length(dicom_constant_header_values(dicom_data_dclunie_image)), length(header_fields(dicom_data_dclunie_image)))
   expect_equal(length(dicom_constant_header_values(dicom_data_dclunie_image)), nrow(dicom_header_as_matrix(dicom_data_dclunie_image)))
-  expect_equal(dicom_constant_header_values(dicom_data_988_MR700)[["GroupLength"]], 194)
-  expect_equal(dicom_constant_header_values(dicom_data_247_MR3)[["DerivationDescription"]], "DRS:DOE, HARRY    24759123  1 01 01  3   JPEG  2   3  1  90")
-  expect_equal(dicom_constant_header_values(dicom_data_247_OT)[["DerivationDescription"]], "DRS:DOE, HARRY    24759123  1 01 01  3   JPEG  2   3  1  90")
 })
 
 
@@ -157,11 +140,16 @@ test_that("DICOM metadata not run on CRAN", {
   expect_equal(num_slices(dicom_data_bladder), 1)
   expect_equal(num_slices(dicom_data_chest), 128)
   expect_equal(num_slices(dicom_data_prostate_pt), 234)
+  expect_equal(num_slices(dicom_data_988_MR700), 12)
+  expect_equal(num_slices(dicom_data_247_MR3), 24)
+  expect_equal(num_slices(dicom_data_247_OT), 1)
 
   # Image dimensions
   expect_equal(img_dimensions(dicom_data_qin_hn_sr), NA)
   expect_error(img_dimensions(dicom_data_bladder))
   expect_equal(img_dimensions(dicom_data_prostate_mr), c(384, 384, 19))
+  expect_equal(img_dimensions(dicom_data_988_MR700), c(512, 512, 12))
+  expect_error(img_dimensions(dicom_data_247_OT))
 
   # DICOM header fields
   fieldsp <- header_fields(dicom_data_prostate_mr)
@@ -172,6 +160,9 @@ test_that("DICOM metadata not run on CRAN", {
   expect_equal(length(fieldsc), 94)
   expect_true("BodyPartExamined" %in% fieldsc)
   expect_true(!"Unknown" %in% fieldsc)
+  expect_true("SOPClassUID" %in% header_fields(dicom_data_988_MR700))
+  expect_true("AcquisitionMatrix" %in% header_fields(dicom_data_247_MR3))
+  expect_true("InstanceCreationDate" %in% header_fields(dicom_data_247_OT))
 
   # Validate header
   expect_error(validate_metadata(dicom_data_prostate_mr))
@@ -197,6 +188,9 @@ test_that("DICOM metadata not run on CRAN", {
   expect_equal(header_value(dicom_data_prostate_pt, "GroupLength"), rep(196,234))
   expect_error(header_value(dicom_data_prostate_pt, "Unknown"))
   expect_equal(header_value(dicom_data_prostate_mr, "Manufacturer")[[slice_idx]], "SIEMENS")
+  expect_equal(header_value(dicom_data_988_MR700, "MediaStorageSOPInstanceUID")[[2]], "1.3.6.1.4.1.5962.1.1.0.0.0.1196533885.18148.0.120")
+  expect_equal(header_value(dicom_data_247_MR3, "ContentTime")[[1]], 1413.094)
+  expect_equal(header_value(dicom_data_247_OT, "ImageType"), "DERIVED SECONDARY")
 
   # DICOM header as matrix
   mat1 <- dicom_header_as_matrix(dicom_data_prostate_mr, 1)
@@ -220,6 +214,9 @@ test_that("DICOM metadata not run on CRAN", {
   expect(ncol(matc %>% dplyr::select(dplyr::starts_with("slice"))), 128)
   expect_equal(mat10c[9,6], "ORIGINAL PRIMARY AXIAL")
   expect_silent(dicom_header_as_matrix(dicom_data_qin_hn_sr))
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_988_MR700)), 16)
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_247_MR3)), 28)
+  expect_equal(ncol(dicom_header_as_matrix(dicom_data_247_OT)), 5)
 
   # Constant header values
   const_val <- dicom_constant_header_values(dicom_data_prostate_mr)
@@ -227,6 +224,9 @@ test_that("DICOM metadata not run on CRAN", {
   expect_equal(const_val[["GroupLength"]], 196)
   expect_equal(dicom_constant_header_values(dicom_data_prostate_mr, numeric = FALSE)[["GroupLength"]], "196")
   expect_null(const_val[["SliceLocation"]])
+  expect_equal(dicom_constant_header_values(dicom_data_988_MR700)[["GroupLength"]], 194)
+  expect_equal(dicom_constant_header_values(dicom_data_247_MR3)[["DerivationDescription"]], "DRS:DOE, HARRY    24759123  1 01 01  3   JPEG  2   3  1  90")
+  expect_equal(dicom_constant_header_values(dicom_data_247_OT)[["DerivationDescription"]], "DRS:DOE, HARRY    24759123  1 01 01  3   JPEG  2   3  1  90")
 
   const_valb <- dicom_constant_header_values(dicom_data_bladder)
   expect_equal(length(const_valb),
