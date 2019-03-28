@@ -1,3 +1,4 @@
+context("NIfTI")
 
 test_that("NIfTI import", {
 

@@ -1,3 +1,4 @@
+context("DICOM - for CRAN")
 
 # Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
 

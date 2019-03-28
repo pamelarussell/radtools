@@ -3,8 +3,9 @@
 
 
 # Make temp directory to store images from web
-outdir_dicom <- xfun::normalize_path(tempdir(check = TRUE))
-dir.create(outdir_dicom, recursive = TRUE)
+outdir_dicom = tempfile(tmpdir = tempdir(check = TRUE))
+# outdir_dicom <- xfun::normalize_path(tempdir(check = TRUE))
+dir.create(outdir_dicom, recursive = TRUE, showWarnings = FALSE)
 
 
 # Images from http://barre.nom.fr/medical/samples/
