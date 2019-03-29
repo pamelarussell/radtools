@@ -3,8 +3,9 @@
 
 
 # Make temp directory to store images from web
-outdir_dicom <- xfun::normalize_path(tempdir(check = TRUE))
-dir.create(outdir_dicom, recursive = TRUE)
+outdir_dicom = tempfile(tmpdir = tempdir(check = TRUE))
+# outdir_dicom <- xfun::normalize_path(tempdir(check = TRUE))
+dir.create(outdir_dicom, recursive = TRUE, showWarnings = FALSE)
 
 
 # Images from http://barre.nom.fr/medical/samples/
@@ -203,6 +204,7 @@ dicom_data_dclunie_image <- read_dicom(xfun::normalize_path(file.path(dir_d_clun
 # PCIR datasets take a long time to download, so skip them on CRAN
 if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
 
+
   # dicom_data_qin_hn_sr
   # - Series 1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882 from TCIA
   # - A DICOM SR object with no slices
@@ -214,7 +216,18 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Can get metadata matrix without error
   # - Error when trying to get image data as matrix
   # - Error when trying to view slice
+  api_key <- Sys.getenv("TCIA_API_KEY")
+  have_api_key = !identical(api_key, "")
   dir_qin_headneck_sr <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/qin_headneck_sr"
+  if (have_api_key) {
+    res = TCIApathfinder::save_image_series("1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882")
+    dir_qin_headneck_sr = tempfile()
+    dir.create(dir_qin_headneck_sr, showWarnings = FALSE)
+    files = unzip(res$out_file, exdir = dir_qin_headneck_sr)
+  } else {
+    testthat::skip_on_travis()
+    testthat::skip_on_appveyor()
+  }
   dicom_data_qin_hn_sr <- read_dicom(xfun::normalize_path(file.path(dir_qin_headneck_sr, "1-234.dcm")))
 
   # dicom_data_prostate_mr
@@ -250,9 +263,18 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Error when trying to view slice number that is out of bounds
   # - Error when trying to view slice of 3D intensity matrix that is out of bounds
   dir_prostate_dicom_mr <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/nci_isbi_2013_challenge_prostate/images_dicom/"
-  dir_prostate_dicom_mr <-
-    xfun::normalize_path(file.path(dir_prostate_dicom_mr,
-          "Prostate3T-03-0001/1.3.6.1.4.1.14519.5.2.1.7307.2101.182382809090179976301292139745/1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219"))
+  dir_prostate_dicom_mr = file.path(dir_prostate_dicom_mr,
+              "Prostate3T-03-0001/1.3.6.1.4.1.14519.5.2.1.7307.2101.182382809090179976301292139745/1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
+  dir_prostate_dicom_mr <- xfun::normalize_path(dir_prostate_dicom_mr)
+  if (have_api_key) {
+    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
+    dir_prostate_dicom_mr = tempfile()
+    dir.create(dir_prostate_dicom_mr, showWarnings = FALSE)
+    files = unzip(res$out_file, exdir = dir_prostate_dicom_mr)
+  } else {
+    testthat::skip_on_travis()
+    testthat::skip_on_appveyor()
+  }
   dicom_data_prostate_mr <- read_dicom(dir_prostate_dicom_mr)
 
   # dicom_data_chest
@@ -273,6 +295,15 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Dimensions of image matrix and 3D matrix are 512x512x128
   # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
   dir_chest_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/lidc_idri_chest_ct/1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138"
+  if (have_api_key) {
+    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138")
+    dir_chest_dicom = tempfile()
+    dir.create(dir_chest_dicom, showWarnings = FALSE)
+    files = unzip(res$out_file, exdir = dir_chest_dicom)
+  } else {
+    testthat::skip_on_travis()
+    testthat::skip_on_appveyor()
+  }
   dicom_data_chest <- read_dicom(dir_chest_dicom)
 
   # dicom_data_prostate_pt
@@ -288,6 +319,15 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Trying to get header value for repeated field throws error
   # - Dimensions of image matrix and 3D matrix are 144x144x234
   dir_prostate_pt_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/naf_prostate_pt/1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545"
+  if (have_api_key) {
+    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545")
+    dir_prostate_pt_dicom = tempfile()
+    dir.create(dir_prostate_pt_dicom, showWarnings = FALSE)
+    files = unzip(res$out_file, exdir = dir_prostate_pt_dicom)
+  } else {
+    testthat::skip_on_travis()
+    testthat::skip_on_appveyor()
+  }
   dicom_data_prostate_pt <- read_dicom(dir_prostate_pt_dicom)
 
   # dicom_data_bladder
@@ -309,9 +349,19 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - List of constant header values has same names as unique fields in metadata matrix because only one slice
   # - Getting constant header values: option to return all values as strings works correctly
   dir_bladder_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/tcga_blca_cr/1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012"
+  if (have_api_key) {
+    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012")
+    dir_bladder_dicom = tempfile()
+    dir.create(dir_bladder_dicom, showWarnings = FALSE)
+    files = unzip(res$out_file, exdir = dir_bladder_dicom)
+  } else {
+    testthat::skip_on_travis()
+    testthat::skip_on_appveyor()
+  }
   dicom_data_bladder <- read_dicom(dir_bladder_dicom)
 
   # Images from patient contributed image repository http://www.pcir.org/
+
   pcir_tar_988 <- paste(outdir_dicom, "98890234_20030505_MR.tar.bz2", sep = "")
   pcir_tar_247 <- paste(outdir_dicom, "24759123_20010101.tar.bz2", sep = "")
   download.file("https://archive.org/download/9889023420030505MR/98890234_20030505_MR.tar.bz2", pcir_tar_988)
