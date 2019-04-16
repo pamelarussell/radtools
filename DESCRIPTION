@@ -1,9 +1,9 @@
 Package: radtools
 Title: Utilities for Convenient Extraction of Medical Image Metadata
-Version: 1.0.4
+Version: 1.0.5
 Author: Pamela Russell [aut, cre]
-Maintainer: Pamela Russell <pamela.russell@ucdenver.edu>
-Authors@R: person("Pamela", "Russell", email = "pamela.russell@ucdenver.edu", role = c("aut", "cre"))
+Maintainer: Pamela Russell <pamela.russell@gmail.com>
+Authors@R: person("Pamela", "Russell", email = "pamela.russell@gmail.com", role = c("aut", "cre"))
 Description: A collection of utilities for navigating medical image data. The DICOM and NIfTI formats
   are supported. Functions provide simple interfaces to the data and metadata contained in these formats.
   A particular emphasis on metadata allows simple conversion of image metadata to familiar R data structures

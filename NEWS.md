@@ -1,3 +1,7 @@
+# radtools 1.0.5
+
+Change maintainer email
+
 # radtools 1.0.4
 
 * Most tests have been modified to download test datasets from the web on the fly
