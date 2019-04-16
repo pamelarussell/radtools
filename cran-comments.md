@@ -3,7 +3,7 @@
 * win-builder
 
 ## R CMD check results
-There were no ERRORs, WARNINGs or NOTEs.
+There were no ERRORs or WARNINGs. There was one NOTE: new maintainer e-mail address.
 
 ## Downstream dependencies
 There are no downstream dependencies.
