@@ -204,6 +204,63 @@ dicom_data_dclunie_image <- read_dicom(xfun::normalize_path(file.path(dir_d_clun
 # PCIR datasets take a long time to download, so skip them on CRAN
 if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
 
+  # Images from patient contributed image repository http://www.pcir.org/
+
+  pcir_tar_988 <- paste(outdir_dicom, "98890234_20030505_MR.tar.bz2", sep = "")
+  pcir_tar_247 <- paste(outdir_dicom, "24759123_20010101.tar.bz2", sep = "")
+  download.file("https://archive.org/download/9889023420030505MR/98890234_20030505_MR.tar.bz2", pcir_tar_988)
+  download.file("https://archive.org/download/2475912320010101/24759123_20010101.tar.bz2", pcir_tar_247)
+  expand_tar_bz2(pcir_tar_988, outdir_dicom)
+  expand_tar_bz2(pcir_tar_247, outdir_dicom)
+  # 98890234_20030505_MR
+  # MR, MRA, DWI of Brain, Carotids
+  dir_pcir_988 <- xfun::normalize_path(file.path(outdir_dicom, "98890234/20030505/MR/"))
+  # 24759123_20010101
+  # Patient contributed DICOM images - MR, MRA, DWI of Brain, Carotids
+  dir_pcir_247 <- xfun::normalize_path(file.path(outdir_dicom, "24759123/20010101/"))
+  #print_dir(dir_pcir_988)
+  #print_dir(dir_pcir_247)
+
+  # dicom_data_988_MR700
+  # Aspects tested:
+  # - Has 12 slices
+  # - Dimensions of metadata matrix
+  # - Image dimensions 512x512x12
+  # - SOP class UID
+  # - MediaStorageSOPInstanceUID is a list
+  # - Constant header values across slices is a list; specific constant values
+  # - Constant header value list elements have appropriate type
+  # - Metadata matrix dimensions
+  # - Convert image data to 3D matrix; correct dimensions
+  # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
+  dicom_data_988_MR700 <- read_dicom(xfun::normalize_path(file.path(dir_pcir_988, "MR700")))
+
+
+  # dicom_data_247_MR3
+  # - A DICOM image with 24 slices, where image file dimensions do not match Rows and Columns attributes in DICOM metadata
+  # Aspects tested:
+  # - Can make 3D matrix despite discrepancy in image dimension attributes; code raises a warning in this case
+  # - Has 24 slices
+  # - Constant header values across slices: a list with names = the header names; specific values
+  # - Constant header values list elements have appropriate type
+  # - Header value is a list with one entry per slice; specific values
+  # - Header value list elements have appropriate type e.g. numeric
+  # - Metadata matrix has 28 columns
+  # - Set of header fields
+  # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
+  dicom_data_247_MR3 <- read_dicom(xfun::normalize_path(file.path(dir_pcir_247, "MR3")))
+
+  # dicom_data_247_OT
+  # -
+  # Aspects tested:
+  # - Header value for image type
+  # - Value for DerivationDescription is constant across slices and has appropriate type when retrieved
+  # - Has a single slice
+  # - Metadata matrix dimensions
+  # - Set of header fields; specific fields are present
+  # - Some calculations fail due to missing fields ImagePositionPatient and ImageOrientationPatient
+  dicom_data_247_OT <- read_dicom(xfun::normalize_path(file.path(dir_pcir_247, "OT999999")))
+
 
   # dicom_data_qin_hn_sr
   # - Series 1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882 from TCIA
@@ -302,7 +359,7 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
     files = unzip(res$out_file, exdir = dir_chest_dicom)
   } else {
     testthat::skip_on_travis()
-    testthat::skip_on_appveyor()
+    testthat::skip_on_appveyor()r
   }
   dicom_data_chest <- read_dicom(dir_chest_dicom)
 
@@ -359,62 +416,5 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
     testthat::skip_on_appveyor()
   }
   dicom_data_bladder <- read_dicom(dir_bladder_dicom)
-
-  # Images from patient contributed image repository http://www.pcir.org/
-
-  pcir_tar_988 <- paste(outdir_dicom, "98890234_20030505_MR.tar.bz2", sep = "")
-  pcir_tar_247 <- paste(outdir_dicom, "24759123_20010101.tar.bz2", sep = "")
-  download.file("https://archive.org/download/9889023420030505MR/98890234_20030505_MR.tar.bz2", pcir_tar_988)
-  download.file("https://archive.org/download/2475912320010101/24759123_20010101.tar.bz2", pcir_tar_247)
-  expand_tar_bz2(pcir_tar_988, outdir_dicom)
-  expand_tar_bz2(pcir_tar_247, outdir_dicom)
-  # 98890234_20030505_MR
-  # MR, MRA, DWI of Brain, Carotids
-  dir_pcir_988 <- xfun::normalize_path(file.path(outdir_dicom, "98890234/20030505/MR/"))
-  # 24759123_20010101
-  # Patient contributed DICOM images - MR, MRA, DWI of Brain, Carotids
-  dir_pcir_247 <- xfun::normalize_path(file.path(outdir_dicom, "24759123/20010101/"))
-  #print_dir(dir_pcir_988)
-  #print_dir(dir_pcir_247)
-
-  # dicom_data_988_MR700
-  # Aspects tested:
-  # - Has 12 slices
-  # - Dimensions of metadata matrix
-  # - Image dimensions 512x512x12
-  # - SOP class UID
-  # - MediaStorageSOPInstanceUID is a list
-  # - Constant header values across slices is a list; specific constant values
-  # - Constant header value list elements have appropriate type
-  # - Metadata matrix dimensions
-  # - Convert image data to 3D matrix; correct dimensions
-  # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
-  dicom_data_988_MR700 <- read_dicom(xfun::normalize_path(file.path(dir_pcir_988, "MR700")))
-
-
-  # dicom_data_247_MR3
-  # - A DICOM image with 24 slices, where image file dimensions do not match Rows and Columns attributes in DICOM metadata
-  # Aspects tested:
-  # - Can make 3D matrix despite discrepancy in image dimension attributes; code raises a warning in this case
-  # - Has 24 slices
-  # - Constant header values across slices: a list with names = the header names; specific values
-  # - Constant header values list elements have appropriate type
-  # - Header value is a list with one entry per slice; specific values
-  # - Header value list elements have appropriate type e.g. numeric
-  # - Metadata matrix has 28 columns
-  # - Set of header fields
-  # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
-  dicom_data_247_MR3 <- read_dicom(xfun::normalize_path(file.path(dir_pcir_247, "MR3")))
-
-  # dicom_data_247_OT
-  # -
-  # Aspects tested:
-  # - Header value for image type
-  # - Value for DerivationDescription is constant across slices and has appropriate type when retrieved
-  # - Has a single slice
-  # - Metadata matrix dimensions
-  # - Set of header fields; specific fields are present
-  # - Some calculations fail due to missing fields ImagePositionPatient and ImageOrientationPatient
-  dicom_data_247_OT <- read_dicom(xfun::normalize_path(file.path(dir_pcir_247, "OT999999")))
 
 }
