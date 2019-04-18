@@ -281,11 +281,10 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
     dir_qin_headneck_sr = tempfile()
     dir.create(dir_qin_headneck_sr, showWarnings = FALSE)
     files = unzip(res$out_file, exdir = dir_qin_headneck_sr)
-  } else {
-    testthat::skip_on_travis()
-    testthat::skip_on_appveyor()
   }
-  dicom_data_qin_hn_sr <- read_dicom(xfun::normalize_path(file.path(dir_qin_headneck_sr, "1-234.dcm")))
+  if (dir.exists(dir_qin_headneck_sr)) {
+    dicom_data_qin_hn_sr <- read_dicom(xfun::normalize_path(file.path(dir_qin_headneck_sr, "1-234.dcm")))
+  }
 
   # dicom_data_prostate_mr
   # - NCI ISBI prostate challenge
@@ -321,18 +320,17 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Error when trying to view slice of 3D intensity matrix that is out of bounds
   dir_prostate_dicom_mr <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/nci_isbi_2013_challenge_prostate/images_dicom/"
   dir_prostate_dicom_mr = file.path(dir_prostate_dicom_mr,
-              "Prostate3T-03-0001/1.3.6.1.4.1.14519.5.2.1.7307.2101.182382809090179976301292139745/1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
+                                    "Prostate3T-03-0001/1.3.6.1.4.1.14519.5.2.1.7307.2101.182382809090179976301292139745/1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
   dir_prostate_dicom_mr <- xfun::normalize_path(dir_prostate_dicom_mr)
   if (have_api_key) {
     res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
     dir_prostate_dicom_mr = tempfile()
     dir.create(dir_prostate_dicom_mr, showWarnings = FALSE)
     files = unzip(res$out_file, exdir = dir_prostate_dicom_mr)
-  } else {
-    testthat::skip_on_travis()
-    testthat::skip_on_appveyor()
   }
-  dicom_data_prostate_mr <- read_dicom(dir_prostate_dicom_mr)
+  if (dir.exists(dir_prostate_dicom_mr)) {
+    dicom_data_prostate_mr <- read_dicom(dir_prostate_dicom_mr)
+  }
 
   # dicom_data_chest
   # - LIDC-IDRI
@@ -357,11 +355,10 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
     dir_chest_dicom = tempfile()
     dir.create(dir_chest_dicom, showWarnings = FALSE)
     files = unzip(res$out_file, exdir = dir_chest_dicom)
-  } else {
-    testthat::skip_on_travis()
-    testthat::skip_on_appveyor()r
   }
-  dicom_data_chest <- read_dicom(dir_chest_dicom)
+  if (dir.exists(dir_chest_dicom)) {
+    dicom_data_chest <- read_dicom(dir_chest_dicom)
+  }
 
   # dicom_data_prostate_pt
   # - NaF Prostate
@@ -381,11 +378,10 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
     dir_prostate_pt_dicom = tempfile()
     dir.create(dir_prostate_pt_dicom, showWarnings = FALSE)
     files = unzip(res$out_file, exdir = dir_prostate_pt_dicom)
-  } else {
-    testthat::skip_on_travis()
-    testthat::skip_on_appveyor()
   }
-  dicom_data_prostate_pt <- read_dicom(dir_prostate_pt_dicom)
+  if (dir.exists(dir_prostate_pt_dicom)) {
+    dicom_data_prostate_pt <- read_dicom(dir_prostate_pt_dicom)
+  }
 
   # dicom_data_bladder
   # - TCIA image with a single slice
@@ -411,10 +407,9 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
     dir_bladder_dicom = tempfile()
     dir.create(dir_bladder_dicom, showWarnings = FALSE)
     files = unzip(res$out_file, exdir = dir_bladder_dicom)
-  } else {
-    testthat::skip_on_travis()
-    testthat::skip_on_appveyor()
   }
-  dicom_data_bladder <- read_dicom(dir_bladder_dicom)
+  if (dir.exists(dir_bladder_dicom)) {
+    dicom_data_bladder <- read_dicom(dir_bladder_dicom)
+  }
 
 }
