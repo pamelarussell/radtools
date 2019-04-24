@@ -134,6 +134,8 @@ test_that("Constant header values - for CRAN", {
 test_that("DICOM metadata not run on CRAN", {
 
   skip_on_cran()
+  testthat::skip_on_travis()
+  testthat::skip_on_appveyor()
 
   # Number of slices
   expect_equal(num_slices(dicom_data_qin_hn_sr), 0)

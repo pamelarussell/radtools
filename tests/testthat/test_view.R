@@ -40,6 +40,8 @@ test_that("View slice - for CRAN", {
 test_that("View slices - skip on CRAN", {
 
   skip_on_cran()
+  testthat::skip_on_travis()
+  testthat::skip_on_appveyor()
 
   # view_slice throws error if there are no slices
   expect_error(view_slice(dicom_data_qin_hn_sr))

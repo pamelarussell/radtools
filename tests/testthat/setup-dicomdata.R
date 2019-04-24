@@ -204,162 +204,6 @@ dicom_data_dclunie_image <- read_dicom(xfun::normalize_path(file.path(dir_d_clun
 # PCIR datasets take a long time to download, so skip them on CRAN
 if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
 
-
-  # dicom_data_qin_hn_sr
-  # - Series 1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882 from TCIA
-  # - A DICOM SR object with no slices
-  # Aspects tested:
-  # - Can support SR object
-  # - Number of slices is 0
-  # - Image dimensions is NA
-  # - Validate metadata option to print issues but not stop executionj
-  # - Can get metadata matrix without error
-  # - Error when trying to get image data as matrix
-  # - Error when trying to view slice
-  api_key <- Sys.getenv("TCIA_API_KEY")
-  have_api_key = !identical(api_key, "")
-  dir_qin_headneck_sr <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/qin_headneck_sr"
-  if (have_api_key) {
-    res = TCIApathfinder::save_image_series("1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882")
-    dir_qin_headneck_sr = tempfile()
-    dir.create(dir_qin_headneck_sr, showWarnings = FALSE)
-    files = unzip(res$out_file, exdir = dir_qin_headneck_sr)
-  } else {
-    testthat::skip_on_travis()
-    testthat::skip_on_appveyor()
-  }
-  dicom_data_qin_hn_sr <- read_dicom(xfun::normalize_path(file.path(dir_qin_headneck_sr, "1-234.dcm")))
-
-  # dicom_data_prostate_mr
-  # - NCI ISBI prostate challenge
-  # - Modality: MR
-  # - Body part: prostate
-  # - Manufacturer: Siemens
-  # Aspects tested:
-  # - Number of slices is 19
-  # - Image dimensions are 384x384x19
-  # - Headers have 111 different fields
-  # - Specific header fields are present or not present
-  # - Metadata does not technically conform to current DICOM standard
-  # - Header value is a list with values in correct order
-  # - Header value for constant numeric value is list with repeated numeric values
-  # - Error when trying to retrieve header value for field that doesn't exist
-  # - Header value for manufacturer is list of strings with value SIEMENS
-  # - Getting metadata matrix for an optional single slice
-  #    - Has expected number of rows, one for each field
-  #    - CodeMeaning is repeated field
-  # - Full metadata matrix has 23 columns
-  # - Full metadata matrix does not contain repeated fields
-  # - Full metadata matrix has expected column names e.g. "slice_2"
-  # - Full metadata matrix elements have expected type
-  # - List of header values constant across slices
-  #    - Repeated header value is absent
-  #    - Specific values and their types
-  #    - Option to encode numeric values as strings works correctly
-  # - Dimensions of matrix are 384x384x19
-  # - Dimensions of 3D matrix are 384x384x19
-  # - View slice 5
-  # - View slice 10 of 3D intensity matrix
-  # - Error when trying to view slice number that is out of bounds
-  # - Error when trying to view slice of 3D intensity matrix that is out of bounds
-  dir_prostate_dicom_mr <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/nci_isbi_2013_challenge_prostate/images_dicom/"
-  dir_prostate_dicom_mr = file.path(dir_prostate_dicom_mr,
-              "Prostate3T-03-0001/1.3.6.1.4.1.14519.5.2.1.7307.2101.182382809090179976301292139745/1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
-  dir_prostate_dicom_mr <- xfun::normalize_path(dir_prostate_dicom_mr)
-  if (have_api_key) {
-    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
-    dir_prostate_dicom_mr = tempfile()
-    dir.create(dir_prostate_dicom_mr, showWarnings = FALSE)
-    files = unzip(res$out_file, exdir = dir_prostate_dicom_mr)
-  } else {
-    testthat::skip_on_travis()
-    testthat::skip_on_appveyor()
-  }
-  dicom_data_prostate_mr <- read_dicom(dir_prostate_dicom_mr)
-
-  # dicom_data_chest
-  # - LIDC-IDRI
-  # - TCIA series instance UID 1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138
-  # - Modality: CT
-  # - Body part: chest
-  # - Manufacturer: GE Medical Systems
-  # Aspects tested:
-  # - Number of slices is 128
-  # - Set of header fields has length 94, contains expected values and does not contain unexpected values
-  # - Full metdata matrix: number of columns that start with "slice" is 128
-  # - Metadata matrix for a single slice: expected entries in matrix
-  # - Constant header values across slices
-  #    - Repeated fields are omitted
-  #    - Numeric values are rendered as numeric
-  #    - Option to return numeric values as strings works
-  # - Dimensions of image matrix and 3D matrix are 512x512x128
-  # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
-  dir_chest_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/lidc_idri_chest_ct/1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138"
-  if (have_api_key) {
-    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138")
-    dir_chest_dicom = tempfile()
-    dir.create(dir_chest_dicom, showWarnings = FALSE)
-    files = unzip(res$out_file, exdir = dir_chest_dicom)
-  } else {
-    testthat::skip_on_travis()
-    testthat::skip_on_appveyor()
-  }
-  dicom_data_chest <- read_dicom(dir_chest_dicom)
-
-  # dicom_data_prostate_pt
-  # - NaF Prostate
-  # - TCIA series instance UID 1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545
-  # - Modality: PET
-  # - Body part: Prostate
-  # - Manufacturer: Philips Medical Systems
-  # Aspects tested:
-  # - Number of slices is 234
-  # - Header values is list with values in correct order
-  # - Header values for constant numeric value across slices is list of repeated numeric value
-  # - Trying to get header value for repeated field throws error
-  # - Dimensions of image matrix and 3D matrix are 144x144x234
-  dir_prostate_pt_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/naf_prostate_pt/1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545"
-  if (have_api_key) {
-    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545")
-    dir_prostate_pt_dicom = tempfile()
-    dir.create(dir_prostate_pt_dicom, showWarnings = FALSE)
-    files = unzip(res$out_file, exdir = dir_prostate_pt_dicom)
-  } else {
-    testthat::skip_on_travis()
-    testthat::skip_on_appveyor()
-  }
-  dicom_data_prostate_pt <- read_dicom(dir_prostate_pt_dicom)
-
-  # dicom_data_bladder
-  # - TCIA image with a single slice
-  # - TCGA-BLCA
-  # - TCIA series instance UID 1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012
-  # - Modality: CR
-  # - Body part: bladder
-  # - Manufacturer: Fujifilm
-  # Aspects tested:
-  # - Number of slices is 1
-  # - Some calculations fail due to missing fields ImagePositionPatient and ImageOrientationPatient
-  # - Metadata does not conform to current DICOM standard
-  # - Header values is list with one element; values are correct
-  # - Trying to get header value for repeated field throws error
-  # - Metadata matrix for specific slice includes repeated fields
-  # - Metadata matrix for all slices does not include repeated fields despite this dataset having one slice
-  # - Metadata matrix has a single column starting with "slice"
-  # - List of constant header values has same names as unique fields in metadata matrix because only one slice
-  # - Getting constant header values: option to return all values as strings works correctly
-  dir_bladder_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/tcga_blca_cr/1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012"
-  if (have_api_key) {
-    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012")
-    dir_bladder_dicom = tempfile()
-    dir.create(dir_bladder_dicom, showWarnings = FALSE)
-    files = unzip(res$out_file, exdir = dir_bladder_dicom)
-  } else {
-    testthat::skip_on_travis()
-    testthat::skip_on_appveyor()
-  }
-  dicom_data_bladder <- read_dicom(dir_bladder_dicom)
-
   # Images from patient contributed image repository http://www.pcir.org/
 
   pcir_tar_988 <- paste(outdir_dicom, "98890234_20030505_MR.tar.bz2", sep = "")
@@ -416,5 +260,156 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Set of header fields; specific fields are present
   # - Some calculations fail due to missing fields ImagePositionPatient and ImageOrientationPatient
   dicom_data_247_OT <- read_dicom(xfun::normalize_path(file.path(dir_pcir_247, "OT999999")))
+
+
+  # dicom_data_qin_hn_sr
+  # - Series 1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882 from TCIA
+  # - A DICOM SR object with no slices
+  # Aspects tested:
+  # - Can support SR object
+  # - Number of slices is 0
+  # - Image dimensions is NA
+  # - Validate metadata option to print issues but not stop executionj
+  # - Can get metadata matrix without error
+  # - Error when trying to get image data as matrix
+  # - Error when trying to view slice
+  api_key <- Sys.getenv("TCIA_API_KEY")
+  have_api_key = !identical(api_key, "")
+  dir_qin_headneck_sr <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/qin_headneck_sr"
+  if (have_api_key) {
+    res = TCIApathfinder::save_image_series("1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882")
+    dir_qin_headneck_sr = tempfile()
+    dir.create(dir_qin_headneck_sr, showWarnings = FALSE)
+    files = unzip(res$out_file, exdir = dir_qin_headneck_sr)
+  }
+  if (dir.exists(dir_qin_headneck_sr)) {
+    dicom_data_qin_hn_sr <- read_dicom(xfun::normalize_path(file.path(dir_qin_headneck_sr, "1-234.dcm")))
+  }
+
+  # dicom_data_prostate_mr
+  # - NCI ISBI prostate challenge
+  # - Modality: MR
+  # - Body part: prostate
+  # - Manufacturer: Siemens
+  # Aspects tested:
+  # - Number of slices is 19
+  # - Image dimensions are 384x384x19
+  # - Headers have 111 different fields
+  # - Specific header fields are present or not present
+  # - Metadata does not technically conform to current DICOM standard
+  # - Header value is a list with values in correct order
+  # - Header value for constant numeric value is list with repeated numeric values
+  # - Error when trying to retrieve header value for field that doesn't exist
+  # - Header value for manufacturer is list of strings with value SIEMENS
+  # - Getting metadata matrix for an optional single slice
+  #    - Has expected number of rows, one for each field
+  #    - CodeMeaning is repeated field
+  # - Full metadata matrix has 23 columns
+  # - Full metadata matrix does not contain repeated fields
+  # - Full metadata matrix has expected column names e.g. "slice_2"
+  # - Full metadata matrix elements have expected type
+  # - List of header values constant across slices
+  #    - Repeated header value is absent
+  #    - Specific values and their types
+  #    - Option to encode numeric values as strings works correctly
+  # - Dimensions of matrix are 384x384x19
+  # - Dimensions of 3D matrix are 384x384x19
+  # - View slice 5
+  # - View slice 10 of 3D intensity matrix
+  # - Error when trying to view slice number that is out of bounds
+  # - Error when trying to view slice of 3D intensity matrix that is out of bounds
+  dir_prostate_dicom_mr <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/nci_isbi_2013_challenge_prostate/images_dicom/"
+  dir_prostate_dicom_mr = file.path(dir_prostate_dicom_mr,
+                                    "Prostate3T-03-0001/1.3.6.1.4.1.14519.5.2.1.7307.2101.182382809090179976301292139745/1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
+  dir_prostate_dicom_mr <- xfun::normalize_path(dir_prostate_dicom_mr)
+  if (have_api_key) {
+    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
+    dir_prostate_dicom_mr = tempfile()
+    dir.create(dir_prostate_dicom_mr, showWarnings = FALSE)
+    files = unzip(res$out_file, exdir = dir_prostate_dicom_mr)
+  }
+  if (dir.exists(dir_prostate_dicom_mr)) {
+    dicom_data_prostate_mr <- read_dicom(dir_prostate_dicom_mr)
+  }
+
+  # dicom_data_chest
+  # - LIDC-IDRI
+  # - TCIA series instance UID 1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138
+  # - Modality: CT
+  # - Body part: chest
+  # - Manufacturer: GE Medical Systems
+  # Aspects tested:
+  # - Number of slices is 128
+  # - Set of header fields has length 94, contains expected values and does not contain unexpected values
+  # - Full metdata matrix: number of columns that start with "slice" is 128
+  # - Metadata matrix for a single slice: expected entries in matrix
+  # - Constant header values across slices
+  #    - Repeated fields are omitted
+  #    - Numeric values are rendered as numeric
+  #    - Option to return numeric values as strings works
+  # - Dimensions of image matrix and 3D matrix are 512x512x128
+  # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
+  dir_chest_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/lidc_idri_chest_ct/1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138"
+  if (have_api_key) {
+    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138")
+    dir_chest_dicom = tempfile()
+    dir.create(dir_chest_dicom, showWarnings = FALSE)
+    files = unzip(res$out_file, exdir = dir_chest_dicom)
+  }
+  if (dir.exists(dir_chest_dicom)) {
+    dicom_data_chest <- read_dicom(dir_chest_dicom)
+  }
+
+  # dicom_data_prostate_pt
+  # - NaF Prostate
+  # - TCIA series instance UID 1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545
+  # - Modality: PET
+  # - Body part: Prostate
+  # - Manufacturer: Philips Medical Systems
+  # Aspects tested:
+  # - Number of slices is 234
+  # - Header values is list with values in correct order
+  # - Header values for constant numeric value across slices is list of repeated numeric value
+  # - Trying to get header value for repeated field throws error
+  # - Dimensions of image matrix and 3D matrix are 144x144x234
+  dir_prostate_pt_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/naf_prostate_pt/1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545"
+  if (have_api_key) {
+    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545")
+    dir_prostate_pt_dicom = tempfile()
+    dir.create(dir_prostate_pt_dicom, showWarnings = FALSE)
+    files = unzip(res$out_file, exdir = dir_prostate_pt_dicom)
+  }
+  if (dir.exists(dir_prostate_pt_dicom)) {
+    dicom_data_prostate_pt <- read_dicom(dir_prostate_pt_dicom)
+  }
+
+  # dicom_data_bladder
+  # - TCIA image with a single slice
+  # - TCGA-BLCA
+  # - TCIA series instance UID 1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012
+  # - Modality: CR
+  # - Body part: bladder
+  # - Manufacturer: Fujifilm
+  # Aspects tested:
+  # - Number of slices is 1
+  # - Some calculations fail due to missing fields ImagePositionPatient and ImageOrientationPatient
+  # - Metadata does not conform to current DICOM standard
+  # - Header values is list with one element; values are correct
+  # - Trying to get header value for repeated field throws error
+  # - Metadata matrix for specific slice includes repeated fields
+  # - Metadata matrix for all slices does not include repeated fields despite this dataset having one slice
+  # - Metadata matrix has a single column starting with "slice"
+  # - List of constant header values has same names as unique fields in metadata matrix because only one slice
+  # - Getting constant header values: option to return all values as strings works correctly
+  dir_bladder_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/tcga_blca_cr/1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012"
+  if (have_api_key) {
+    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012")
+    dir_bladder_dicom = tempfile()
+    dir.create(dir_bladder_dicom, showWarnings = FALSE)
+    files = unzip(res$out_file, exdir = dir_bladder_dicom)
+  }
+  if (dir.exists(dir_bladder_dicom)) {
+    dicom_data_bladder <- read_dicom(dir_bladder_dicom)
+  }
 
 }

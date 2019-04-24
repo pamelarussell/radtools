@@ -9,12 +9,12 @@ dir.create(outdir_nifti, recursive = TRUE)
 # NIMH NIfTI-1 test datasets
 # Valid test data sets of 3D (structural) and 4D (functional) images in NIfTI-1 format.
 # https://nifti.nimh.nih.gov/nifti-1/data
-url_nimh <- "https://nifti.nimh.nih.gov/nifti-1/data/"
+url_nimh <- "https://nifti.nimh.nih.gov/nifti-1/data"
 download_nimh <- function(base, extension) {
   name <- paste(base, extension, sep = ".")
   name_gz <- paste(name, "gz", sep = ".")
   gz <- xfun::normalize_path(file.path(outdir_nifti, name_gz))
-  download.file(paste(url_nimh, name_gz, sep = "/"), gz)
+  download.file(file.path(url_nimh, name_gz), gz)
   R.utils::gunzip(gz)
 }
 

@@ -83,6 +83,8 @@ test_that("DICOM import - for CRAN", {
 test_that("DICOM import - skip on CRAN", {
 
   skip_on_cran()
+  testthat::skip_on_travis()
+  testthat::skip_on_appveyor()
 
   # No slices
   expect_error(img_data_to_3D_mat(dicom_data_qin_hn_sr))
