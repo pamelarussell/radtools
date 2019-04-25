@@ -3,7 +3,11 @@
 
 
 # Make temp directory to store images from web
-outdir_dicom = tempfile(tmpdir = tempdir(check = TRUE))
+if (getRversion() < '3.5.0'){
+  outdir_dicom = tempfile(tmpdir = tempdir())
+} else{
+  outdir_dicom = tempfile(tmpdir = tempdir(check = TRUE))
+}
 # outdir_dicom <- xfun::normalize_path(tempdir(check = TRUE))
 dir.create(outdir_dicom, recursive = TRUE, showWarnings = FALSE)
 
