@@ -20,8 +20,10 @@ download_nimh <- function(base, extension) {
   name <- paste(base, extension, sep = ".")
   name_gz <- paste(name, "gz", sep = ".")
   gz <- xfun::normalize_path(file.path(outdir_nifti, name_gz))
-  download.file(file.path(url_nimh, name_gz), gz)
-  R.utils::gunzip(gz)
+  if (!file.exists(gz)) {
+    download.file(file.path(url_nimh, name_gz), gz)
+  }
+  R.utils::gunzip(gz, overwrite = TRUE)
 }
 
 # avg152T1_LR
