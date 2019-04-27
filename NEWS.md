@@ -1,3 +1,7 @@
+# radtools 1.0.6
+
+Update tests to comply with CRAN policy regarding use of internet resources: tests fail gracefully with an informative message when resources are not available.
+
 # radtools 1.0.5
 
 Change maintainer email

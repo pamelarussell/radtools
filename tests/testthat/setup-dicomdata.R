@@ -1,6 +1,7 @@
 
 # Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
 
+source("helper.R")
 
 # Make temp directory to store images from web
 outdir_dicom = tempfile(tmpdir = tempdir(check = TRUE))
@@ -22,8 +23,8 @@ sbarre_url_sample <- function(sample) {paste(url_sbarre, sample, ".gz", sep = ""
 sbarre_unzip_file <- function(sample) {xfun::normalize_path(file.path(outdir_dicom, sample))}
 sbarre_zip_file <- function(sample) {paste(sbarre_unzip_file(sample), ".gz", sep = "")}
 for(sample in sbarre_samples) {
-  download.file(sbarre_url_sample(sample), sbarre_zip_file(sample))
-  R.utils::gunzip(sbarre_zip_file(sample))
+  dl_try(sbarre_url_sample(sample), sbarre_zip_file(sample))
+  if(file.exists(sbarre_zip_file(sample))) R.utils::gunzip(sbarre_zip_file(sample))
 }
 
 # dicom_data_sbarre_ort
@@ -42,7 +43,7 @@ for(sample in sbarre_samples) {
 # - Can't make 3D matrix with single slice
 # - Test specific header values
 # - Dimensions of metadata matrix
-dicom_data_sbarre_ort <- read_dicom(sbarre_unzip_file(sbarre_samples$ort))
+dicom_data_sbarre_ort <- read_dicom_try(sbarre_unzip_file(sbarre_samples$ort))
 
 # dicom_data_sbarre_brain
 # - DICOM
@@ -59,7 +60,7 @@ dicom_data_sbarre_ort <- read_dicom(sbarre_unzip_file(sbarre_samples$ort))
 # - Slice thickness
 # - Dimensions of metadata matrix
 # - View slice of 2D image
-dicom_data_sbarre_brain <- read_dicom(sbarre_unzip_file(sbarre_samples$brain))
+dicom_data_sbarre_brain <- read_dicom_try(sbarre_unzip_file(sbarre_samples$brain))
 
 # dicom_data_sbarre_head
 # - DICOM
@@ -74,7 +75,7 @@ dicom_data_sbarre_brain <- read_dicom(sbarre_unzip_file(sbarre_samples$brain))
 # - Has a single slice
 # - Spatial resolution
 # - Manufacturer
-dicom_data_sbarre_head <- read_dicom(sbarre_unzip_file(sbarre_samples$head))
+dicom_data_sbarre_head <- read_dicom_try(sbarre_unzip_file(sbarre_samples$head))
 
 # dicom_data_sbarre_knee
 # - DICOM
@@ -88,7 +89,7 @@ dicom_data_sbarre_head <- read_dicom(sbarre_unzip_file(sbarre_samples$head))
 # Aspects tested:
 # - Has a single slice
 # - Specific metadata values
-dicom_data_sbarre_knee <- read_dicom(sbarre_unzip_file(sbarre_samples$knee))
+dicom_data_sbarre_knee <- read_dicom_try(sbarre_unzip_file(sbarre_samples$knee))
 
 # dicom_data_sbarre_heart_mr
 # - A 3D DICOM image stored in a single file instead of one slice per file
@@ -106,7 +107,7 @@ dicom_data_sbarre_knee <- read_dicom(sbarre_unzip_file(sbarre_samples$knee))
 # - dicom_header_as_matrix can't specify slice if multiple slices in single image file
 # - Dimensions of metadata matrix
 # - Conversion to 3D matrix fails due to missing header fields ImagePositionPatient, ImageOrientationPatient
-dicom_data_sbarre_heart_mr <- read_dicom(sbarre_unzip_file(sbarre_samples$heart_mr))
+dicom_data_sbarre_heart_mr <- read_dicom_try(sbarre_unzip_file(sbarre_samples$heart_mr))
 
 # dicom_data_sbarre_heart_nm
 # - DICOM
@@ -122,7 +123,7 @@ dicom_data_sbarre_heart_mr <- read_dicom(sbarre_unzip_file(sbarre_samples$heart_
 # - Number of frames (13)
 # - Set of header fields
 # - Conversion to 3D matrix fails due to missing header fields ImagePositionPatient, ImageOrientationPatient
-dicom_data_sbarre_heart_nm <- read_dicom(sbarre_unzip_file(sbarre_samples$heart_nm))
+dicom_data_sbarre_heart_nm <- read_dicom_try(sbarre_unzip_file(sbarre_samples$heart_nm))
 
 # dicom_data_sbarre_execho
 # - DICOM
@@ -136,7 +137,7 @@ dicom_data_sbarre_heart_nm <- read_dicom(sbarre_unzip_file(sbarre_samples$heart_
 # - Number of frames
 # - Set of header fields
 # - Some calculations fail due to missing header fields ImagePositionPatient, ImageOrientationPatient
-dicom_data_sbarre_execho <- read_dicom(sbarre_unzip_file(sbarre_samples$execho))
+dicom_data_sbarre_execho <- read_dicom_try(sbarre_unzip_file(sbarre_samples$execho))
 
 
 # Function to expand a .tar.bz2 archive
@@ -151,12 +152,12 @@ expand_tar_bz2 <- function(file, outdir) {
 d_clunie_tar_charset <- xfun::normalize_path(file.path(outdir_dicom, "charsettests.20070405.tar.bz2"))
 d_clunie_tar_deflate <- xfun::normalize_path(file.path(outdir_dicom, "deflate_tests_release.tar.gz"))
 d_clunie_tar_signedrange <- xfun::normalize_path(file.path(outdir_dicom, "signedrangeimages.tar.bz2"))
-download.file("http://www.dclunie.com/images/charset/charsettests.20070405.tar.bz2", d_clunie_tar_charset)
-download.file("http://www.dclunie.com/images/compressed/deflate_tests_release.tar.gz", d_clunie_tar_deflate)
-download.file("http://www.dclunie.com/images/signedrange/signedrangeimages.tar.bz2", d_clunie_tar_signedrange)
-untar(d_clunie_tar_deflate, exdir = outdir_dicom)
-expand_tar_bz2(d_clunie_tar_charset, outdir_dicom)
-expand_tar_bz2(d_clunie_tar_signedrange, outdir_dicom)
+dl_try("http://www.dclunie.com/images/charset/charsettests.20070405.tar.bz2", d_clunie_tar_charset)
+dl_try("http://www.dclunie.com/images/compressed/deflate_tests_release.tar.gz", d_clunie_tar_deflate)
+dl_try("http://www.dclunie.com/images/signedrange/signedrangeimages.tar.bz2", d_clunie_tar_signedrange)
+if (file.exists(d_clunie_tar_deflate)) untar(d_clunie_tar_deflate, exdir = outdir_dicom)
+if (file.exists(d_clunie_tar_charset)) expand_tar_bz2(d_clunie_tar_charset, outdir_dicom)
+if (file.exists(d_clunie_tar_signedrange)) expand_tar_bz2(d_clunie_tar_signedrange, outdir_dicom)
 dir_d_clunie_dicom_deflate <- xfun::normalize_path(file.path(outdir_dicom, "deflate_tests"))
 dir_d_clunie_dicom_charset <- xfun::normalize_path(file.path(outdir_dicom, "charsettests"))
 dir_d_clunie_dicom_signedrange <- xfun::normalize_path(file.path(outdir_dicom, "IMAGES"))
@@ -182,11 +183,11 @@ print_dir <- function(dir) {
 # - Single slice
 # - Specific header fields and values
 # - Set of header fields
-dicom_data_dclunie_scsgreek <- read_dicom(xfun::normalize_path(file.path(dir_d_clunie_dicom_charset, "SCSGREEK")))
+dicom_data_dclunie_scsgreek <- read_dicom_try(xfun::normalize_path(file.path(dir_d_clunie_dicom_charset, "SCSGREEK")))
 
 # Aspects tested:
 # - Some calculations fail due to missing header fields ImagePositionPatient, ImageOrientationPatient
-dicom_data_dclunie_scsx2 <- read_dicom(xfun::normalize_path(file.path(dir_d_clunie_dicom_charset, "SCSX2")))
+dicom_data_dclunie_scsx2 <- read_dicom_try(xfun::normalize_path(file.path(dir_d_clunie_dicom_charset, "SCSX2")))
 
 # dicom_data_dclunie_image
 # - Deflate transfer syntax
@@ -197,7 +198,7 @@ dicom_data_dclunie_scsx2 <- read_dicom(xfun::normalize_path(file.path(dir_d_clun
 # - Has invalid metadata according to current DICOM standard
 # - Study instance UID
 # - Some calculations fail due to missing header fields ImagePositionPatient, ImageOrientationPatient
-dicom_data_dclunie_image <- read_dicom(xfun::normalize_path(file.path(dir_d_clunie_dicom_deflate, "image")))
+dicom_data_dclunie_image <- read_dicom_try(xfun::normalize_path(file.path(dir_d_clunie_dicom_deflate, "image")))
 
 
 # TCIA datasets can't be downloaded on the fly
@@ -208,10 +209,10 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
 
   pcir_tar_988 <- paste(outdir_dicom, "98890234_20030505_MR.tar.bz2", sep = "")
   pcir_tar_247 <- paste(outdir_dicom, "24759123_20010101.tar.bz2", sep = "")
-  download.file("https://archive.org/download/9889023420030505MR/98890234_20030505_MR.tar.bz2", pcir_tar_988)
-  download.file("https://archive.org/download/2475912320010101/24759123_20010101.tar.bz2", pcir_tar_247)
-  expand_tar_bz2(pcir_tar_988, outdir_dicom)
-  expand_tar_bz2(pcir_tar_247, outdir_dicom)
+  dl_try("https://archive.org/download/9889023420030505MR/98890234_20030505_MR.tar.bz2", pcir_tar_988)
+  dl_try("https://archive.org/download/2475912320010101/24759123_20010101.tar.bz2", pcir_tar_247)
+  if (file.exists(pcir_tar_988)) expand_tar_bz2(pcir_tar_988, outdir_dicom)
+  if (file.exists(pcir_tar_247)) expand_tar_bz2(pcir_tar_247, outdir_dicom)
   # 98890234_20030505_MR
   # MR, MRA, DWI of Brain, Carotids
   dir_pcir_988 <- xfun::normalize_path(file.path(outdir_dicom, "98890234/20030505/MR/"))
@@ -233,7 +234,7 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Metadata matrix dimensions
   # - Convert image data to 3D matrix; correct dimensions
   # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
-  dicom_data_988_MR700 <- read_dicom(xfun::normalize_path(file.path(dir_pcir_988, "MR700")))
+  dicom_data_988_MR700 <- read_dicom_try(xfun::normalize_path(file.path(dir_pcir_988, "MR700")))
 
 
   # dicom_data_247_MR3
@@ -248,7 +249,7 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Metadata matrix has 28 columns
   # - Set of header fields
   # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
-  dicom_data_247_MR3 <- read_dicom(xfun::normalize_path(file.path(dir_pcir_247, "MR3")))
+  dicom_data_247_MR3 <- read_dicom_try(xfun::normalize_path(file.path(dir_pcir_247, "MR3")))
 
   # dicom_data_247_OT
   # -
@@ -259,7 +260,7 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Metadata matrix dimensions
   # - Set of header fields; specific fields are present
   # - Some calculations fail due to missing fields ImagePositionPatient and ImageOrientationPatient
-  dicom_data_247_OT <- read_dicom(xfun::normalize_path(file.path(dir_pcir_247, "OT999999")))
+  dicom_data_247_OT <- read_dicom_try(xfun::normalize_path(file.path(dir_pcir_247, "OT999999")))
 
 
   # dicom_data_qin_hn_sr
@@ -283,7 +284,7 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
     files = unzip(res$out_file, exdir = dir_qin_headneck_sr)
   }
   if (dir.exists(dir_qin_headneck_sr)) {
-    dicom_data_qin_hn_sr <- read_dicom(xfun::normalize_path(file.path(dir_qin_headneck_sr, "1-234.dcm")))
+    dicom_data_qin_hn_sr <- read_dicom_try(xfun::normalize_path(file.path(dir_qin_headneck_sr, "1-234.dcm")))
   }
 
   # dicom_data_prostate_mr
@@ -329,7 +330,7 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
     files = unzip(res$out_file, exdir = dir_prostate_dicom_mr)
   }
   if (dir.exists(dir_prostate_dicom_mr)) {
-    dicom_data_prostate_mr <- read_dicom(dir_prostate_dicom_mr)
+    dicom_data_prostate_mr <- read_dicom_try(dir_prostate_dicom_mr)
   }
 
   # dicom_data_chest
@@ -357,7 +358,7 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
     files = unzip(res$out_file, exdir = dir_chest_dicom)
   }
   if (dir.exists(dir_chest_dicom)) {
-    dicom_data_chest <- read_dicom(dir_chest_dicom)
+    dicom_data_chest <- read_dicom_try(dir_chest_dicom)
   }
 
   # dicom_data_prostate_pt
@@ -380,7 +381,7 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
     files = unzip(res$out_file, exdir = dir_prostate_pt_dicom)
   }
   if (dir.exists(dir_prostate_pt_dicom)) {
-    dicom_data_prostate_pt <- read_dicom(dir_prostate_pt_dicom)
+    dicom_data_prostate_pt <- read_dicom_try(dir_prostate_pt_dicom)
   }
 
   # dicom_data_bladder
@@ -409,7 +410,7 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
     files = unzip(res$out_file, exdir = dir_bladder_dicom)
   }
   if (dir.exists(dir_bladder_dicom)) {
-    dicom_data_bladder <- read_dicom(dir_bladder_dicom)
+    dicom_data_bladder <- read_dicom_try(dir_bladder_dicom)
   }
 
 }

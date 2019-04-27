@@ -1,9 +1,9 @@
 ## Test environments
-* local OS X install, R 3.5.2.
+* local OS X install, R 3.5.3.
 * win-builder
 
 ## R CMD check results
-There were no ERRORs or WARNINGs. There was one NOTE: new maintainer e-mail address.
+There were no ERRORs, WARNINGs, or NOTEs.
 
 ## Downstream dependencies
 There are no downstream dependencies.

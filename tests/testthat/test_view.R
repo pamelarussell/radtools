@@ -2,20 +2,20 @@
 # Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
 
 test_that("View slice - for CRAN", {
-  view_slice(sample_dicom_img, 1)
-  view_slice(sample_nifti_img, 1)
+  expression_try(sample_dicom_img, view_slice(sample_dicom_img, 1))
+  expression_try(sample_dicom_img, view_slice(sample_nifti_img, 1))
 
   # View a slice of a 2D image with view_slice
-  view_slice(dicom_data_sbarre_brain)
+  expression_try(dicom_data_sbarre_brain, view_slice(dicom_data_sbarre_brain))
 
   # View a slice of a 2D image with view_slice_mat
-  view_slice_mat(img_data_to_mat(dicom_data_sbarre_brain))
+  expression_try(dicom_data_sbarre_brain, view_slice_mat(img_data_to_mat(dicom_data_sbarre_brain)))
 
   # View a slice of a 3D image with view_slice_mat
-  view_slice_mat(img_data_to_mat(nifti_data_avg152T1_LR), 10)
+  expression_try(nifti_data_avg152T1_LR, view_slice_mat(img_data_to_mat(nifti_data_avg152T1_LR), 10))
 
   # View a slice of a 4D image with view_slice_mat
-  view_slice_mat(img_data_to_3D_mat(nifti_data_filtered_func, 10), 5)
+  expression_try(nifti_data_filtered_func, view_slice_mat(img_data_to_3D_mat(nifti_data_filtered_func, 10), 5))
 
   # view_slice throws error for 4D image
   expect_error(view_slice(nifti_data_filtered_func, 5))

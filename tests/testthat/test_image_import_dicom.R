@@ -2,14 +2,14 @@
 # Note: explicitly set environment variable NOT_CRAN to "true" (e.g. on command line) to run skipped tests
 
 test_that("DICOM image data to 3D matrix - for CRAN", {
-  expect_equal(dim(img_data_to_3D_mat(sample_dicom_img)), c(256, 256, 3))
-  expect_error(img_data_to_3D_mat(sample_dicom_img, coord_extra_dim = 1))
-  expect_equal(dim(img_data_to_3D_mat(sample_dicom_img)), c(256, 256, 3))
-  expect_error(img_data_to_3D_mat(sample_dicom_img, coord_extra_dim = 1))
+  expression_try(sample_dicom_img, expect_equal(dim(img_data_to_3D_mat(sample_dicom_img)), c(256, 256, 3)))
+  expression_try(sample_dicom_img, expect_error(img_data_to_3D_mat(sample_dicom_img, coord_extra_dim = 1)))
+  expression_try(sample_dicom_img, expect_equal(dim(img_data_to_3D_mat(sample_dicom_img)), c(256, 256, 3)))
+  expression_try(sample_dicom_img, expect_error(img_data_to_3D_mat(sample_dicom_img, coord_extra_dim = 1)))
 })
 
 test_that("DICOM image data to matrix - for CRAN", {
-  expect_equal(dim(img_data_to_mat(sample_dicom_img)), c(256, 256, 3))
+  expression_try(sample_dicom_img, expect_equal(dim(img_data_to_mat(sample_dicom_img)), c(256, 256, 3)))
 })
 
 test_that("Matrix reduce dimensions", {
