@@ -1,4 +1,5 @@
 
+source("helper.R")
 
 # Make temp directory to store images from web
 outdir_nifti <- tempdir(check = TRUE)
@@ -20,10 +21,8 @@ download_nimh <- function(base, extension) {
   name <- paste(base, extension, sep = ".")
   name_gz <- paste(name, "gz", sep = ".")
   gz <- xfun::normalize_path(file.path(outdir_nifti, name_gz))
-  if (!file.exists(gz)) {
-    download.file(file.path(url_nimh, name_gz), gz)
-  }
-  R.utils::gunzip(gz, overwrite = TRUE)
+  dl_try(file.path(url_nimh, name_gz), gz)
+  if(file.exists(gz)) R.utils::gunzip(gz)
 }
 
 # avg152T1_LR
@@ -52,14 +51,14 @@ avg152T1_LR_hdr <- download_nimh("avg152T1_LR_nifti", "hdr")
 avg152T1_LR_img <- download_nimh("avg152T1_LR_nifti", "img")
 avg152T1_LR_nii <- download_nimh("avg152T1_LR_nifti", "nii")
 avg152T1_LR_base <- gsub(".hdr", "", avg152T1_LR_hdr)
-nifti_data_avg152T1_LR_hi <- read_nifti1(avg152T1_LR_base)
-nifti_data_avg152T1_LR <- read_nifti1(avg152T1_LR_nii)
+nifti_data_avg152T1_LR_hi <- read_nifti1_try(avg152T1_LR_base)
+nifti_data_avg152T1_LR <- read_nifti1_try(avg152T1_LR_nii)
 avg152T1_RL_hdr <- download_nimh("avg152T1_RL_nifti", "hdr")
 avg152T1_RL_img <- download_nimh("avg152T1_RL_nifti", "img")
 avg152T1_RL_nii <- download_nimh("avg152T1_RL_nifti", "nii")
 avg152T1_RL_base <- gsub(".hdr", "", avg152T1_RL_hdr)
-nifti_data_avg152T1_RL_hi <- read_nifti1(avg152T1_RL_base)
-nifti_data_avg152T1_RL <- read_nifti1(avg152T1_RL_nii)
+nifti_data_avg152T1_RL_hi <- read_nifti1_try(avg152T1_RL_base)
+nifti_data_avg152T1_RL <- read_nifti1_try(avg152T1_RL_nii)
 
 # filtered_func_data
 # - A simple image time-series in gzipped single file nifti-1 form
@@ -83,7 +82,7 @@ nifti_data_avg152T1_RL <- read_nifti1(avg152T1_RL_nii)
 # - Can't just view a slice due to extra dimensions
 # - Can't just use view_slice_mat to view a slice of 4D matrix
 filtered_func <- download_nimh("filtered_func_data", "nii")
-nifti_data_filtered_func <- read_nifti1(filtered_func)
+nifti_data_filtered_func <- read_nifti1_try(filtered_func)
 
 # minimal data
 # - The "minimal" dataset minimal.hdr, minimal.img and minimal.nii is provided as an example
@@ -99,7 +98,7 @@ nifti_data_filtered_func <- read_nifti1(filtered_func)
 minimal_base <- xfun::normalize_path(file.path(outdir_nifti, "minimal"))
 minimal <- download_nimh("minimal", "hdr")
 minimal <- download_nimh("minimal", "img")
-nifti_data_minimal_hi <- read_nifti1(minimal_base)
+nifti_data_minimal_hi <- read_nifti1_try(minimal_base)
 
 # SIRP
 # - Sternberg Item Recognition Paradigm (SIRP) fMRI Study + XML Extension Data
@@ -117,9 +116,9 @@ nifti_data_minimal_hi <- read_nifti1(minimal_base)
 # - Conversion to matrix returns correct 4D matrix
 sirp_gz <- xfun::normalize_path(file.path(outdir_nifti, "sirp_fmri_study_ver4.tar.gz"))
 sirp_file <- xfun::normalize_path(file.path(outdir_nifti, "newsirp_final_XML.nii"))
-download.file("https://nifti.nimh.nih.gov/nifti-1/data/sirp_fmri_study_ver4.tar.gz", sirp_gz)
-untar(sirp_gz, exdir = outdir_nifti)
-nifti_data_sirp <- read_nifti1(sirp_file, reorient = F)
+dl_try("https://nifti.nimh.nih.gov/nifti-1/data/sirp_fmri_study_ver4.tar.gz", sirp_gz)
+if (file.exists(sirp_gz)) untar(sirp_gz, exdir = outdir_nifti)
+nifti_data_sirp <- read_nifti1_try(sirp_file, reorient = F)
 
 # zstat1
 # - A single z-statistic image in gzipped single file nifti-1 form
@@ -131,7 +130,7 @@ nifti_data_sirp <- read_nifti1(sirp_file, reorient = F)
 # - Header value magic
 # - Correct conversion to 3D matrix
 zstat1_nii <- download_nimh("zstat1", "nii")
-nifti_data_zstat1 <- read_nifti1(zstat1_nii)
+nifti_data_zstat1 <- read_nifti1_try(zstat1_nii)
 
 
 
@@ -140,8 +139,8 @@ nifti_data_zstat1 <- read_nifti1(zstat1_nii)
 file_1103 <- xfun::normalize_path(file.path(outdir_nifti, "Data/1103/3/NIFTI/1103_3.nii"))
 file_1103_glm <- xfun::normalize_path(file.path(outdir_nifti, "Data/1103/3/NIFTI/1103_3_glm.nii"))
 gz_1103 <- xfun::normalize_path(file.path(outdir_nifti, "1103_3.tgz"))
-download.file("http://www.neuromorphometrics.com/1103_3.tgz", gz_1103)
-untar(gz_1103, exdir = outdir_nifti)
+dl_try("http://www.neuromorphometrics.com/1103_3.tgz", gz_1103)
+if (file.exists(gz_1103)) untar(gz_1103, exdir = outdir_nifti)
 
 # nifti_data_1103_3 and nifti_data_1103_3_glm
 # Aspects tested:
@@ -153,14 +152,14 @@ untar(gz_1103, exdir = outdir_nifti)
 # - nifti1_header_values returns list with correct names and values
 # - Number of dimensions
 # - Correct conversion to matrix and 3D matrix
-nifti_data_1103_3 <- read_nifti1(file_1103)
-nifti_data_1103_3_glm <- read_nifti1(file_1103_glm)
+nifti_data_1103_3 <- read_nifti1_try(file_1103)
+nifti_data_1103_3_glm <- read_nifti1_try(file_1103_glm)
 
 
 # John Muschelli's Neurohacking Coursera course data
 download_jm <- function(path, outfile) {
   saved_file <- xfun::normalize_path(file.path(outdir_nifti, outfile))
-  download.file(paste("https://github.com/muschellij2/Neurohacking_data/raw/master/", path, sep = ""),
+  dl_try(paste("https://github.com/muschellij2/Neurohacking_data/raw/master/", path, sep = ""),
                 saved_file)
   saved_file
 }
@@ -174,12 +173,12 @@ download_jm <- function(path, outfile) {
 # - Header values with header_value and nifti1_header_values
 # - Conversion to matrix and 3D matrix
 # - Header value srow_z is numeric vector
-nifti_data_flair <- read_nifti1(download_jm("BRAINIX/NIfTI/FLAIR.nii.gz", "FLAIR.nii.gz"), reorient = F)
-nifti_data_flair_regToT1 <- read_nifti1(download_jm("BRAINIX/NIfTI/FLAIR_regToT1.nii.gz", "FLAIR_regToT1.nii.gz"), reorient = F)
-nifti_data_roi <- read_nifti1(download_jm("BRAINIX/NIfTI/ROI.nii.gz", "ROI.nii.gz"), reorient = F)
-nifti_data_roi_regToT1_SyNtoMNI <- read_nifti1(download_jm("BRAINIX/NIfTI/ROI_regToT1_SyNtoMNI.nii.gz", "ROI_regToT1_SyNtoMNI.nii.gz"))
-nifti_data_t1 <- read_nifti1(download_jm("BRAINIX/NIfTI/T1.nii.gz", "T1.nii.gz"), reorient = F)
-nifti_data_t1_SyNtoMNI <- read_nifti1(download_jm("BRAINIX/NIfTI/T1_SyNtoMNI.nii.gz", "T1_SyNtoMNI.nii.gz"))
+nifti_data_flair <- read_nifti1_try(download_jm("BRAINIX/NIfTI/FLAIR.nii.gz", "FLAIR.nii.gz"), reorient = F)
+nifti_data_flair_regToT1 <- read_nifti1_try(download_jm("BRAINIX/NIfTI/FLAIR_regToT1.nii.gz", "FLAIR_regToT1.nii.gz"), reorient = F)
+nifti_data_roi <- read_nifti1_try(download_jm("BRAINIX/NIfTI/ROI.nii.gz", "ROI.nii.gz"), reorient = F)
+nifti_data_roi_regToT1_SyNtoMNI <- read_nifti1_try(download_jm("BRAINIX/NIfTI/ROI_regToT1_SyNtoMNI.nii.gz", "ROI_regToT1_SyNtoMNI.nii.gz"))
+nifti_data_t1 <- read_nifti1_try(download_jm("BRAINIX/NIfTI/T1.nii.gz", "T1.nii.gz"), reorient = F)
+nifti_data_t1_SyNtoMNI <- read_nifti1_try(download_jm("BRAINIX/NIfTI/T1_SyNtoMNI.nii.gz", "T1_SyNtoMNI.nii.gz"))
 
 # https://github.com/muschellij2/Neurohacking_data/tree/master/Template
 # Aspects tested:
@@ -188,9 +187,9 @@ nifti_data_t1_SyNtoMNI <- read_nifti1(download_jm("BRAINIX/NIfTI/T1_SyNtoMNI.nii
 # - Conversion to matrix and 3D matrix
 # - Num slices
 # - Num dimensions
-nifti_data_JHU_MNI_SS_T1_brain <- read_nifti1(download_jm("Template/JHU_MNI_SS_T1_brain.nii.gz", "JHU_MNI_SS_T1_brain.nii.gz"))
-nifti_data_JHU_MNI_SS_T1_mask <- read_nifti1(download_jm("Template/JHU_MNI_SS_T1_mask.nii.gz", "JHU_MNI_SS_T1_mask.nii.gz"))
-nifti_data_MNI152_T1_1mm_brain <- read_nifti1(download_jm("Template/MNI152_T1_1mm_brain.nii.gz", "MNI152_T1_1mm_brain.nii.gz"))
+nifti_data_JHU_MNI_SS_T1_brain <- read_nifti1_try(download_jm("Template/JHU_MNI_SS_T1_brain.nii.gz", "JHU_MNI_SS_T1_brain.nii.gz"))
+nifti_data_JHU_MNI_SS_T1_mask <- read_nifti1_try(download_jm("Template/JHU_MNI_SS_T1_mask.nii.gz", "JHU_MNI_SS_T1_mask.nii.gz"))
+nifti_data_MNI152_T1_1mm_brain <- read_nifti1_try(download_jm("Template/MNI152_T1_1mm_brain.nii.gz", "MNI152_T1_1mm_brain.nii.gz"))
 
 # https://github.com/muschellij2/Neurohacking_data/tree/master/kirby21/visit_1/113
 # Aspects tested:
@@ -200,7 +199,7 @@ nifti_data_MNI152_T1_1mm_brain <- read_nifti1(download_jm("Template/MNI152_T1_1m
 # - Header values
 # - Header fields
 # - Conversion to matrix and 3D matrix
-nifti_data_113_01_MPRAGE <- read_nifti1(download_jm("kirby21/visit_1/113/113-01-MPRAGE.nii.gz", "113-01-MPRAGE.nii.gz"))
-nifti_data_113_01_MPRAGE_mask <- read_nifti1(download_jm("kirby21/visit_1/113/113-01-MPRAGE_mask.nii.gz", "113-01-MPRAGE_mask.nii.gz"))
-nifti_data_FLIRT_113_01_T2w_regToT1 <- read_nifti1(download_jm("kirby21/visit_1/113/FLIRT_113-01-T2w_regToT1.nii.gz", "FLIRT_113-01-T2w_regToT1.nii.gz"))
+nifti_data_113_01_MPRAGE <- read_nifti1_try(download_jm("kirby21/visit_1/113/113-01-MPRAGE.nii.gz", "113-01-MPRAGE.nii.gz"))
+nifti_data_113_01_MPRAGE_mask <- read_nifti1_try(download_jm("kirby21/visit_1/113/113-01-MPRAGE_mask.nii.gz", "113-01-MPRAGE_mask.nii.gz"))
+nifti_data_FLIRT_113_01_T2w_regToT1 <- read_nifti1_try(download_jm("kirby21/visit_1/113/FLIRT_113-01-T2w_regToT1.nii.gz", "FLIRT_113-01-T2w_regToT1.nii.gz"))
 
