@@ -3,9 +3,6 @@
 
 # radtools
 
-  [![Travis build status](https://travis-ci.org/pamelarussell/radtools.svg?branch=master)](https://travis-ci.org/pamelarussell/radtools)
-  [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/pamelarussell/radtools?branch=master&svg=true)](https://ci.appveyor.com/project/pamelarussell/radtools)
-
 `radtools` is an R package that provides utilities to explore images in the two leading medical image formats: [DICOM](https://www.dicomstandard.org/) and [NIfTI](https://nifti.nimh.nih.gov/). This documentation demonstrates how to read image data into R, extract data and metadata, and view images.
 
 # Citation
