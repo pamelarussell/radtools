@@ -3,31 +3,36 @@
 
 # radtools
 
-[![](https://www.r-pkg.org/badges/version/radtools)](https://cran.r-project.org/web/packages/radtools/index.html)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/radtools?color=brightgreen)](https://cran.r-project.org/web/packages/radtools/index.html)
+  [![Travis build status](https://travis-ci.org/pamelarussell/radtools.svg?branch=master)](https://travis-ci.org/pamelarussell/radtools)
+  [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/pamelarussell/radtools?branch=master&svg=true)](https://ci.appveyor.com/project/pamelarussell/radtools)
 
-`radtools` is an R package that provides utilities to explore images in
-the two leading medical image formats:
-[DICOM](https://www.dicomstandard.org/) and
-[NIfTI](https://nifti.nimh.nih.gov/). This documentation demonstrates
-how to read image data into R, extract data and metadata, and view
-images.
+`radtools` is an R package that provides utilities to explore images in the two leading medical image formats: [DICOM](https://www.dicomstandard.org/) and [NIfTI](https://nifti.nimh.nih.gov/). This documentation demonstrates how to read image data into R, extract data and metadata, and view images.
+
+# Citation
+
+Russell and Ghosh. [Radtools: R utilities for convenient extraction of medical image metadata](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6518432.3/). F1000 Research 5 March 2019. doi: 10.12688/f1000research.17139.3
 
 # Installation
 
-Radtools is on [CRAN](https://cran.r-project.org/package=radtools).
+Radtools is on [Neuroconductor](https://neuroconductor.org/package/radtools).
 
 To install from within R:
 
-``` r
-install.packages("radtools")
+```{r cran-installation, eval = FALSE}
+source("https://neuroconductor.org/neurocLite.R")
+neuro_install('radtools')
 ```
 
-You can install the development version from GitHub with:
+To install the stable release from GitHub:
 
-``` r
-# install.packages("devtools")
-devtools::install_github("pamelarussell/radtools")
+```{r gh-stable, eval = FALSE}
+neuro_install('radtools', release = "stable", release_repo = "github") 
+```
+
+To install the development version from GitHub:
+
+```{r gh-installation, eval = FALSE}
+neuro_install('radtools', release = "current", release_repo = "github")
 ```
 
 # Image file formats
