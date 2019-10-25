@@ -15,7 +15,9 @@ dir.create(outdir_dicom, recursive = TRUE, showWarnings = FALSE)
 
 # Images from http://barre.nom.fr/medical/samples/
 # This repository collects DICOM files for testing purposes.
-url_sbarre <- "http://barre.nom.fr/medical/samples/files/"
+# url_sbarre <- "http://barre.nom.fr/medical/samples/files/"
+# https://ndownloader.figshare.com/articles/10052303/versions/1
+url_sbarre <- "https://www.dropbox.com/s/u2rj556q3xcgv2b/"
 sbarre_samples <- list(ort = "CT-MONO2-16-ort",
                        brain = "CT-MONO2-16-brain",
                        head = "MR-MONO2-16-head",
@@ -23,7 +25,13 @@ sbarre_samples <- list(ort = "CT-MONO2-16-ort",
                        heart_mr = "MR-MONO2-8-16x-heart",
                        heart_nm = "NM-MONO2-16-13x-heart",
                        execho = "US-MONO2-8-8x-execho")
-sbarre_url_sample <- function(sample) {paste(url_sbarre, sample, ".gz", sep = "")}
+sbarre_url_sample <- function(sample) {
+  paste(url_sbarre, sample, ".gz",
+        ifelse(grepl("dropbox",
+                     tolower(url_sbarre)),
+               "?dl=1", ""),
+        sep = "")
+}
 sbarre_unzip_file <- function(sample) {xfun::normalize_path(file.path(outdir_dicom, sample))}
 sbarre_zip_file <- function(sample) {paste(sbarre_unzip_file(sample), ".gz", sep = "")}
 for(sample in sbarre_samples) {
