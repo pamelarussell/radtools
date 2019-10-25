@@ -3,14 +3,20 @@ source("helper.R")
 
 # Make temp directory to store images from web
 outdir_nifti <- tempdir(check = TRUE)
-dir.create(outdir_nifti, recursive = TRUE)
+if (getRversion() < '3.5.0'){
+  outdir_nifti = tempdir()
+} else{
+  outdir_nifti = tempdir(check = TRUE)
+}
+dir.create(outdir_nifti, recursive = TRUE, showWarnings = FALSE)
 
 
 
 # NIMH NIfTI-1 test datasets
 # Valid test data sets of 3D (structural) and 4D (functional) images in NIfTI-1 format.
 # https://nifti.nimh.nih.gov/nifti-1/data
-url_nimh <- "https://nifti.nimh.nih.gov/nifti-1/data"
+# url_nimh <- "https://nifti.nimh.nih.gov/nifti-1/data"
+url_nimh <- "https://github.com/muschellij2/nifti_nimh/raw/master/"
 download_nimh <- function(base, extension) {
   name <- paste(base, extension, sep = ".")
   name_gz <- paste(name, "gz", sep = ".")
