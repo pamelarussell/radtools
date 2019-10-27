@@ -1,3 +1,8 @@
+# radtools 1.0.7
+
+* Update tests for modified sbarre test datasets
+* Update tests to remove check for TCIA API key which is no longer required
+
 # radtools 1.0.6
 
 Update tests to comply with CRAN policy regarding use of internet resources: tests fail gracefully with an informative message when resources are not available.
