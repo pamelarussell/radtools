@@ -239,6 +239,5 @@ test_that("DICOM metadata not run on CRAN", {
   expect_equal(dicom_constant_header_values(dicom_data_chest, numeric = FALSE)[["SeriesDate"]], "20000101")
   expect_null(const_valc[["SliceLocation"]])
 
-
 })
 
