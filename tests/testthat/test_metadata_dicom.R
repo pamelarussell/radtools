@@ -102,8 +102,6 @@ test_that("DICOM header values - for CRAN", {
   expression_try(dicom_data_sbarre_brain, expect_equal(header_value(dicom_data_sbarre_brain, "SliceThickness"), 10.0))
   expression_try(dicom_data_sbarre_knee, expect_equal(header_value(dicom_data_sbarre_knee, "HighBit"), 15))
   expression_try(dicom_data_sbarre_ort, expect_equal(header_value(dicom_data_sbarre_ort, "PhotometricInterpretation"), "MONOCHROME2"))
-  expression_try(dicom_data_sbarre_heart_nm, expect_equal(header_value(dicom_data_sbarre_heart_nm, "NumberOfFrames"), 13))
-  expression_try(dicom_data_sbarre_execho, expect_equal(header_value(dicom_data_sbarre_execho, "NumberOfFrames"), 8))
   expression_try(dicom_data_dclunie_scsgreek, expect_equal(header_value(dicom_data_dclunie_scsgreek, "InstanceNumber"), 1))
   expression_try(dicom_data_dclunie_scsgreek, expect_equal(header_value(dicom_data_dclunie_scsgreek, "PhotometricInterpretation"), "MONOCHROME2"))
   expression_try(sample_dicom_img, expect_equal(header_value(sample_dicom_img, "InstanceCreatorUID")[[1]], "1.3.6.1.4.1.5962.3"))
