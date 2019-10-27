@@ -286,15 +286,11 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Can get metadata matrix without error
   # - Error when trying to get image data as matrix
   # - Error when trying to view slice
-  api_key <- Sys.getenv("TCIA_API_KEY")
-  have_api_key = !identical(api_key, "")
   dir_qin_headneck_sr <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/qin_headneck_sr"
-  if (have_api_key) {
-    res = TCIApathfinder::save_image_series("1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882")
-    dir_qin_headneck_sr = tempfile()
-    dir.create(dir_qin_headneck_sr, showWarnings = FALSE)
-    files = unzip(res$out_file, exdir = dir_qin_headneck_sr)
-  }
+  res = TCIApathfinder::save_image_series("1.2.276.0.7230010.3.1.3.8323329.18438.1440001309.981882")
+  dir_qin_headneck_sr = tempfile()
+  dir.create(dir_qin_headneck_sr, showWarnings = FALSE)
+  files = unzip(res$out_file, exdir = dir_qin_headneck_sr)
   if (dir.exists(dir_qin_headneck_sr)) {
     dicom_data_qin_hn_sr <- read_dicom_try(xfun::normalize_path(file.path(dir_qin_headneck_sr, "1-234.dcm")))
   }
@@ -335,12 +331,10 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   dir_prostate_dicom_mr = file.path(dir_prostate_dicom_mr,
                                     "Prostate3T-03-0001/1.3.6.1.4.1.14519.5.2.1.7307.2101.182382809090179976301292139745/1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
   dir_prostate_dicom_mr <- xfun::normalize_path(dir_prostate_dicom_mr)
-  if (have_api_key) {
-    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
-    dir_prostate_dicom_mr = tempfile()
-    dir.create(dir_prostate_dicom_mr, showWarnings = FALSE)
-    files = unzip(res$out_file, exdir = dir_prostate_dicom_mr)
-  }
+  res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.7307.2101.287009217605941401146066177219")
+  dir_prostate_dicom_mr = tempfile()
+  dir.create(dir_prostate_dicom_mr, showWarnings = FALSE)
+  files = unzip(res$out_file, exdir = dir_prostate_dicom_mr)
   if (dir.exists(dir_prostate_dicom_mr)) {
     dicom_data_prostate_mr <- read_dicom_try(dir_prostate_dicom_mr)
   }
@@ -363,12 +357,10 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Dimensions of image matrix and 3D matrix are 512x512x128
   # - When converting image data to 3D matrix, can't use option to hold additional dimensions constant because there are no additional dimensions
   dir_chest_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/lidc_idri_chest_ct/1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138"
-  if (have_api_key) {
-    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138")
-    dir_chest_dicom = tempfile()
-    dir.create(dir_chest_dicom, showWarnings = FALSE)
-    files = unzip(res$out_file, exdir = dir_chest_dicom)
-  }
+  res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.6279.6001.140253591510022414496468423138")
+  dir_chest_dicom = tempfile()
+  dir.create(dir_chest_dicom, showWarnings = FALSE)
+  files = unzip(res$out_file, exdir = dir_chest_dicom)
   if (dir.exists(dir_chest_dicom)) {
     dicom_data_chest <- read_dicom_try(dir_chest_dicom)
   }
@@ -386,12 +378,10 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - Trying to get header value for repeated field throws error
   # - Dimensions of image matrix and 3D matrix are 144x144x234
   dir_prostate_pt_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/naf_prostate_pt/1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545"
-  if (have_api_key) {
-    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545")
-    dir_prostate_pt_dicom = tempfile()
-    dir.create(dir_prostate_pt_dicom, showWarnings = FALSE)
-    files = unzip(res$out_file, exdir = dir_prostate_pt_dicom)
-  }
+  res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.9823.8001.580231868964887648671150773545")
+  dir_prostate_pt_dicom = tempfile()
+  dir.create(dir_prostate_pt_dicom, showWarnings = FALSE)
+  files = unzip(res$out_file, exdir = dir_prostate_pt_dicom)
   if (dir.exists(dir_prostate_pt_dicom)) {
     dicom_data_prostate_pt <- read_dicom_try(dir_prostate_pt_dicom)
   }
@@ -415,12 +405,10 @@ if(identical(tolower(Sys.getenv("NOT_CRAN")), "true")) {
   # - List of constant header values has same names as unique fields in metadata matrix because only one slice
   # - Getting constant header values: option to return all values as strings works correctly
   dir_bladder_dicom <- "~/Dropbox/Documents/Radiogenomics/radiogenomics_r_package/sample_data/images/dicom/tcga_blca_cr/1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012"
-  if (have_api_key) {
-    res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012")
-    dir_bladder_dicom = tempfile()
-    dir.create(dir_bladder_dicom, showWarnings = FALSE)
-    files = unzip(res$out_file, exdir = dir_bladder_dicom)
-  }
+  res = TCIApathfinder::save_image_series("1.3.6.1.4.1.14519.5.2.1.8421.4016.922520924373492766630626617012")
+  dir_bladder_dicom = tempfile()
+  dir.create(dir_bladder_dicom, showWarnings = FALSE)
+  files = unzip(res$out_file, exdir = dir_bladder_dicom)
   if (dir.exists(dir_bladder_dicom)) {
     dicom_data_bladder <- read_dicom_try(dir_bladder_dicom)
   }
