@@ -82,10 +82,6 @@ test_that("Number of slices - for CRAN", {
 test_that("Image dimensions - for CRAN", {
   expression_try(sample_dicom_img, expect_equal(img_dimensions(sample_dicom_img), c(256, 256, 3)))
   expression_try(dicom_data_sbarre_brain, expect_equal(img_dimensions(dicom_data_sbarre_brain), c(512, 512, 1)))
-  expect_error(img_dimensions(dicom_data_sbarre_ort))
-  expect_error(img_dimensions(dicom_data_sbarre_knee))
-  expect_error(img_dimensions(dicom_data_sbarre_head))
-  expect_error(img_dimensions(dicom_data_sbarre_execho))
   expect_error(img_dimensions(dicom_data_dclunie_scsgreek))
   expect_error(img_dimensions(dicom_data_dclunie_image))
   expression_try(sample_dicom_img, expect_equal(img_dimensions(sample_dicom_img), c(256, 256, 3)))
@@ -104,7 +100,6 @@ test_that("DICOM header values - for CRAN", {
   expression_try(sample_dicom_img, expect_equal(header_value(sample_dicom_img, "InstanceCreatorUID")[[1]], "1.3.6.1.4.1.5962.3"))
   expression_try(sample_dicom_img, expect_equal(header_value(sample_dicom_img, "GroupLength")[[3]], 192))
   expression_try(dicom_data_sbarre_brain, expect_equal(header_value(dicom_data_sbarre_brain, "SliceThickness"), 10.0))
-  expression_try(dicom_data_sbarre_head, expect_equal(header_value(dicom_data_sbarre_head, "SpatialResolution"), "1.145833 0.859375"))
   expression_try(dicom_data_sbarre_knee, expect_equal(header_value(dicom_data_sbarre_knee, "HighBit"), 15))
   expression_try(dicom_data_sbarre_ort, expect_equal(header_value(dicom_data_sbarre_ort, "PhotometricInterpretation"), "MONOCHROME2"))
   expression_try(dicom_data_sbarre_heart_mr, expect_equal(header_value(dicom_data_sbarre_heart_mr, "NumberOfFrames"), 16))

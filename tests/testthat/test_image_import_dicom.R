@@ -60,23 +60,15 @@ test_that("DICOM import - for CRAN", {
 
   # S. Barre ort
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_ort, 1))
-  expect_error(img_data_to_mat(dicom_data_sbarre_ort))
-  expect_error(img_data_to_3D_mat(dicom_data_sbarre_ort))
 
   # S. Barre heart MR
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_heart_mr, 1))
-  expect_error(img_data_to_mat(dicom_data_sbarre_heart_mr))
-  expect_error(img_data_to_3D_mat(dicom_data_sbarre_heart_mr))
 
   # S. Barre heart NM
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_heart_nm, 1))
-  expect_error(img_data_to_mat(dicom_data_sbarre_heart_nm))
-  expect_error(img_data_to_3D_mat(dicom_data_sbarre_heart_nm))
 
   # S. Barre execho
   expect_error(img_data_to_3D_mat(dicom_data_sbarre_execho, 1))
-  expect_error(img_data_to_mat(dicom_data_sbarre_execho))
-  expect_error(img_data_to_3D_mat(dicom_data_sbarre_execho))
 })
 
 
