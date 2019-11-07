@@ -16,7 +16,7 @@ dir.create(outdir_nifti, recursive = TRUE, showWarnings = FALSE)
 # Valid test data sets of 3D (structural) and 4D (functional) images in NIfTI-1 format.
 # https://nifti.nimh.nih.gov/nifti-1/data
 # url_nimh <- "https://nifti.nimh.nih.gov/nifti-1/data"
-url_nimh <- "https://github.com/muschellij2/nifti_nimh/raw/master/"
+url_nimh <- "https://github.com/muschellij2/nifti_nimh/raw/master"
 download_nimh <- function(base, extension) {
   name <- paste(base, extension, sep = ".")
   name_gz <- paste(name, "gz", sep = ".")
@@ -116,7 +116,7 @@ nifti_data_minimal_hi <- read_nifti1_try(minimal_base)
 # - Conversion to matrix returns correct 4D matrix
 sirp_gz <- xfun::normalize_path(file.path(outdir_nifti, "sirp_fmri_study_ver4.tar.gz"))
 sirp_file <- xfun::normalize_path(file.path(outdir_nifti, "newsirp_final_XML.nii"))
-dl_try("https://nifti.nimh.nih.gov/nifti-1/data/sirp_fmri_study_ver4.tar.gz", sirp_gz)
+dl_try("https://github.com/muschellij2/nifti_nimh/raw/master/sirp_fmri_study_ver4.tar.gz", sirp_gz)
 if (file.exists(sirp_gz)) untar(sirp_gz, exdir = outdir_nifti)
 nifti_data_sirp <- read_nifti1_try(sirp_file, reorient = F)
 
