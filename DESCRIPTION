@@ -1,6 +1,6 @@
 Package: radtools
 Title: Utilities for Convenient Extraction of Medical Image Metadata
-Version: 1.0.7
+Version: 1.0.7.1
 Author: Pamela Russell [aut, cre]
 Maintainer: Pamela Russell <pamela.russell@gmail.com>
 Authors@R: person("Pamela", "Russell", email = "pamela.russell@gmail.com", role = c("aut", "cre"))
