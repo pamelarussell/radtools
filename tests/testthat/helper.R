@@ -43,3 +43,6 @@ expression_try <- function(input, expression) {
 }
 
 
+have_tcia_key = function() {
+  nzchar(Sys.getenv("TCIA_API_KEY", ""))
+}
