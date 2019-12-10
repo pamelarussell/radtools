@@ -3,7 +3,7 @@
 # If error is caught, delete the destfile
 dl_try <- function(url, destfile) {
   tryCatch({
-    download.file(url, destfile)
+    download.file(url, destfile, mode="wb")
   },
   error = function(e) {
     message(paste("Could not download file from url", url))
