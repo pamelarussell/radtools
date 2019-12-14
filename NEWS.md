@@ -1,3 +1,9 @@
+# radtools 1.0.7.2
+
+* Fix Windows tests on AppVeyor
+
+# radtools 1.0.7.1
+
 # radtools 1.0.7
 
 * Update tests for modified sbarre test datasets
